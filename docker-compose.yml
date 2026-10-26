@@ -29,7 +29,7 @@ services:
     volumes:
       - .:/app
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health > /dev/null"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health > /dev/null"]
       interval: 5s
       timeout: 10s
       retries: 60
