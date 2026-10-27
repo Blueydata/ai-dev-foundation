@@ -23,20 +23,25 @@ flowchart LR
 ## 🗺️ O caminho
 
 ```mermaid
-flowchart LR
-    subgraph P["Preparar"]
+flowchart TB
+    subgraph P["🧰 Preparar"]
+        direction LR
         S1["1 · Projeto"] --> S2["2 · Negócio"]
     end
-    subgraph E["Especificar"]
+    subgraph E["🎤 Especificar"]
+        direction LR
         S3["3 · Entrevista"] --> S4["4 · Plano"]
     end
-    subgraph C["Construir"]
+    subgraph C["🔨 Construir"]
+        direction LR
         S5["5 · Admin"] --> S6["6 · Tokens"] --> S7["7 · Chat"]
     end
-    subgraph V["Validar"]
+    subgraph V["🔍 Validar"]
+        direction LR
         S8["8 · Revisão"] --> S9["9 · Quebrar o chat"]
     end
-    subgraph D["Entregar"]
+    subgraph D["🚀 Entregar"]
+        direction LR
         S10["10 · Documentação"] --> S11["11 · Entrega"]
     end
     P --> E --> C --> V --> D
