@@ -1,72 +1,118 @@
-# Pré-requisitos — Chegue com tudo pronto
+# Pré-requisitos
 
-Para usar o **Dev Foundation**, no treinamento "Desenvolvimento de software com IA" ou em qualquer projeto, você precisa de três coisas no computador: **Claude**, **Git** e **Docker Desktop**. São uns 30 minutos no total, a maior parte esperando download.
+Tudo o que você precisa no computador para usar o **Dev Foundation**, no treinamento "Desenvolvimento de software com IA" ou em qualquer projeto.
 
-Você **não** precisa saber programar nem instalar Node, banco de dados ou qualquer outra ferramenta: a aplicação roda inteira dentro do Docker.
+![Tempo](https://img.shields.io/badge/tempo-~30%20min-1f6feb?style=for-the-badge)
+![Espaço](https://img.shields.io/badge/espa%C3%A7o-10%20GB%20livres-1f6feb?style=for-the-badge)
+![Sistema](https://img.shields.io/badge/sistema-macOS%20%7C%20Windows-1f6feb?style=for-the-badge)
+![Programar](https://img.shields.io/badge/saber%20programar-n%C3%A3o%20precisa-2da44e?style=for-the-badge)
 
-## O que você precisa
+```mermaid
+flowchart LR
+    A["1 · Claude"] --> B["2 · Git"] --> C["3 · Docker Desktop"] --> D["4 · Baixar o projeto"] --> E["5 · /setup-project"] --> F(["✓ Tudo pronto"])
+    style F fill:#2da44e,color:#fff,stroke:#2da44e
+```
 
-- [ ] Computador com macOS ou Windows e pelo menos 10 GB livres
-- [ ] O app **Claude**, com login numa conta de plano Pro ou superior
-- [ ] **Git**
-- [ ] **Docker Desktop**, aberto e funcionando
+## O que instalar
 
-## 1. Claude
+| | Ferramenta | Para quê | Onde baixar |
+| :---: | --- | --- | --- |
+| 🤖 | **Claude** (app) | Conversar com a IA que constrói o software | [claude.ai/download](https://claude.ai/download) |
+| 🌿 | **Git** | Baixar o projeto e guardar cada versão | [git-scm.com](https://git-scm.com/download/win) (Windows) · já vem no macOS |
+| 🐳 | **Docker Desktop** | Rodar a aplicação e o banco de dados | [docker.com](https://www.docker.com/products/docker-desktop) |
 
-1. Baixe o app Claude para o seu sistema em https://claude.ai/download e instale.
-2. Abra o app e faça login com a sua conta. O plano precisa ser **Pro ou superior**, porque é ele que dá acesso ao Claude Code.
-3. No app, abra a aba **Code**. É ali que você vai trabalhar.
+> [!NOTE]
+> Só isso. Node, banco de dados e o resto rodam **dentro do Docker**: não instale mais nada.
 
-## 2. Git
+---
 
-- **macOS:** abra o Terminal e rode `git --version`. Se ainda não estiver instalado, o próprio macOS oferece a instalação: aceite e espere terminar.
-- **Windows:** baixe e instale o Git for Windows em https://git-scm.com/download/win, mantendo as opções padrão.
+## 1 · 🤖 Claude
 
-## 3. Docker Desktop
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Baixe e instale o app em [claude.ai/download](https://claude.ai/download) |
+| 2 | Faça login com a sua conta |
+| 3 | Abra a aba **Code**: é ali que você vai trabalhar |
 
-1. Baixe em https://www.docker.com/products/docker-desktop e instale.
-2. Abra o Docker Desktop e espere ele indicar que está rodando.
-3. No **Windows**, o instalador pode pedir para ativar o WSL 2: aceite e reinicie o computador.
+> [!IMPORTANT]
+> A conta precisa ser do plano **Pro ou superior**, que é o que dá acesso ao Claude Code.
 
-## 4. Teste final: o projeto rodando
+## 2 · 🌿 Git
 
-Este passo já baixa tudo o que o projeto usa, para não depender da internet no dia.
+| 🍎 macOS | 🪟 Windows |
+| --- | --- |
+| No Terminal, rode `git --version`. Se não estiver instalado, o macOS oferece a instalação: aceite. | Instale o [Git for Windows](https://git-scm.com/download/win) com as opções padrão. |
 
-1. No Terminal (ou no PowerShell, no Windows), baixe o Dev Foundation:
+## 3 · 🐳 Docker Desktop
+
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Baixe e instale em [docker.com](https://www.docker.com/products/docker-desktop) |
+| 2 | Abra o Docker Desktop e espere ele indicar que está **rodando** |
+
+> [!WARNING]
+> **Windows:** o instalador pode pedir para ativar o **WSL 2**. Aceite e reinicie o computador.
+
+## 4 · 📦 Baixar o projeto
+
+No Terminal (ou no PowerShell, no Windows):
 
 ```bash
 git clone https://github.com/Blueydata/ai-dev-foundation.git
 ```
 
-2. Abra o Docker Desktop.
-3. No app Claude, aba **Code**, abra a pasta `ai-dev-foundation` que acabou de ser criada e digite:
+## 5 · ✅ Teste final
+
+Com o Docker Desktop aberto, no app Claude, aba **Code**, abra a pasta `ai-dev-foundation` e digite:
 
 ```
 /setup-project
 ```
 
-Ele confere o Git e o Docker, sobe o projeto e diz exatamente o que fazer se faltar alguma coisa, até estar tudo pronto. Na primeira vez ele baixa e instala tudo, o que leva alguns minutos. Não precisa configurar nada.
+Ele confere tudo, sobe o projeto e diz o que fazer se faltar algo. Na primeira vez leva alguns minutos, baixando o que o projeto usa. **Está pronto quando aparecer assim:**
 
-4. Está pronto quando aparecer tudo ✓, menos "Product", que é o contexto do negócio, preenchido depois (no treinamento, a gente preenche junto). Para conferir, abra http://localhost:3000: deve aparecer **"Banco de dados: conectado"**.
-5. Para desligar, feche o Docker Desktop. Para voltar a trabalhar, é só abrir o Docker Desktop e rodar `/setup-project` de novo.
+```
+✓ Git
+✓ Docker instalado e rodando
+✓ Aplicação e banco no ar (http://localhost:3000)
+✓ Testes e tipos
+✓ Sem segredos no código
+– Chave da OpenAI não configurada (opcional: só o chat precisa dela)
+✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
+```
 
-Os prompts do treinamento, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md). Não precisa fazer nada com ele antes.
+> [!TIP]
+> O "Product" é o contexto do negócio, preenchido depois (no treinamento, a gente preenche junto). Abra http://localhost:3000: deve aparecer **"Banco de dados: conectado"**.
 
-## Opcional: chave da OpenAI
+| Quero… | Faço |
+| --- | --- |
+| Desligar | Feche o Docker Desktop |
+| Voltar a trabalhar | Abra o Docker Desktop e rode `/setup-project` |
+| Ver os prompts do treinamento | [`WORKSHOP.md`](WORKSHOP.md) (não precisa fazer nada com ele antes) |
 
-O produto construído no treinamento tem um chat com IA. Para ele responder no seu computador, você precisa de uma chave da OpenAI:
+---
 
-1. Crie uma conta em https://platform.openai.com, adicione um pouco de crédito (US$ 5 sobram) e gere uma chave em **API keys**.
-2. Na pasta do projeto, crie um arquivo chamado `.env` com uma única linha (o `/setup-project` explica como, se precisar):
+<details>
+<summary><strong>🔑 Opcional: chave da OpenAI, para o chat com IA responder</strong></summary>
+
+<br>
+
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Crie uma conta em [platform.openai.com](https://platform.openai.com) e adicione um pouco de crédito (US$ 5 sobram) |
+| 2 | Gere uma chave em **API keys** |
+| 3 | Na pasta do projeto, crie um arquivo `.env` com a linha abaixo |
 
 ```
 OPENAI_API_KEY=a-sua-chave
 ```
 
-Esse arquivo nunca vai para o Git. **Não mande a sua chave para ninguém**, nem cole em conversas.
+Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.
 
-Sem a chave, todo o resto funciona normalmente; só o chat avisa que a IA está indisponível.
+> [!CAUTION]
+> O `.env` nunca vai para o Git. **Não mande a sua chave para ninguém**, nem cole em conversas.
 
-## Travou?
+</details>
 
-Se algum passo não funcionar, peça ajuda ao próprio Claude, no app, descrevendo o erro e colando a mensagem que apareceu.
+> [!TIP]
+> **Travou?** Peça ajuda ao próprio Claude, no app, colando a mensagem de erro que apareceu.
