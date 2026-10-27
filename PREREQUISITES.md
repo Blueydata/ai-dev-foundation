@@ -4,22 +4,22 @@ Tudo o que você precisa no computador para usar o **Dev Foundation**, no treina
 
 ![Tempo](https://img.shields.io/badge/tempo-~30%20min-1f6feb?style=for-the-badge)
 ![Espaço](https://img.shields.io/badge/espa%C3%A7o-10%20GB%20livres-1f6feb?style=for-the-badge)
-![Sistema](https://img.shields.io/badge/sistema-macOS%20%7C%20Windows-1f6feb?style=for-the-badge)
+![Sistema](https://img.shields.io/badge/sistema-Windows%20%7C%20macOS%20%7C%20Linux-1f6feb?style=for-the-badge)
 ![Programar](https://img.shields.io/badge/saber%20programar-n%C3%A3o%20precisa-2da44e?style=for-the-badge)
 
 ```mermaid
 flowchart LR
-    A["1 · Claude"] --> B["2 · Git"] --> C["3 · Docker Desktop"] --> D["4 · Baixar o projeto"] --> E["5 · /setup-project"] --> F(["✓ Tudo pronto"])
+    A["1 · Claude"] --> B["2 · Git"] --> C["3 · Docker"] --> D["4 · Baixar o projeto"] --> E["5 · /setup-project"] --> F(["✓ Tudo pronto"])
     style F fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
 ## O que instalar
 
-| | Ferramenta | Para quê | Onde baixar |
-| :---: | --- | --- | --- |
-| 🤖 | **Claude** (app) | Conversar com a IA que constrói o software | [claude.ai/download](https://claude.ai/download) |
-| 🌿 | **Git** | Baixar o projeto e guardar cada versão | [git-scm.com](https://git-scm.com/download/win) (Windows) · já vem no macOS |
-| 🐳 | **Docker Desktop** | Rodar a aplicação e o banco de dados | [docker.com](https://www.docker.com/products/docker-desktop) |
+| | Ferramenta | Para quê | 🪟 Windows | 🍎 macOS | 🐧 Linux |
+| :---: | --- | --- | --- | --- | --- |
+| 🤖 | **Claude** | Conversar com a IA que constrói o software | [App Claude](https://claude.ai/download) | [App Claude](https://claude.ai/download) | [App Claude (beta)](https://code.claude.com/docs/en/desktop-linux) ou [Claude Code no terminal](https://code.claude.com/docs/en/quickstart) |
+| 🌿 | **Git** | Baixar o projeto e guardar cada versão | [Git for Windows](https://git-scm.com/download/win) | Já vem no sistema | Gerenciador de pacotes |
+| 🐳 | **Docker** | Rodar a aplicação e o banco de dados | [Docker Desktop](https://www.docker.com/products/docker-desktop) | [Docker Desktop](https://www.docker.com/products/docker-desktop) | [Docker Engine](https://docs.docker.com/engine/install/) ou [Docker Desktop](https://docs.docker.com/desktop/setup/install/linux/) |
 
 > [!NOTE]
 > Só isso. Node, banco de dados e o resto rodam **dentro do Docker**: não instale mais nada.
@@ -28,34 +28,35 @@ flowchart LR
 
 ## 1 · 🤖 Claude
 
-| Passo | O que fazer |
-| :---: | --- |
-| 1 | Baixe e instale o app em [claude.ai/download](https://claude.ai/download) |
-| 2 | Faça login com a sua conta |
-| 3 | Abra a aba **Code**: é ali que você vai trabalhar |
+| 🪟 Windows | 🍎 macOS | 🐧 Linux |
+| --- | --- | --- |
+| Baixe e instale o app em [claude.ai/download](https://claude.ai/download) | Baixe e instale o app em [claude.ai/download](https://claude.ai/download) | **Ubuntu 22.04+ ou Debian 12+:** instale o [app Claude para Linux (beta)](https://code.claude.com/docs/en/desktop-linux) via `apt`. **Outras distribuições:** use o [Claude Code no terminal](https://code.claude.com/docs/en/quickstart) |
+
+Depois, faça login com a sua conta e abra a aba **Code**: é ali que você vai trabalhar (no terminal, rode `claude` dentro da pasta do projeto).
 
 > [!IMPORTANT]
 > A conta precisa ser do plano **Pro ou superior**, que é o que dá acesso ao Claude Code.
 
 ## 2 · 🌿 Git
 
-| 🍎 macOS | 🪟 Windows |
-| --- | --- |
-| No Terminal, rode `git --version`. Se não estiver instalado, o macOS oferece a instalação: aceite. | Instale o [Git for Windows](https://git-scm.com/download/win) com as opções padrão. |
+| 🪟 Windows | 🍎 macOS | 🐧 Linux |
+| --- | --- | --- |
+| Instale o [Git for Windows](https://git-scm.com/download/win) com as opções padrão | No Terminal, rode `git --version`. Se não estiver instalado, o macOS oferece a instalação: aceite | Ubuntu/Debian: `sudo apt install git` · Fedora: `sudo dnf install git` |
 
-## 3 · 🐳 Docker Desktop
+## 3 · 🐳 Docker
 
-| Passo | O que fazer |
-| :---: | --- |
-| 1 | Baixe e instale em [docker.com](https://www.docker.com/products/docker-desktop) |
-| 2 | Abra o Docker Desktop e espere ele indicar que está **rodando** |
+| 🪟 Windows | 🍎 macOS | 🐧 Linux |
+| --- | --- | --- |
+| Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop), abra e espere ele indicar que está **rodando** | Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop), abra e espere ele indicar que está **rodando** | Instale o [Docker Engine com o plugin Compose](https://docs.docker.com/engine/install/) e rode `sudo usermod -aG docker $USER`; saia e entre de novo na sessão. Ou use o [Docker Desktop para Linux](https://docs.docker.com/desktop/setup/install/linux/) |
 
 > [!WARNING]
 > **Windows:** o instalador pode pedir para ativar o **WSL 2**. Aceite e reinicie o computador.
+>
+> **Linux:** confira com `docker compose version`. Sem o `usermod`, o Docker só funciona com `sudo`.
 
 ## 4 · 📦 Baixar o projeto
 
-No Terminal (ou no PowerShell, no Windows):
+No PowerShell (Windows) ou no Terminal (macOS e Linux):
 
 ```bash
 git clone https://github.com/Blueydata/ai-dev-foundation.git
@@ -63,7 +64,7 @@ git clone https://github.com/Blueydata/ai-dev-foundation.git
 
 ## 5 · ✅ Teste final
 
-Com o Docker Desktop aberto, no app Claude, aba **Code**, abra a pasta `ai-dev-foundation` e digite:
+Com o Docker rodando, abra a pasta `ai-dev-foundation` no Claude (app: aba **Code**; terminal: `cd ai-dev-foundation` e `claude`) e digite:
 
 ```
 /setup-project
@@ -84,11 +85,13 @@ Ele confere tudo, sobe o projeto e diz o que fazer se faltar algo. Na primeira v
 > [!TIP]
 > O "Product" é o contexto do negócio, preenchido depois (no treinamento, a gente preenche junto). Abra http://localhost:3000: deve aparecer **"Banco de dados: conectado"**.
 
-| Quero… | Faço |
-| --- | --- |
-| Desligar | Feche o Docker Desktop |
-| Voltar a trabalhar | Abra o Docker Desktop e rode `/setup-project` |
-| Ver os prompts do treinamento | [`WORKSHOP.md`](WORKSHOP.md) (não precisa fazer nada com ele antes) |
+| Quero… | 🪟 Windows | 🍎 macOS | 🐧 Linux |
+| --- | --- | --- | --- |
+| Ver a aplicação dentro do app Claude | Painel **Browser**: `Ctrl+Shift+B` | Painel **Browser**: `Cmd+Shift+B` | Painel **Browser**: `Ctrl+Shift+B` (no terminal, use o seu navegador) |
+| Desligar | Feche o Docker Desktop | Feche o Docker Desktop | `docker compose stop` na pasta do projeto |
+| Voltar a trabalhar | Abra o Docker Desktop e rode `/setup-project` | Abra o Docker Desktop e rode `/setup-project` | Rode `/setup-project` |
+
+Os prompts do treinamento, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md). Não precisa fazer nada com ele antes.
 
 ---
 
@@ -115,4 +118,4 @@ Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponíve
 </details>
 
 > [!TIP]
-> **Travou?** Peça ajuda ao próprio Claude, no app, colando a mensagem de erro que apareceu.
+> **Travou?** Peça ajuda ao próprio Claude colando a mensagem de erro que apareceu.

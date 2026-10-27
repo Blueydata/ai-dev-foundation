@@ -7,19 +7,22 @@ description: Guided setup of the project - checks Git and Docker, starts the app
 
 Take the person from "just cloned" to "ready to develop". Check each item in order; when something is missing, give the exact next step for their operating system, wait for them to say it is done, and check again. Do what you safely can yourself (starting the containers); never install software, change system settings or read `.env`.
 
-The computer only needs **Git**, **Docker Desktop** and **Claude** (this app). Node.js, the dependencies, the database and the browser all run inside Docker: never ask the person to install them.
+The computer only needs **Git**, **Docker** and **Claude**, on Windows, macOS or Linux. Node.js, the dependencies, the database and the browser all run inside Docker: never ask the person to install them.
 
 ## Steps
 
-Find the operating system first (`uname -s`; on Windows the shell reports MINGW, MSYS or similar) so every instruction matches it.
+Find the operating system first (`uname -s`: `Darwin` is macOS, `Linux` is Linux, and MINGW, MSYS or similar is Windows) so every instruction matches it. Always give the instruction for the person's system.
 
 1. **Git:** `git --version`.
    - Missing on macOS: run `git --version` in the Terminal and accept the installation the system offers.
    - Missing on Windows: install Git for Windows from https://git-scm.com/download/win with the default options, then reopen the app.
+   - Missing on Linux: `sudo apt install git` (Ubuntu, Debian) or `sudo dnf install git` (Fedora).
 2. **Docker installed:** `docker --version`.
-   - Missing: install Docker Desktop from https://www.docker.com/products/docker-desktop (on Windows, accept enabling WSL 2 and restart).
+   - Missing on Windows or macOS: install Docker Desktop from https://www.docker.com/products/docker-desktop (on Windows, accept enabling WSL 2 and restart).
+   - Missing on Linux: install Docker Engine with the Compose plugin (https://docs.docker.com/engine/install/), then `sudo usermod -aG docker $USER` and log out and back in. Docker Desktop for Linux also works.
 3. **Docker running:** `docker info --format "{{.ServerVersion}}"`.
-   - Fails: open Docker Desktop and wait until it says it is running, then say "pronto".
+   - Fails on Windows or macOS: open Docker Desktop and wait until it says it is running, then say "pronto".
+   - Fails on Linux: `sudo systemctl start docker`; a permission error means the `usermod` step above is missing (log out and back in after it).
 4. **Project folder:** `test -f docker-compose.yml`. If it fails, the app was opened in the wrong folder: tell the person to open the project folder (the folder created by `git clone`, `ai-dev-foundation` by default).
 5. **App and database running:** `curl -s http://localhost:3000/api/health`.
    - If it does not answer with `"database":"ok"`, start everything yourself: `docker compose up -d --wait` with a long timeout (the first run downloads the images and installs the dependencies, which can take several minutes; say so before starting). Then check the health again.
@@ -28,7 +31,7 @@ Find the operating system first (`uname -s`; on Windows the shell reports MINGW,
 7. **Secrets:** `docker compose exec -T app npm run check:secrets` reports nothing.
 8. **User-provided keys:** `docker compose exec -T app npm run check:env`. Missing keys are **optional** for setup: say which features need them, where to get each key, and that it goes into a `.env` file in the project folder (then `docker compose up -d` again).
 9. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
-10. **Built-in browser:** in the Claude desktop app, tell the person they can open the **Browser** pane (Cmd+Shift+B on macOS, Ctrl+Shift+B on Windows) to see the app at http://localhost:3000.
+10. **Built-in browser:** in the Claude desktop app, tell the person they can open the **Browser** pane (Ctrl+Shift+B on Windows and Linux, Cmd+Shift+B on macOS) to see the app at http://localhost:3000; in the terminal, they open that address in their own browser.
 
 ## How to answer
 

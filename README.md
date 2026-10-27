@@ -26,15 +26,15 @@ Code and project definitions are in English and code has no comments: whatever n
 
 ## Prerequisites
 
-Step-by-step installation guide, in Brazilian Portuguese: [`PREREQUISITES.md`](PREREQUISITES.md).
+Works on Windows, macOS and Linux. Step-by-step installation guide for each system, in Brazilian Portuguese: [`PREREQUISITES.md`](PREREQUISITES.md).
 
 To work with Claude (specify, plan, document):
 
-- [Claude Code](https://code.claude.com/docs/en/quickstart), already signed in. Use it in the Claude desktop app to watch the end-to-end checks in the built-in browser; in the terminal, Claude uses a headless browser and shows screenshots
+- [Claude Code](https://code.claude.com/docs/en/quickstart), already signed in. Use it in the Claude desktop app (Windows, macOS, and Linux in beta on Ubuntu and Debian) to watch the end-to-end checks in the built-in browser; in the terminal, Claude uses a headless browser and shows screenshots
 
 To run the app:
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/), open and running (it includes Docker Compose)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) on Windows and macOS, open and running (it includes Docker Compose); on Linux, [Docker Engine](https://docs.docker.com/engine/install/) with the Compose plugin, or Docker Desktop
 
 Nothing else is installed on the computer: Node.js, the dependencies, the database and the browser for browser tests all run inside Docker.
 
@@ -71,7 +71,7 @@ From there, the skill drives the way and stops at each phase for your approval:
 1. **Interview:** Claude asks questions until it understands the problem, who uses it, what is in, what is out and how to know it is done.
 2. **Plan:** it proposes the stages; you approve or ask for changes.
 3. **Implementation:** one stage at a time, with tests and one commit per stage.
-4. **End-to-end check:** Claude uses the app in the built-in browser and checks every done criterion. Open the **Browser** pane (Cmd+Shift+B) to watch.
+4. **End-to-end check:** Claude uses the app in the built-in browser and checks every done criterion. Open the **Browser** pane to watch (Ctrl+Shift+B on Windows and Linux, Cmd+Shift+B on macOS).
 5. **Review:** validator and code, security and UX reviewers, in parallel.
 6. **Documentation:** the documenters update `docs/` with what was delivered.
 
