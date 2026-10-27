@@ -387,6 +387,31 @@ Pode seguir para a documentação.
 
 Ele confere o checklist e prepara o pull request. O envio para o GitHub e o CI a gente mostra no telão; para fazer no seu projeto depois, você vai precisar de uma conta no GitHub.
 
+### 💰 Quanto custou esta funcionalidade?
+
+🤖 **Claude:**
+
+```
+/usage
+```
+
+Na parte de cima (a sessão), você vê o que foi gasto desde o começo desta conversa:
+
+| Linha | O que mostra |
+| --- | --- |
+| `Total cost` | Quanto a funcionalidade custaria em tokens, a preço de tabela |
+| `Total duration` | Quanto tempo a IA trabalhou e quanto tempo a sessão ficou aberta |
+| `Total code changes` | Quantas linhas foram adicionadas e removidas |
+| `Usage by model` | Quanto cada modelo consumiu: o principal e os mais baratos dos subagentes, como o haiku do `tester` |
+| `Prompt cache` | Quanto da conversa foi reaproveitado do cache, que custa bem menos |
+
+Mais abaixo, a divisão do uso por skills e subagentes e as recomendações para gastar menos.
+
+> [!NOTE]
+> No plano Pro ou superior, esse valor é uma **estimativa**: o uso já está incluído na assinatura. Ele serve para comparar: quanto custou a funcionalidade inteira, com testes, revisão, documentação e infraestrutura, contra as horas que ela levaria sem IA. Se você usou `/clear` no meio do caminho, o total começa de novo a partir dali.
+
+Quem tem chave da OpenAI também pode ver quanto o chat gastou nos testes em https://platform.openai.com/usage.
+
 ---
 
 ## 🏃 Ficou para trás?
