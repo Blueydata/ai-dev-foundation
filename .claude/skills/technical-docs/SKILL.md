@@ -21,7 +21,8 @@ docs/technical/
   runtime-and-configuration.md  Docker Compose topology, startup sequence, environment variables, commands
   testing-and-quality.md        Test layers, how to run them, CI pipeline, architecture rules, secret scan
   security.md                   Threats and the control that handles each one, where it lives in the code
-  ai.md                         Models, agents, tools, instructions, streaming pipeline, limits (when the product uses AI)
+  ai.md                         Models, agents, tools, instructions, streaming pipeline, limits, cost (when the product uses AI)
+  infrastructure.md             AWS deployment diagram, Terraform modules, Terragrunt units, dev and prod, deploy runbook, costs
   ui.md                         Theme tokens, typeface, shared components and layouts, screen states, URL state
   decisions/NNNN-title.md       One decision record per relevant technical decision
 ```
@@ -64,7 +65,7 @@ Every module in `src/modules/` has `docs/technical/modules/<module>.md` with the
 4. **Use cases:** a table with use case, input, output, errors and the ports it needs.
 5. **Ports and adapters:** a `classDiagram` of use cases, ports and implementations.
 6. **Flows:** a `sequenceDiagram` for each main flow (from the screen or route to the database and back).
-7. **Data:** the module's tables (`erDiagram`) and migrations, or "No tables".
+7. **Data:** the module's tables (`erDiagram`), indexes and migrations, and its main queries with what `db:explain` showed (index used, execution time on the development data), or "No tables".
 8. **Routes and screens:** pages and API routes that use the module, with URL parameters.
 9. **Configuration:** environment variables it reads and which kind they are (local default or user-provided).
 10. **Tests:** unit and integration test files and what they cover.
@@ -86,7 +87,7 @@ Every module in `src/modules/` has `docs/technical/modules/<module>.md` with the
 
 ## Keeping it in sync
 
-- After every delivery, the `technical-documenter` updates every page the change touches; a new module gets its module page, a new table updates `data-model.md`, a new route updates `api.md`, a new variable updates `runtime-and-configuration.md`, a new folder updates `project-structure.md`.
+- After every delivery, the `technical-documenter` updates every page the change touches; a new module gets its module page, a new table updates `data-model.md`, a new route updates `api.md`, a new variable updates `runtime-and-configuration.md`, a new folder updates `project-structure.md`, a change in `infra/` updates `infrastructure.md`.
 - Decisions with alternatives (a library, a data model, a security approach) get a record in `decisions/`, listed in `README.md`.
 - Facts come from the code and the commands' output, never from the plan alone. If the code and the plan differ, document the code and say so in the answer.
 - Never write secret values, only variable names.

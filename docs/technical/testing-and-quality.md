@@ -42,6 +42,26 @@ flowchart LR
   trigger --> integration["Integration tests<br/>docker compose up -d --wait<br/>npm run test:integration"]
 ```
 
+## Query validation
+
+A query is done when it is proven correct and efficient on realistic data (`database-queries` skill). Three tools cover it:
+
+| Tool | Where | What it shows |
+| --- | --- | --- |
+| Integration tests | `*.integration.test.ts` next to each repository | The query returns exactly what the use case expects, including filters, sorting, pagination and empty results |
+| `countQueries` | `src/shared/database/query-counter.ts`, used inside integration tests | How many queries a function sends through the pool; a list with 3 or 30 items must send the same number (no N+1) |
+| `db:query` and `db:explain` | `scripts/db-query.mjs`, run in the app container | The real data and the execution plan of one read statement, with a warning for sequential scans that read 10 000 rows or more; `--force-index` disables sequential scans to prove an index can serve the query |
+
+```mermaid
+flowchart LR
+  query["New or changed query"] --> it["Integration test<br/>correct rows"]
+  it --> count["countQueries<br/>same count for 3 and 30 items"]
+  count --> explain["db:explain on development data<br/>index used, time, no large scan"]
+  explain --> docs["Module page<br/>query and plan summary"]
+```
+
+`db:query` and `db:explain` accept a single `SELECT`, `WITH`, `EXPLAIN`, `SHOW`, `TABLE` or `VALUES` statement, run it inside `BEGIN READ ONLY` with `statement_timeout = 5s`, and always roll back, so they can be used on any database without changing data. CI runs both against the Compose database and checks that a `DELETE` is refused.
+
 ## Architecture test
 
 `src/architecture.test.ts` runs with the unit tests. It parses every source file with the TypeScript compiler to read imports and comments and checks the rules listed in [architecture](architecture.md#rules-enforced-by-the-architecture-test): layer dependencies, module boundaries, allowed folders, client and server separation, database and environment access, naming, migrations and the absence of comments in code, CSS, SQL, YAML and `.env.example`.
@@ -58,6 +78,8 @@ flowchart LR
 | `src/modules/system-status/domain/system-status.test.ts` | Unit | Status rules |
 | `src/modules/system-status/application/use-cases/get-system-status.test.ts` | Unit | Use case with fake probes |
 | `src/modules/system-status/infrastructure/postgres-database-probe.integration.test.ts` | Integration | Probe against the real database |
+| `src/shared/database/query-counter.integration.test.ts` | Integration | Query counting used to detect N+1 |
+| `scripts/db-query.test.ts` | Unit | Read-only statement guard, arguments, row formatting and plan analysis |
 | `src/shared/config/env.test.ts` | Unit | Environment validation and error message |
 | `src/shared/http/responses.test.ts` | Unit | Body parsing, error mapping, hidden internal errors |
 | `src/shared/ai/stream.test.ts` | Unit | Smooth streaming with a mocked model |

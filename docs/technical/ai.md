@@ -42,7 +42,43 @@ sequenceDiagram
 - Server only: the provider key and model name come from `getServerEnv()`; the key is a user-provided, optional variable, and without it the feature answers with `UnavailableError` while the rest of the app works.
 - Instructions are separate from user text, in English, and tell the assistant to answer in the product language.
 - Agent tools call use cases received as dependencies, never SQL directly.
+- Data reaches the model only through tools with typed filters and at most 10 compact rows per call; the whole table is never put in the prompt. Visibility and permission rules live in the use case or the query, never only in the instructions.
 - Limits on message count and size, agent steps (`stopWhen`) and requests on public routes.
 - Tests mock the model with `MockLanguageModelV4`; no test calls a real provider.
+
+## Answering questions over data
+
+Users ask in plain language; the model chooses a tool and fills typed filters; the database filters, ranks and counts; the model writes the answer from a few rows.
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Agent
+  participant Tool as searchProducts tool
+  participant UseCase as use case
+  participant Repository
+  participant Postgres
+  User->>Agent: tem café frutado para V60 até 80 reais?
+  Agent->>Tool: brewMethod v60, maxPriceBrl 80, query frutado, limit 5
+  Tool->>UseCase: filters validated with zod
+  UseCase->>Repository: visible products only
+  Repository->>Postgres: parameterized SQL with indexes and LIMIT
+  Postgres-->>Repository: 5 rows and the total
+  Repository-->>Agent: compact rows
+  Agent-->>User: streamed answer citing only those products
+```
+
+The tool set per data source is search with filters, details of one item, summaries computed in SQL (counts, minimum, maximum, groups) and the list of categories. See the `ai-integration` skill, section "Answering questions over data", and `database-queries` for the queries behind them.
+
+## Cost
+
+| Lever | Effect |
+| --- | --- |
+| Small model by default, larger only with evidence | Lower price per token |
+| Short, stable instructions | Provider prompt caching of the prefix |
+| Data through tools, a few rows per call | Input tokens stay flat as the catalog grows |
+| Limits on messages, output tokens, steps and requests | Bounded cost per conversation and protection against abuse |
+| Recent history only in long conversations | Input tokens stop growing with the conversation |
+| `usage` totals recorded without content | Cost visible per feature, without personal data |
 
 Related: [security](security.md) · [ui](ui.md)

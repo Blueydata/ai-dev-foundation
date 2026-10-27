@@ -11,7 +11,9 @@
     "check:secrets": "node scripts/check-secrets.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "check:env": "node scripts/check-env.mjs",
-    "test:integration": "node scripts/test-integration.mjs"
+    "test:integration": "node scripts/test-integration.mjs",
+    "db:query": "node scripts/db-query.mjs",
+    "db:explain": "node scripts/db-query.mjs --explain"
   },
   "dependencies": {
     "@ai-sdk/openai": "4.0.102",

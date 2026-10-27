@@ -20,6 +20,8 @@ flowchart LR
 | Leaking internals in errors | Typed errors with safe messages; anything else becomes a generic 500 and only the error name is logged | `src/shared/http/responses.ts` |
 | Invalid or malicious input | zod schemas at every boundary (`parseJsonBody`, server actions, URL parsers) | module `application/schemas.ts`, `presentation/url-state.ts` |
 | SQL injection | SQL only in repositories, always with `$1`, `$2` parameters | module `infrastructure/` |
+| AI reading data it should not | Tools with typed filters call use cases; the model never writes SQL; visibility and permission rules in the query | module `infrastructure/ai/`, `ai-integration` skill |
+| Changing data while inspecting it | `db:query` and `db:explain` accept one read statement, inside a read-only transaction with a timeout, always rolled back | `scripts/db-query.mjs`, CI |
 | Agent with too much power | Claude Code permissions: tests and checks allowed, `.env` reads, `git push` and `rm -rf` denied; push done by a person | `.claude/settings.json` |
 | Prompt injection | Assistant instructions in `system`/`instructions`, user text only in messages; tools call use cases with their own validation | `ai-integration` skill, module `infrastructure/ai/` |
 | Abuse of public routes and AI cost | Message size and count limits, agent step limits, rate limiting on public routes | per feature, see [ai](ai.md) |

@@ -16,11 +16,13 @@ A foundation to start building any kind of software with AI. It ships the techni
 | Claude context | `CLAUDE.md` | The product, the rules and the workflow |
 | Permissions | `.claude/settings.json` | What Claude can do on its own and what is blocked |
 | Workflow skills | `.claude/skills/` | `/setup-project`, `/new-feature`, `/adjust-feature`, `/fix-bug`, `/test-in-browser` and `/deliver` |
-| Standards skills | `.claude/skills/` | `project-structure`, `code-standards`, `ui-standards`, `url-state`, `ai-integration` and `technical-docs`, which Claude follows on its own |
-| Subagents | `.claude/agents/` | Eight specialists, each with its own model and effort level |
+| Standards skills | `.claude/skills/` | `project-structure`, `code-standards`, `ui-standards`, `url-state`, `database-queries`, `infrastructure-as-code`, `ai-integration` and `technical-docs`, which Claude follows on its own |
+| Subagents | `.claude/agents/` | Nine specialists, each with its own model and effort level |
+| Data at scale | `database-queries` skill, `scripts/db-query.mjs`, `src/shared/database/query-counter.ts` | Rules for queries that stay fast with large data, AI that answers plain-language questions through typed tools, and the tools to prove it: read-only `db:query` and `db:explain`, and N+1 tests |
+| Infrastructure | `infra/`, `Dockerfile` | Terraform and Terragrunt for AWS with `dev` and `prod` (ECS Fargate, Aurora PostgreSQL Serverless v2, load balancer, Secrets Manager), updated with every feature by the `infrastructure-engineer` and checked with no AWS account |
 | Documentation | `docs/` | Technical in English, complete from day one: overview, folder tree, architecture, module pages, data model, API, runtime, testing, security, AI and UI, with Mermaid diagrams (start at `docs/technical/README.md`). Business in English and Brazilian Portuguese, created with the first feature. Both grow with every delivery |
 | Tests | `*.test.ts`, `*.integration.test.ts`, `.claude/launch.json` | Unit tests, integration tests against the real database, and the end-to-end check: at the end of each feature Claude uses the app in the built-in browser of the Claude desktop app, while you watch |
-| CI | `.github/workflows/ci.yml` | Types, unit tests, integration tests and secret scanning, with no external tool |
+| CI | `.github/workflows/ci.yml` | Types, unit tests, integration tests, read-only query checks, secret scanning, infrastructure checks and the production image build |
 
 Code and project definitions are in English and code has no comments: whatever needs explanation lives in `docs/technical/`. Text on screen and the conversation with Claude are in Brazilian Portuguese (configurable in `CLAUDE.md`).
 
@@ -79,7 +81,7 @@ Then `/deliver` prepares the pull request. To change something that exists, use 
 
 ## Useful commands
 
-All commands run inside the `app` container, with the app running (`docker compose up`):
+Commands with `exec app` run inside the `app` container, with the app running (`docker compose up`); `run --rm infra` uses the infrastructure tools container:
 
 | Command | What it does |
 | --- | --- |
@@ -89,6 +91,10 @@ All commands run inside the `app` container, with the app running (`docker compo
 | `docker compose exec app npm run check:secrets` | Looks for API keys, tokens and private keys in the code |
 | `docker compose exec app npm run check:env` | Lists keys from `.env.example` still missing in `.env` |
 | `docker compose exec app npm run db:migrate` | Applies pending database migrations |
+| `docker compose exec app npm run db:query -- "SELECT …"` | Runs one read-only query on the development database |
+| `docker compose exec app npm run db:explain -- "SELECT …"` | Shows the query plan and warns about large sequential scans |
+| `docker compose run --rm infra check` | Formats, validates, lints and scans the infrastructure code, with no AWS account |
+| `docker compose run --rm infra plan dev` | Shows what would change in AWS for `dev` (`apply` and `destroy` too) |
 | `docker compose exec app npx shadcn@latest add <name>` | Adds a shadcn/ui component |
 | `docker compose exec app npm run build` | Builds for production |
 
@@ -112,7 +118,9 @@ src/
     ai/                   Smooth streaming for AI responses
     utils/                Generic helpers
   architecture.test.ts    The architecture rules, as tests
-scripts/                  Migrations and secret scan
+scripts/                  Migrations, read-only queries, test runner and checks
+infra/                    Terraform modules and Terragrunt units for dev and prod
+workshop/                 Training material: the Torra Sul catalog CSV and its specification
 docs/technical/           Technical documentation (English)
 docs/business/            Business documentation (en and pt-BR)
 .claude/                  Permissions, skills and subagents

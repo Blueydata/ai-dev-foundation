@@ -44,6 +44,8 @@ flowchart LR
 - Primary keys `id` as `uuid` with `gen_random_uuid()` or `bigint generated always as identity`; foreign keys `<table_singular>_id`.
 - `created_at` and `updated_at` as `timestamptz not null default now()` on business tables.
 - Constraints in the database for what must always be true (`not null`, `unique`, `check`, foreign keys), validation with zod at the boundaries.
+- Money as `numeric(12,2)`, converted from string in the repository; closed vocabularies as `text` with a `CHECK` or a lookup table; multi-value attributes as `text[]` with a GIN index.
+- An index for every filter, sort and join used by screens and AI tools, created in the same migration; free-text search in Portuguese with a generated `tsvector` column (`portuguese_unaccent` configuration) and a GIN index, as in the `database-queries` skill.
 - Never edit an applied migration: changes come as a new file.
 - Personal data only when the feature needs it (LGPD), documented here with its purpose.
 

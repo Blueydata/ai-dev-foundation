@@ -43,7 +43,8 @@ src/
     utils/                               Generic helpers with no business meaning (cn)
     hooks/                               Generic client hooks
   architecture.test.ts                   The rules of this file, as tests
-scripts/                                 Tooling: migrate, check-secrets
+scripts/                                 Tooling: migrate, read-only db:query and db:explain, check-secrets, check-env, test runner
+infra/                                   Terraform modules and Terragrunt units for dev and prod (infrastructure-as-code skill)
 ```
 
 Unit tests sit next to the file they test (`get-order.ts` → `get-order.test.ts`) and integration tests next to repositories (`*.integration.test.ts`). The end-to-end check is done by Claude in the browser (`test-in-browser`), not written as files. See "Tests" in `code-standards`. Create folders and files on demand; never create empty ones.
@@ -89,15 +90,18 @@ infrastructure ──→ application (implements ports), domain, shared
 | **An API endpoint** | `app/api/<resource>/route.ts`: `withErrorHandling`, `parseJsonBody(request, schema)`, call the use case, `Response.json` |
 | **A webhook** | Same as an API endpoint, plus signature verification in an `infrastructure/` adapter; the secret comes from `shared/config/env.ts` |
 | **An external service** (payments, email, CRM) | Port `<Name>Gateway` in `ports.ts` → `infrastructure/<service>-gateway.ts` with the provider package → wire in `index.ts`; tests use a fake gateway |
-| **AI chat or agent** | `infrastructure/ai/` (model, agent, tools, instructions; `ai-integration` skill). Tools call use cases. Route in `app/api/<resource>/route.ts`. Screen in `presentation/components/` with `shared/ui/ai` |
+| **A list, search or report over large data** | Filters schema with a maximum page size in `application/schemas.ts` → use case → repository query with indexes in the migration (`database-queries`) → integration test with `countQueries` → `db:explain` |
+| **A bulk import** (CSV, spreadsheet, API) | Row schema in `application/schemas.ts` → import use case (validate every row, report rejected lines, upsert by business key in batches) → repository → command in `scripts/` or server action calling the module `index.ts` (`database-queries`, "Bulk imports") |
+| **AI chat or agent** | `infrastructure/ai/` (model, agent, tools, instructions; `ai-integration` skill). Tools call use cases with typed filters and small results, never the whole table in the prompt. Route in `app/api/<resource>/route.ts`. Screen in `presentation/components/` with `shared/ui/ai` |
 | **Using another module** | Port in your `application/ports.ts`, adapter in your `infrastructure/` calling `@/modules/<other>` |
 | **Screen state in the URL** | `presentation/url-state.ts` (`url-state` skill) |
 | **Scheduled job** | Use case in the module → `app/api/jobs/<job-name>/route.ts` protected by a secret from `env.ts`, called by the scheduler |
-| **Authentication and access** | An `access` or `auth` module: domain rules for who can do what, infrastructure for sessions; other modules declare an `AccessChecker` port. Shared route protection in `app/` layouts or `src/proxy.ts` |
+| **Authentication and access** | An `access` or `auth` module: domain rules for who can do what, infrastructure for sessions in signed, `httpOnly` cookies (never in server memory: the app runs as several copies behind a load balancer); other modules declare an `AccessChecker` port. Shared route protection in `app/` layouts or `src/proxy.ts` |
 | **A UI piece used by many modules** | `shared/ui/` (shadcn: `docker compose exec app npx shadcn@latest add <name>`) or `shared/ui/layout/` |
 | **A generic helper** | `shared/utils/` only if it has no business meaning; otherwise it belongs to a module `domain` |
 | **Tests for a feature** | Unit next to domain and use cases; `*.integration.test.ts` next to each repository; the done criteria checked in the browser with `test-in-browser` |
-| **A new environment variable** | Schema in `shared/config/env.ts` + a local value in `docker-compose.yml`, or `.env.example` when only the product owner can provide it (see "Configuration") |
+| **A new environment variable** | Schema in `shared/config/env.ts` + a local value in `docker-compose.yml`, or `.env.example` when only the product owner can provide it (see "Configuration") + the value for `dev` and `prod` in `infra/live/<env>/env.hcl` or a secret (`infrastructure-as-code`) |
+| **A new cloud resource** (bucket, queue, scheduled job) | Terraform module in `infra/modules/` + units in `infra/live/dev` and `infra/live/prod`, by the `infrastructure-engineer` (`infrastructure-as-code`) |
 
 ## Configuration: runs locally with no setup
 

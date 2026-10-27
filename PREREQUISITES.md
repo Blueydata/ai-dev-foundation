@@ -76,6 +76,7 @@ Ele confere tudo, sobe o projeto e diz o que fazer se faltar algo. Na primeira v
 ✓ Git
 ✓ Docker instalado e rodando
 ✓ Aplicação e banco no ar (http://localhost:3000)
+✓ Ferramentas de infraestrutura
 ✓ Testes e tipos
 ✓ Sem segredos no código
 – Chave da OpenAI não configurada (opcional: só o chat precisa dela)

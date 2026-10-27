@@ -19,6 +19,8 @@ Check each item and show the result as a list with ✓ or ✗:
 5. **Secrets:** run `docker compose exec -T app npm run check:secrets` (the same check as CI) and confirm `.env` is not in the diff.
 6. **Environment variables:** `docker compose up` works with no `.env`; local values have defaults in `docker-compose.yml`; only user-provided keys are in `.env.example`, without a value.
 7. **Code standards:** no comments in code and everything in English (`code-standards` skill).
+8. **Queries:** every new or changed query has an integration test, lists have a `countQueries` check, and `db:explain` showed no large sequential scan (`database-queries`).
+9. **Infrastructure:** `docker compose run --rm infra check` passes and `infra/live/dev` and `infra/live/prod` include what the delivery needs (`infrastructure-as-code`).
 
 If any item fails, stop and explain what is missing.
 
@@ -45,6 +47,8 @@ If any item fails, stop and explain what is missing.
 - [x] Documentation updated
 - [x] No secrets in code
 - [x] Runs locally with no setup; user-provided keys listed in .env.example
+- [x] Queries validated (integration tests, query count, EXPLAIN)
+- [x] Infrastructure for dev and prod updated and checked
 ```
 
 4. The product owner does the push. Show the commands for them to run:

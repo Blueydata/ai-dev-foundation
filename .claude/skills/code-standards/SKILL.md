@@ -48,12 +48,13 @@ Two layers of automated tests live in the code. The end-to-end check is done by 
 
 - **Every rule and use case gets a unit test**, with fake dependencies (see `src/modules/system-status/application/use-cases/get-system-status.test.ts`). External services are never called: for AI, use `MockLanguageModelV4` from `ai/test` (see `src/shared/ai/stream.test.ts`).
 - **Every repository gets an integration test.** SQL is never only mocked. The runner recreates the `app_test` database and applies the migrations before each run, so tests may write freely; close the pool in `afterAll` (`await getPool().end()`).
+- **Lists and searches prove they have no N+1:** wrap the use case in `countQueries` (`src/shared/database/query-counter.ts`) with few and many rows and assert the same number of queries. Every new or changed query is also checked with `npm run db:explain` (`database-queries`).
 - **Do not write end-to-end test files** (no Playwright or Cypress specs). The end-to-end check is `test-in-browser`, at the end of each feature.
 - Test names are English sentences that describe the behavior: `it("returns 401 without a password")`.
 
 ## Commits
 
-- In English, as `type: what changed`, with `feat`, `fix`, `docs`, `test` or `chore`. Example: `feat: add order history page`.
+- In English, as `type: what changed`, with `feat`, `fix`, `docs`, `test`, `build` (infrastructure, Docker, CI) or `chore`. Example: `feat: add order history page`.
 
 ## Before saying it is done
 

@@ -64,6 +64,8 @@ src/
 │   ├── config/env.ts                         getServerEnv: the only reader of process.env, validated with zod
 │   ├── database/
 │   │   ├── client.ts                         getPool: one shared pg pool
+│   │   ├── query-counter.ts                  countQueries: number of queries a function sends, for N+1 tests
+│   │   ├── query-counter.integration.test.ts
 │   │   └── migrations/                       NNNN-description.sql files, applied in order
 │   ├── http/responses.ts                     parseJsonBody, errorResponse, withErrorHandling
 │   ├── kernel/errors.ts                      AppError and ValidationError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, UnavailableError
@@ -82,6 +84,7 @@ Test files sit next to the file they test (`*.test.ts` for unit, `*.integration.
 scripts/
 ├── check-env.mjs           Lists keys from .env.example missing in the environment (names only)
 ├── check-secrets.mjs       Looks for API keys, tokens and private keys in tracked files
+├── db-query.mjs            db:query and db:explain: one read statement in a read-only transaction, with plan analysis
 ├── migrate.mjs             Applies pending SQL migrations and records them in schema_migrations
 ├── test-integration.mjs    Recreates app_test, applies migrations and runs the integration tests
 └── *.d.mts, *.test.ts      Types for the TypeScript tests, and the tests of each script

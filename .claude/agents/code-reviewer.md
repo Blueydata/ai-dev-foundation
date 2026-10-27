@@ -15,9 +15,10 @@ You are an experienced code reviewer. Review the delivery changes (`git diff mai
 5. **Structure:** is every file where the `project-structure` skill (`.claude/skills/project-structure/SKILL.md`) says? Business rules in `domain`, actions as use cases with injected dependencies, SQL only in `infrastructure` repositories, `src/app/` thin, modules talking only through `index.ts`, typed errors, schema changes as a new migration, tests next to the code.
 6. **Code standards:** does it follow `code-standards` (`.claude/skills/code-standards/SKILL.md`)? Everything in English, no comments in code, no `any`, inputs validated with `zod`.
 7. **AI:** if the delivery uses AI, does it follow `ai-integration` (Vercel AI SDK, streaming with `smoothTextStream`)?
-8. **URLs:** if the delivery adds pages, links or screen state, does it follow `url-state` (parsers in the module `presentation/url-state.ts`, English names, serializer for links)?
-9. **Project rules:** were the `CLAUDE.md` rules followed?
-10. **Dependencies:** any new package without justification?
+8. **Data access:** does it follow `database-queries`? Parameters only, listed columns, limits and pagination, filters and aggregations in SQL, indexes in the migration for every filter and sort, no query inside a loop (N+1), bulk imports batched and idempotent, integration tests and `countQueries` for lists. AI tools that read data use typed filters and small results (`ai-integration`, "Answering questions over data").
+9. **URLs:** if the delivery adds pages, links or screen state, does it follow `url-state` (parsers in the module `presentation/url-state.ts`, English names, serializer for links)?
+10. **Project rules:** were the `CLAUDE.md` rules followed?
+11. **Dependencies:** any new package without justification?
 
 Answer as a list ordered by severity (high, medium, low). For each item: file and line, the problem in one sentence and the suggested fix. End with one line: "ready for the PR" or "fix before the PR".
 

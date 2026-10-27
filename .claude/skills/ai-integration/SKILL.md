@@ -1,6 +1,6 @@
 ---
 name: ai-integration
-description: How to integrate LLMs and AI agents in the project - always with the Vercel AI SDK (ai, @ai-sdk/react and the provider package), with smooth streaming, tools, agents and tests. Use whenever a feature calls a language model, an agent or an AI API.
+description: How to integrate LLMs and AI agents in the project - always with the Vercel AI SDK (ai, @ai-sdk/react and the provider package), with smooth streaming, tools, agents that answer plain-language questions over large data through typed tools, cost limits and tests. Use whenever a feature calls a language model, an agent or an AI API.
 ---
 
 # AI integration
@@ -154,6 +154,67 @@ export const POST = withErrorHandling(async (request: Request) => {
   });
 });
 ```
+
+## Answering questions over data
+
+People talk to the assistant in plain language ("tem algum café frutado para V60 até 80 reais?"). They never write filters, ids or SQL. The assistant turns the question into **tool calls with typed filters**, and the database does the heavy work. This is what keeps answers correct and cheap when the data grows from 10 rows to 100 000.
+
+**Never put the whole table in the prompt.** It works with 10 products and fails with 1 000: every message pays for all of it in tokens and latency, the model misses rows in the middle, and hidden or stale data leaks. The prompt carries only the rules; the data comes from tools, a few rows at a time.
+
+### Design the tools
+
+| Tool | Use for | Input | Output |
+| --- | --- | --- | --- |
+| `search<Things>` | "tem algo assim?", recommendations, comparisons | Optional typed filters from the domain vocabulary (`z.enum` for closed lists, numbers with `min`/`max` for ranges), an optional free-text `query`, `limit` (max 10) | Compact rows: id, name and only the fields needed to answer, plus `total` matches |
+| `get<Thing>` | Details of one item the user picked | The id or code returned by a search | The full item |
+| `summarize<Things>` | "quantos…", "qual o mais barato/mais bem avaliado…", "quais origens vocês têm?" | Optional filters and a grouping or ranking from an enum | Counts, minimum, maximum, average or groups computed in SQL |
+| `list<Categories>` | "o que vocês vendem?" | Nothing | The categories with counts |
+
+Rules:
+
+1. **Filters, not SQL.** The model never writes SQL and never sees table names. Each tool input is a `zod` schema whose enums come from the domain (the same vocabulary the import and the screens use), so an invalid filter fails validation instead of reaching the database. Describe every field in `.describe()` in English, including the units and the vocabulary.
+2. **Tools call use cases, use cases call repositories** following `database-queries`: parameterized, indexed, limited, no N+1. Visibility and permission rules (for example "hidden products never appear") live in the use case or the query, **never only in the instructions**.
+3. **Small results.** Return at most 10 rows per call and only the fields needed; include `total` so the model can say "encontrei 23, estes são os 5 melhores". Ranking and aggregation happen in SQL, never by sending many rows for the model to sort.
+4. **Empty is an answer.** When nothing matches, the tool returns an empty list and the instructions say to tell the user plainly and suggest the closest alternative (relax one filter), never to invent.
+5. **Instructions explain the tools, not the data:** when to use each tool, to call `search` before answering about products, to use only tool results for facts (names, prices, availability), to ask one short question when the request is too vague, and to answer in the product language.
+6. **Steps and limits:** `stopWhen: stepCountIs(5)` is enough for search → details → answer; keep `maxOutputTokens` proportional to the answer size.
+
+```ts
+const productFilters = z.object({
+  query: z.string().max(100).optional().describe("Free text such as flavor notes or a product name, in Portuguese"),
+  folder: z.enum(FOLDERS).optional().describe("Catalog folder"),
+  roast: z.enum(ROASTS).optional(),
+  brewMethod: z.enum(BREW_METHODS).optional().describe("Brewing method the product is recommended for"),
+  maxPriceBrl: z.number().positive().optional().describe("Maximum price in Brazilian reais"),
+  sortBy: z.enum(["relevance", "price-asc", "price-desc", "score-desc"]).default("relevance"),
+  limit: z.number().int().min(1).max(10).default(5),
+});
+
+tools: {
+  searchProducts: tool({
+    description: "Search visible catalog products with optional filters. Always call before recommending or quoting a product.",
+    inputSchema: productFilters,
+    execute: async (filters) => searchProducts(filters),
+  }),
+}
+```
+
+### Test it
+
+- Unit tests of each tool with fake use cases: valid filters reach the use case unchanged; invalid ones are rejected.
+- Integration tests of the repository with a realistic volume (`database-queries`), including the hidden-item rule and the empty result.
+- In the browser (`test-in-browser`), ask in plain language questions that need filters, ranking, counts and an item that does not exist, and compare the answers with the data (`npm run db:query`).
+
+## Cost
+
+Every message to the model is paid in tokens, and the same mistakes cost more with more users:
+
+1. **Smallest model that answers well.** Start with the small model of the provider (`OPENAI_MODEL` default in `docker-compose.yml`); move up only with evidence (a failing conversation), as a decision to record.
+2. **Short, stable instructions.** Keep the system instructions short and identical between requests, so the provider can cache the prefix; never add per-request data to them.
+3. **Data through tools, a few rows at a time** (see above), never the whole table in the prompt.
+4. **Limits:** maximum messages and message length per request (`application/schemas.ts`), `maxOutputTokens`, `stopWhen: stepCountIs(n)` and rate limiting on public routes.
+5. **Send only recent history** when conversations get long: the last N messages are usually enough.
+6. **Measure:** the AI SDK returns `usage` (input and output tokens) per call; record totals, never content, when the product owner wants to follow cost.
 
 ## On screen
 

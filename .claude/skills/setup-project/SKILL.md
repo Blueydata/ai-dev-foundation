@@ -27,11 +27,12 @@ Find the operating system first (`uname -s`: `Darwin` is macOS, `Linux` is Linux
 5. **App and database running:** `curl -s http://localhost:3000/api/health`.
    - If it does not answer with `"database":"ok"`, start everything yourself: `docker compose up -d --wait` with a long timeout (the first run downloads the images and installs the dependencies, which can take several minutes; say so before starting). Then check the health again.
    - If it still fails, read `docker compose logs --tail 40 app`, explain the cause in one line and the fix. A busy port 3000 means another program is using it: ask the person to close it.
-6. **Tests and types:** ask the `tester` subagent.
-7. **Secrets:** `docker compose exec -T app npm run check:secrets` reports nothing.
-8. **User-provided keys:** `docker compose exec -T app npm run check:env`. Missing keys are **optional** for setup: say which features need them, where to get each key, and that it goes into a `.env` file in the project folder (then `docker compose up -d` again).
-9. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
-10. **Built-in browser:** in the Claude desktop app, tell the person they can open the **Browser** pane (Ctrl+Shift+B on Windows and Linux, Cmd+Shift+B on macOS) to see the app at http://localhost:3000; in the terminal, they open that address in their own browser.
+6. **Infrastructure tools:** `docker compose run --rm infra check`. The first run builds the image with Terraform, Terragrunt and the checkers (a few minutes; say so before starting). It needs no AWS account.
+7. **Tests and types:** ask the `tester` subagent.
+8. **Secrets:** `docker compose exec -T app npm run check:secrets` reports nothing.
+9. **User-provided keys:** `docker compose exec -T app npm run check:env`. Missing keys are **optional** for setup: say which features need them, where to get each key, and that it goes into a `.env` file in the project folder (then `docker compose up -d` again).
+10. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
+11. **Built-in browser:** in the Claude desktop app, tell the person they can open the **Browser** pane (Ctrl+Shift+B on Windows and Linux, Cmd+Shift+B on macOS) to see the app at http://localhost:3000; in the terminal, they open that address in their own browser.
 
 ## How to answer
 
@@ -45,6 +46,7 @@ In the conversation language (`CLAUDE.md`), short:
 ✓ Git
 ✓ Docker instalado e rodando
 ✓ Aplicação e banco no ar (http://localhost:3000)
+✓ Ferramentas de infraestrutura
 ✓ Testes e tipos
 ✓ Sem segredos no código
 – Chave da OpenAI não configurada (opcional: só o chat precisa dela)

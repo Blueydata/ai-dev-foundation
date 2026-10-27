@@ -36,5 +36,8 @@ jobs:
       - uses: actions/checkout@v7
       - run: docker compose up -d --wait
       - run: docker compose exec -T app npm run test:integration
+      - run: docker compose exec -T app npm run db:query -- "SELECT count(*) AS migrations FROM schema_migrations"
+      - run: docker compose exec -T app npm run db:explain -- "SELECT name FROM schema_migrations WHERE name = '0001'"
+      - run: "! docker compose exec -T app npm run db:query -- \"DELETE FROM schema_migrations\""
       - if: failure()
         run: docker compose logs app

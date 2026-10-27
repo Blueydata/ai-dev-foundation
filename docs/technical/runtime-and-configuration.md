@@ -68,6 +68,8 @@ All commands run inside the `app` container with the app running.
 | `docker compose exec -T app npm run check:secrets` | Secret scan |
 | `docker compose exec -T app npm run check:env` | Missing user-provided keys, by name |
 | `docker compose exec -T app npm run db:migrate` | Applies pending migrations |
+| `docker compose exec -T app npm run db:query -- "<SELECT …>"` | Runs one read statement on the development database, read-only with a 5-second timeout |
+| `docker compose exec -T app npm run db:explain -- "<SELECT …>"` | Prints the execution plan and warns about large sequential scans; `--force-index` disables sequential scans |
 | `docker compose exec -T app npm run build` | Production build |
 | `docker compose exec app npx shadcn@latest add <name>` | Adds a shadcn/ui component to `src/shared/ui/` |
 | `docker compose down -v` | Stops everything and erases the database volume |
