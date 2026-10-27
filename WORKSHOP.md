@@ -271,6 +271,9 @@ Quantos cafés do Cerrado Mineiro vocês têm? E qual o mais barato?
 Vocês têm café descafeinado?
 ```
 
+> [!TIP]
+> As respostas certas, conferidas nos dados, estão em [`workshop/README.md`](workshop/README.md). Repare que o chat nunca cita os produtos ocultos.
+
 Depois cadastre na área do administrador e pergunte de novo:
 
 | Nome | Origem | Pasta | Preço | Informações |
