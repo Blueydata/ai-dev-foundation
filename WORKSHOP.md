@@ -215,6 +215,9 @@ Salve o arquivo. **Não cole esses valores no Claude.**
 Pode começar a etapa 1.
 ```
 
+> [!NOTE]
+> Antes de mexer no código, o Claude cria uma **branch** só para esta funcionalidade (algo como `feature/product-catalog-chat`). A versão principal do projeto, a `main`, só muda quando a funcionalidade for aprovada e entregue, na etapa 14.
+
 🌐 **Navegador** · Quando o Claude terminar, abra a página de login (o endereço aparece na resposta) e entre com o e-mail e a senha que **você** colocou no `.env`.
 
 > [!TIP]

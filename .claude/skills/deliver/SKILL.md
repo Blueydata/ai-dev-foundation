@@ -26,7 +26,7 @@ If any item fails, stop and explain what is missing.
 
 ## Steps
 
-1. If on `main`, create the branch: `feature/short-name`, `change/short-name` or `fix/short-name`.
+1. Confirm you are on the work branch (`feature/…`, `change/…` or `fix/…`) created at the start of the work. If you are on `main`, something went wrong: create the branch now with the pending work (`git switch -c feature/short-name`) and say so in one line.
 2. Commit anything pending.
 3. Write the pull request description, in English:
 

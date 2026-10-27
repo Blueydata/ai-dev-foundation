@@ -129,7 +129,7 @@ Each subagent has a model and an effort level chosen for its task. They all work
 4. **Secrets and credentials never go into code, prompts or the conversation.** Real keys and logins come from `.env`, chosen by the product owner and read only through `src/shared/config/env.ts`; Claude never reads `.env` and never suggests passwords.
 5. **External API keys only on the server.** Never in `"use client"` components or `NEXT_PUBLIC_` variables.
 6. **Every change comes with tests.** Unit tests for rules and use cases, integration tests for repositories, both through the `tester` subagent. Every feature ends with Claude testing all done criteria in the browser (`test-in-browser`).
-7. **Small deliveries.** One plan stage at a time, one commit per stage, in English.
+7. **Small deliveries, on their own branch.** Every feature, change or fix starts on a new branch (`feature/…`, `change/…`, `fix/…`), never on `main`; one plan stage at a time, one commit per stage, in English. `main` changes only through a merged pull request.
 8. **Every screen follows `ui-standards` and `url-state`**, and **all AI uses the Vercel AI SDK, streamed** (`ai-integration`). AI reads data through tools with typed filters, never the whole table in the prompt.
 9. **Built for volume** (`database-queries`). Filters, sorting and counts in SQL, indexes in the migration, no query inside a loop, every list paginated; every new query validated with integration tests, `countQueries` and `db:explain`.
 10. **Infrastructure comes with the feature** (`infrastructure-as-code`). What a feature needs in AWS is added to `infra/` for `dev` and `prod` by the `infrastructure-engineer` and checked with `infra check`. Never run `apply` or `destroy` unless the product owner asks.

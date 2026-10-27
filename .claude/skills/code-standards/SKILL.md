@@ -54,6 +54,7 @@ Two layers of automated tests live in the code. The end-to-end check is done by 
 
 ## Commits
 
+- Never commit features, changes or fixes on `main`. Each piece of work has its own branch, created at the start: `feature/<short-name>` (`/new-feature`), `change/<short-name>` (`/adjust-feature`) or `fix/<short-name>` (`/fix-bug`), in English and kebab-case. `main` changes only through a merged pull request.
 - In English, as `type: what changed`, with `feat`, `fix`, `docs`, `test`, `build` (infrastructure, Docker, CI) or `chore`. Example: `feat: add order history page`.
 
 ## Before saying it is done

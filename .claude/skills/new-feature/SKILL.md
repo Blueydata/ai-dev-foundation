@@ -41,6 +41,8 @@ Talk to the product owner in the conversation language (`CLAUDE.md`), in busines
 
 ## Phase 3 — Implementation (one stage at a time)
 
+**Before stage 1, create the feature branch.** Never implement on `main`. Run `git status`: if there are uncommitted changes, stop and ask what to do with them. Then create the branch from the current `main` with a short English name from the approved understanding, `git switch -c feature/<short-name>` (for example `feature/product-catalog-chat`), and say its name in one line. Every stage, fix and documentation commit of this feature goes on this branch; `main` only changes when the pull request is merged. If you are already on a branch for this feature (for example after `/clear`), keep working on it.
+
 1. Say in one line which stage you are on ("Stage 2 of 3: ...").
 2. Read only the files for the stage. Write the unit and integration tests together with the code. External services are mocked. Follow `project-structure` and `code-standards`; if the stage has screens, `ui-standards` and `url-state`; if it uses AI, `ai-integration`; if it stores or reads data, `database-queries`.
 3. Ask the `tester` subagent to run types, unit and integration tests. Fix until they pass; after 3 failed attempts, stop and explain.
@@ -83,6 +85,6 @@ After the last stage, before the review:
 - Never skip a phase or an approval point.
 - Answer short and direct, as the "How to answer" section of `CLAUDE.md` requires.
 - The interview is in business language; code only from phase 3 on.
-- One stage at a time, one commit per stage.
+- One stage at a time, one commit per stage, all on the feature branch, never on `main`.
 - `docker compose up` keeps working with no setup; user-provided keys and credentials only through `.env`, chosen by the product owner and never written in the conversation; external API keys only on the server.
 - Every query validated before the stage is done; every feature leaves `infra/` ready for `dev` and `prod`.

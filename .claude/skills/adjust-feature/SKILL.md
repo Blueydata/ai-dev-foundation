@@ -11,12 +11,13 @@ Adjustments look small, but they are where working things break most often. The 
 
 1. **Understand what exists.** Read the feature in `docs/business/en/features.md` and ask the `explorer` subagent for the files involved.
 2. **Confirm the change.** Answer, in the conversation language, with "Today: [current behavior]. After: [new behavior]. Impact: [what else may be affected]." **Stop and wait for confirmation.** If the change is large (more than a day of work), suggest handling it as `/new-feature`.
-3. **Test first.** Update or create the tests that describe the new behavior, in the layers it touches (unit, integration), and confirm with the `tester` subagent that they fail.
-4. **Change the code** with the smallest possible change, following `code-standards` (and `ui-standards` and `url-state` if it touches screens, `ai-integration` if it touches AI, `database-queries` if it touches data). If a query changed, validate it with `db:explain` and `countQueries`. If configuration changed, call the `infrastructure-engineer` to update `infra/` for `dev` and `prod`.
-5. **Confirm** with the `tester` that everything passes, including the existing tests. If the change is visible on screen, check it in the browser with `test-in-browser`, before and after showing the new behavior.
-6. **Review:** if the change touches routes, customer data or integrations, ask the `security-reviewer`; if it touches screens, the `ux-reviewer`.
-7. **Document:** call in parallel the `business-documenter` (features and changelog in both languages, with "Change:") and, if something technical changed, the `technical-documenter`.
-8. Commit: `feat: [what changed]`, and answer with the summary and how to test it on screen.
+3. **Branch.** Never change code on `main`: after the confirmation, if you are on `main`, run `git status` (stop and ask if there are uncommitted changes) and create `git switch -c change/<short-name>`.
+4. **Test first.** Update or create the tests that describe the new behavior, in the layers it touches (unit, integration), and confirm with the `tester` subagent that they fail.
+5. **Change the code** with the smallest possible change, following `code-standards` (and `ui-standards` and `url-state` if it touches screens, `ai-integration` if it touches AI, `database-queries` if it touches data). If a query changed, validate it with `db:explain` and `countQueries`. If configuration changed, call the `infrastructure-engineer` to update `infra/` for `dev` and `prod`.
+6. **Confirm** with the `tester` that everything passes, including the existing tests. If the change is visible on screen, check it in the browser with `test-in-browser`, before and after showing the new behavior.
+7. **Review:** if the change touches routes, customer data or integrations, ask the `security-reviewer`; if it touches screens, the `ux-reviewer`.
+8. **Document:** call in parallel the `business-documenter` (features and changelog in both languages, with "Change:") and, if something technical changed, the `technical-documenter`.
+9. Commit: `feat: [what changed]`, and answer with the summary and how to test it on screen.
 
 ## Rules
 
