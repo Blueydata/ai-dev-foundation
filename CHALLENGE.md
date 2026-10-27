@@ -1,4 +1,6 @@
-# 🎁 Desafio — Seu projeto no ar na AWS
+# 🎁 Para ir além — Seu projeto no ar na AWS
+
+> **Para levar para casa.** O workshop termina aqui, mas o seu projeto pode ir mais longe. Este desafio é opcional, no seu ritmo, para quem quiser continuar depois do encontro.
 
 Durante o workshop, a cada etapa um subagente escreveu a infraestrutura do projeto junto com o código. O desafio é usar essa infraestrutura para colocar o **seu** catálogo no ar na AWS, no ambiente **dev**, com **Terraform** e **Terragrunt**, em serviços que escalam sozinhos.
 
