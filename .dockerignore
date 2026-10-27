@@ -1,0 +1,14 @@
+.git
+.github
+.claude
+.next
+node_modules
+infra
+docs
+workshop
+.env
+.env.*
+*.log
+.playwright-mcp
+Dockerfile
+.dockerignore

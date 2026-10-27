@@ -25,6 +25,7 @@ How the system is built, for a developer who just joined. The code has no commen
 | [security.md](security.md) | Threats and the control that handles each one |
 | [ai.md](ai.md) | AI integration and the streaming pipeline |
 | [ui.md](ui.md) | Theme, typeface, shared components, layouts and URL state |
+| [infrastructure.md](infrastructure.md) | AWS deployment, Terraform modules, Terragrunt units, dev and prod, deploy runbook, costs |
 
 ## Decisions
 
@@ -32,5 +33,6 @@ How the system is built, for a developer who just joined. The code has no commen
 | --- | --- | --- |
 | [0001](decisions/0001-initial-stack.md) | Initial stack | accepted |
 | [0002](decisions/0002-modular-architecture.md) | Modular architecture in `src` | accepted |
+| [0003](decisions/0003-aws-infrastructure-as-code.md) | AWS infrastructure as code with Terraform and Terragrunt | accepted |
 
 Business documentation, for non-technical readers, is in [`docs/business/`](../business/) once the first feature is delivered.

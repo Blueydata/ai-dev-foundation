@@ -38,5 +38,23 @@ services:
       db:
         condition: service_healthy
 
+  infra:
+    build: ./infra/tools
+    profiles:
+      - infra
+    working_dir: /workspace
+    environment:
+      - AWS_PROFILE
+      - AWS_REGION
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+      - IMAGE_TAG
+    volumes:
+      - .:/workspace
+      - infra-cache:/cache
+      - ~/.aws:/root/.aws
+
 volumes:
   postgres-data:
+  infra-cache:

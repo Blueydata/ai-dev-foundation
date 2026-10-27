@@ -41,3 +41,27 @@ jobs:
       - run: "! docker compose exec -T app npm run db:query -- \"DELETE FROM schema_migrations\""
       - if: failure()
         run: docker compose logs app
+
+  infrastructure:
+    name: Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker compose run --rm -T infra check
+
+  image:
+    name: Production image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t ai-dev-foundation:ci .
+      - run: docker compose up -d --wait db
+      - run: |
+          NETWORK=$(docker inspect -f '{{range $name, $network := .NetworkSettings.Networks}}{{$name}}{{end}}' "$(docker compose ps -q db)")
+          docker run -d --name production-image --network "$NETWORK" -p 3001:3000 -e DATABASE_URL=postgres://app:app@db:5432/app ai-dev-foundation:ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:3001/api/health; then exit 0; fi
+            sleep 2
+          done
+          docker logs production-image
+          exit 1

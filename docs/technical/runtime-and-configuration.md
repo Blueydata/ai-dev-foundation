@@ -25,6 +25,7 @@ flowchart LR
 | --- | --- | --- | --- | --- |
 | `db` | `postgres:17-alpine` | 5432 inside the network only | `pg_isready` every 5 s | none |
 | `app` | `node:22-alpine` | 3000 → 3000 | `GET /api/health` answers 200, every 5 s, up to 5 min after a 30 s start period | `db` healthy |
+| `infra` | built from `infra/tools/Dockerfile` (Terraform, Terragrunt, TFLint, Checkov, AWS CLI) | none | none | none; profile `infra`, started only by `docker compose run --rm infra <command>`; mounts the project and the `infra-cache` volume, and passes the AWS variables through from the computer |
 
 ## Startup
 

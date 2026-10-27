@@ -28,5 +28,6 @@ flowchart LR
 | Customer data (LGPD) | Keep only what is needed; no message content or personal data in logs or URLs | `CLAUDE.md` rules, [data model](data-model.md) |
 | Unsafe dependencies | Exact versions pinned; new packages only with a stated reason; review in pull requests | `package.json`, `code-reviewer` |
 | Development credentials in production | Local values in `docker-compose.yml` are development only and must be replaced | [runtime](runtime-and-configuration.md#environment-variables) |
+| Cloud exposure and leaked cloud secrets | Only the load balancer is public; tasks accept only the load balancer and the database only the tasks; secrets in Secrets Manager, created empty; least-privilege IAM; Checkov scan in CI | `infra/`, [infrastructure](infrastructure.md) |
 
 Related: [api](api.md) · [ai](ai.md) · [testing and quality](testing-and-quality.md)

@@ -11,12 +11,16 @@ The complete folder tree of the repository, with what each folder and file holds
 │   ├── skills/                    Skills: workflow (setup-project, new-feature, ...) and standards (code-standards, ...)
 │   ├── launch.json                Starts the app (docker compose up) in the built-in browser of the Claude desktop app
 │   └── settings.json              Permissions: commands Claude may run alone, and what is denied
-├── .github/workflows/ci.yml       CI: types, unit tests, secret scan, integration tests
+├── .github/workflows/ci.yml       CI: types, unit tests, secret scan, integration tests, infrastructure checks, production image
+├── infra/                         Terraform modules and Terragrunt units for dev and prod (see infrastructure.md)
 ├── docs/
 │   ├── technical/                 This documentation (English)
 │   └── business/                  Business documentation in en and pt-BR (created with the first feature)
 ├── scripts/                       Node tooling run inside the app container (migrations, checks, test runner)
 ├── src/                           All application source code (see below)
+├── workshop/                      Training material: the Torra Sul catalog CSV and its import specification
+├── .dockerignore                  Files left out of the production image
+├── Dockerfile                     Production image: Next.js standalone, migrations on start, non-root user
 ├── .env.example                   Names of keys only the product owner can provide; empty means none needed
 ├── .gitignore                     Keeps .env, build output and dependencies out of git
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available

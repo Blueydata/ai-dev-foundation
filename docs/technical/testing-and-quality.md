@@ -33,13 +33,15 @@ flowchart LR
 
 ## CI pipeline
 
-`.github/workflows/ci.yml` runs three jobs in parallel on every pull request and on pushes to `main`. A pull request is merged only with the three green.
+`.github/workflows/ci.yml` runs five jobs in parallel on every pull request and on pushes to `main`. A pull request is merged only with all of them green.
 
 ```mermaid
 flowchart LR
   trigger["push or pull request"] --> tests["Tests and types<br/>npm ci · typecheck · npm test"]
   trigger --> secrets["Secret scan<br/>npm run check:secrets"]
-  trigger --> integration["Integration tests<br/>docker compose up -d --wait<br/>npm run test:integration"]
+  trigger --> integration["Integration tests<br/>docker compose up -d --wait<br/>npm run test:integration<br/>db:query and db:explain read-only checks"]
+  trigger --> infrastructure["Infrastructure<br/>fmt · validate · tflint · Checkov"]
+  trigger --> image["Production image<br/>docker build · migrations · /api/health"]
 ```
 
 ## Query validation
