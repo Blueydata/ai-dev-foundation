@@ -465,3 +465,7 @@ git clone https://github.com/Blueydata/ai-dev-foundation.git minha-pasta
 
 > [!IMPORTANT]
 > O mesmo caminho serve para a sua startup: preencha o "Product" do `CLAUDE.md` com o seu negócio e peça a primeira funcionalidade com `/new-feature`, em uma frase.
+
+## 🎁 Para ir além
+
+Para levar para casa: coloque o seu projeto no ar na AWS, no seu ritmo, com a infraestrutura que foi escrita junto com cada etapa: [`CHALLENGE.md`](CHALLENGE.md).
