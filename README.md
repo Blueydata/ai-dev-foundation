@@ -26,6 +26,8 @@ Code and project definitions are in English and code has no comments: whatever n
 
 ## Prerequisites
 
+Step-by-step installation guide, in Brazilian Portuguese: [`PREREQUISITES.md`](PREREQUISITES.md).
+
 To work with Claude (specify, plan, document):
 
 - [Claude Code](https://code.claude.com/docs/en/quickstart), already signed in. Use it in the Claude desktop app to watch the end-to-end checks in the built-in browser; in the terminal, Claude uses a headless browser and shows screenshots

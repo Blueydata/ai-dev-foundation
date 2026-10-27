@@ -10,6 +10,8 @@ Hoje você constrói, no seu computador, o mesmo produto que aparece no telão: 
 
 ## Antes de começar
 
+Se ainda não instalou nada, siga o [`PREREQUISITES.md`](PREREQUISITES.md) primeiro.
+
 1. Abra o Docker Desktop.
 2. No app Claude, aba Code, abra a pasta `ai-dev-foundation`.
 3. Se você tem uma chave da OpenAI, confira se o arquivo `.env` existe com `OPENAI_API_KEY=...`. Sem chave, tudo funciona menos as respostas do chat.
