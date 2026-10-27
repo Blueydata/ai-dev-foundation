@@ -60,7 +60,7 @@ To stop: `Ctrl + C`. To also erase the database data: `docker compose down -v`.
 
 ## Workshop
 
-The step-by-step prompts used in the training, to build the workshop product along with the presenters or to reproduce it later, are in [`WORKSHOP.md`](WORKSHOP.md) (in Brazilian Portuguese).
+The step-by-step prompts used in the training, to build the workshop product along with the presenters or to reproduce it later, are in [`WORKSHOP.md`](WORKSHOP.md) (in Brazilian Portuguese). The follow-up challenge, deploying the project to AWS with the infrastructure in `infra/`, is in [`CHALLENGE.md`](CHALLENGE.md).
 
 ## How to work with Claude
 
