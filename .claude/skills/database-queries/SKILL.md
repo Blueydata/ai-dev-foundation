@@ -1,9 +1,11 @@
 ---
 name: database-queries
-description: How to write and validate database access that stays fast with large data - schema and indexes, filters, search in Portuguese, pagination, aggregations, bulk imports, no N+1, and how to prove each query with integration tests, query counts and EXPLAIN on real data. Use whenever creating or changing a migration, a repository, a list, a search, a report, an import or an AI tool that reads data.
+description: How to write and validate database access that stays fast with large data - schema and indexes, filters, search in Portuguese, pagination, aggregations, bulk imports, no N+1, and how to prove each query with integration tests, query counts and EXPLAIN on real data. Use whenever creating or changing a migration, a repository, a list, a search, a report, an import or an AI tool that reads data, and whenever the product owner asks, in any words, whether something will stay fast or cheap as the data grows.
 ---
 
 # Database queries
+
+The product owner talks about the business ("it has to stay fast when the catalog grows", "loading the spreadsheet twice cannot duplicate anything"). This skill turns that into the technical rules below; never expect the product owner to name them, and explain results back in business terms.
 
 Every query is written for the data the product will have, not the data on the developer's screen. A list with 20 rows today has 200 000 next year. Repositories are the only place with SQL (`project-structure`), and every query in them follows this skill and is **validated** before the stage is done.
 

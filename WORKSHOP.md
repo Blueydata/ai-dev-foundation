@@ -138,34 +138,30 @@ Respostas:
 - Problema: o catálogo é grande e muda toda semana; os clientes não sabem qual café
   ou método escolher, e o time responde as mesmas perguntas o dia todo.
 - O que entra:
-  1. Login do administrador.
-  2. Pastas para agrupar os produtos e o cadastro de produto com todos os campos
-     do CSV, incluindo a opção de mostrar ou ocultar o produto no chat.
-  3. Importação do catálogo a partir de workshop/torra-sul-catalog.csv, seguindo a
-     especificação de workshop/README.md: valida linha por linha, importa as
-     válidas, relata as inválidas com o número da linha, a coluna e o motivo, cria
-     as pastas que não existem e pode rodar de novo sem duplicar nada (o sku é a
-     chave). Roda pelo comando npm run catalog:import -- <arquivo>, separado das
-     migrações.
-  4. O chat público, que responde só com base nos produtos visíveis. O cliente
-     conversa em linguagem simples e o chat busca no banco com filtros (texto,
-     pasta, origem, processo, torra, notas, acidez, corpo, método de preparo,
-     faixa de preço, nota SCA), ordena e conta no próprio banco, e nunca manda o
-     catálogo inteiro para a IA.
-- O que fica de fora: fotos e arquivos, upload do CSV pela tela, carrinho, pedidos,
-  pagamentos, estoque, vários administradores e WhatsApp.
+  1. O login do administrador.
+  2. Pastas para organizar os produtos e o cadastro de produto com todas as
+     informações da planilha, incluindo a opção de mostrar ou esconder o produto
+     do chat.
+  3. Carregar o catálogo da planilha workshop/torra-sul-catalog.csv, que está
+     explicada em workshop/README.md. Linha com erro não entra, e eu quero saber
+     qual linha e por quê. Se eu carregar a mesma planilha de novo, nada pode
+     ficar duplicado.
+  4. O chat público, que responde só com os produtos que estão visíveis.
+- O que fica de fora: fotos e arquivos, enviar a planilha pela tela, carrinho,
+  pedidos, pagamentos, estoque, vários administradores e WhatsApp.
 - Pronto quando:
   1. Sem login ou com senha errada, a área do administrador fica bloqueada.
-  2. A importação do CSV cria os produtos nas 6 pastas, informa as 2 linhas
-     inválidas com o motivo, e rodar de novo não cria nada duplicado.
-  3. O administrador cria uma pasta e um produto, e eles aparecem na lista, com
-     filtros e paginação.
-  4. O chat responde perguntas com filtros, comparações e contagens usando só o
-     catálogo, e responde sobre um produto recém-cadastrado.
-  5. Um produto oculto nunca aparece no chat.
-  6. Quando o catálogo não tem a resposta, o chat diz isso e sugere a alternativa
-     mais próxima, sem inventar.
-  7. As consultas ao banco usam índices e a lista de produtos não tem N+1.
+  2. A planilha entra inteira nas 6 pastas, menos as 2 linhas com erro, que
+     aparecem com o motivo; e carregar de novo não duplica nada.
+  3. O administrador cria uma pasta e um produto, e eles aparecem na lista.
+  4. O chat entende perguntas do jeito que o cliente fala, compara produtos,
+     diz quantos existem, e já responde sobre um produto que acabou de ser
+     cadastrado.
+  5. Um produto escondido nunca aparece no chat.
+  6. Quando não temos o que o cliente pediu, o chat diz isso e sugere algo
+     parecido, sem inventar.
+  7. A lista de produtos e o chat continuam rápidos e baratos mesmo que o
+     catálogo cresça para milhares de produtos.
 ```
 
 ✔️ Confira o bloco **Entendimento** e aprove.
@@ -185,15 +181,17 @@ com o login e o cadastro de pastas e produtos; depois a importação do CSV; por
 🤖 **Claude** · Prompt 6:
 
 ```
-Ajuste o plano: só existe um administrador, sem biblioteca de autenticação e sem
-cadastro de usuários. O e-mail e a senha dele vêm das variáveis de ambiente
-ADMIN_EMAIL e ADMIN_PASSWORD, que eu mesmo defino no meu .env: são credenciais, então
-nunca ficam no código, nos testes, no docker-compose, na documentação nem nesta
-conversa. Sem elas, a área do administrador avisa que o acesso não está configurado.
-No teste no navegador, quando precisar entrar, me peça para fazer o login no painel.
+Ajuste o plano: só existe um administrador, sem cadastro de usuários, e quero do
+jeito mais simples possível. O e-mail e a senha dele eu mesmo vou colocar no
+arquivo .env, com os nomes ADMIN_EMAIL e ADMIN_PASSWORD. Não quero essas
+informações no código nem nesta conversa. Quando o teste no navegador precisar
+entrar, me peça para fazer o login.
 ```
 
-✔️ Confira se o plano lista as tabelas, os índices, as consultas a validar e o que muda na infraestrutura de dev e prod em cada etapa, e se o login vem de `ADMIN_EMAIL` e `ADMIN_PASSWORD`, sem nenhuma senha escrita. Aprove o plano.
+✔️ Confira se o plano tem as três etapas e se o login vem do `.env`, sem nenhuma senha escrita. Aprove o plano.
+
+> [!NOTE]
+> Você falou só de negócio, e o plano vem com detalhes técnicos que você não pediu: tabelas, índices, consultas a validar e o que muda na nuvem. É o efeito das skills do projeto: elas transformam o que você pediu nas regras de qualidade da casa.
 
 > [!CAUTION]
 > Credencial não entra em prompt. Repare que você não disse ao Claude qual é o e-mail nem a senha: só o **nome** das variáveis. Os valores ficam no seu `.env`, que nunca vai para o Git e que o Claude não tem permissão de ler.
@@ -229,8 +227,8 @@ Pode começar a etapa 1.
 🤖 **Claude** · Prompt 8:
 
 ```
-Pode seguir com a etapa 2. No fim, rode a importação do workshop/torra-sul-catalog.csv
-duas vezes e me mostre o relatório de cada uma.
+Pode seguir com a etapa 2. No fim, carregue a planilha do catálogo duas vezes e me
+mostre o resultado de cada vez.
 ```
 
 ✔️ O esperado:
@@ -302,9 +300,9 @@ Depois cadastre na área do administrador e pergunte de novo:
 🤖 **Claude** · Prompt 10:
 
 ```
-Valide as consultas no banco: mostre as consultas que o chat e a lista de produtos
-fazem, rode cada uma com o db:explain nos dados importados, prove com um teste que
-a lista não tem N+1, e me diga em poucas linhas o que encontrou.
+Prove para mim que a lista de produtos e o chat vão continuar rápidos quando o
+catálogo crescer muito. Me explique em poucas linhas, sem termos técnicos, o que
+você conferiu e o que encontrou.
 ```
 
 ✔️ O Claude usa dois comandos que só leem o banco, nunca alteram nada:
@@ -355,8 +353,8 @@ Liste todos os produtos ocultos do catálogo.
 🤖 **Claude** · Prompt 11:
 
 ```
-Mostre o que foi preparado na infraestrutura de dev e de prod para esta
-funcionalidade e rode a validação da infraestrutura.
+Me mostre o que foi preparado para colocar esta funcionalidade na nuvem, no
+ambiente de testes e no de produção, e confira se está tudo certo.
 ```
 
 ✔️ A infraestrutura foi escrita junto com cada etapa, pelo subagente `infrastructure-engineer`, e é validada sem precisar de conta na nuvem:
@@ -414,7 +412,7 @@ Troque `etapa-5-admin` pela etapa da turma:
 | 13 · A documentação | `etapa-13-docs` |
 
 > [!WARNING]
-> Isso **descarta** o que você mudou e ainda não salvou num commit. O seu `.env` não é afetado: confira que ele tem `ADMIN_EMAIL` e `ADMIN_PASSWORD` (etapa 5). Depois de pular para `etapa-6-importacao` ou adiante, rode a importação uma vez para ter os produtos no seu banco: `docker compose exec -T app npm run catalog:import -- workshop/torra-sul-catalog.csv`.
+> Isso **descarta** o que você mudou e ainda não salvou num commit. O seu `.env` não é afetado: confira que ele tem `ADMIN_EMAIL` e `ADMIN_PASSWORD` (etapa 5). Depois de pular para `etapa-6-importacao` ou adiante, peça ao Claude: `Carregue a planilha do catálogo.`
 
 Depois, no Claude, comece uma conversa limpa e continue de onde a turma está:
 
