@@ -2,7 +2,7 @@
 
 Sequência de prompts para construir, do zero, o produto do treinamento "Desenvolvimento de software com IA", a partir do **Dev Foundation**. Também serve para reproduzir tudo depois, em casa, no seu ritmo.
 
-![Duração](https://img.shields.io/badge/dura%C3%A7%C3%A3o-~1h45-1f6feb?style=for-the-badge)
+![Duração](https://img.shields.io/badge/dura%C3%A7%C3%A3o-~2h-1f6feb?style=for-the-badge)
 ![Etapas](https://img.shields.io/badge/etapas-14-1f6feb?style=for-the-badge)
 ![Sistema](https://img.shields.io/badge/sistema-Windows%20%7C%20macOS%20%7C%20Linux-1f6feb?style=for-the-badge)
 ![Produto](https://img.shields.io/badge/produto-Torra%20Sul%20%E2%98%95-6f4e37?style=for-the-badge)

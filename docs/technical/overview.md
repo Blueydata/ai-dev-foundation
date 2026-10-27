@@ -39,6 +39,8 @@ flowchart LR
 | Tests | Vitest | 5.0.5 | `vitest.config.ts`, `vitest.integration.config.ts` |
 | Runtime | Node.js in Docker | 22 (alpine image) | `docker-compose.yml`, `.nvmrc` |
 | CI | GitHub Actions | | `.github/workflows/ci.yml` |
+| Infrastructure as code | Terraform, Terragrunt, AWS provider | 1.15.9, 1.1.6, ~> 6.50 | `infra/`, [infrastructure](infrastructure.md) |
+| Cloud | AWS: ECS Fargate (ARM), Application Load Balancer, Aurora PostgreSQL Serverless v2, ECR, Secrets Manager | Aurora PostgreSQL 16.8 | `infra/modules/` |
 
 ## Quality goals
 
