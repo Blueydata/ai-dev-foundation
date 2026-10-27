@@ -84,5 +84,5 @@ After the last stage, before the review:
 - Answer short and direct, as the "How to answer" section of `CLAUDE.md` requires.
 - The interview is in business language; code only from phase 3 on.
 - One stage at a time, one commit per stage.
-- `docker compose up` keeps working with no setup; user-provided keys only through `.env`; external API keys only on the server.
+- `docker compose up` keeps working with no setup; user-provided keys and credentials only through `.env`, chosen by the product owner and never written in the conversation; external API keys only on the server.
 - Every query validated before the stage is done; every feature leaves `infra/` ready for `dev` and `prod`.

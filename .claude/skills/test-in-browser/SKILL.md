@@ -27,7 +27,7 @@ This is the end-to-end test of the project. **You do the test yourself**, using 
 - Go step by step like a user: click, type, wait for the screen to respond. Read what appears on screen; do not check things only through the API or the database.
 - Say in one short line what you are about to do in each scenario, so the product owner can follow in the browser.
 - Use only made-up data with recognizable names (`Teste — ...`). Never real customer data.
-- Never read `.env`. Logins use the development credentials in `docker-compose.yml`.
+- Never read `.env` and never ask for credentials in the conversation. When a scenario needs to sign in, ask the product owner to sign in in the browser pane with their own credentials, wait for them to say it is done, and continue from there. Scenarios with a wrong password use made-up values.
 - In each scenario, check the browser console and failed network requests.
 - **URL and state** (`url-state` skill): after changing a filter, tab, page or opening an item, the URL changes; reloading brings back the same state; back and forward follow; opening the URL directly shows the same screen.
 - **AI features:** check the response streams word by word, stays on topic, uses only the product's data and says when it does not know. Try one off-topic request.

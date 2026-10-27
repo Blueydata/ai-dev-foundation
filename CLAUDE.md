@@ -125,8 +125,8 @@ Each subagent has a model and an effort level chosen for its task. They all work
 
 1. **Every file in its place** (`project-structure`): rules in `domain`, actions as use cases, SQL in repositories, `src/app/` thin, modules talk only through `index.ts`, schema changes as migrations.
 2. **Code and project definitions in English, with no comments in code.** Whatever needs explanation goes to `docs/technical/` (`code-standards`).
-3. **Runs locally with no setup.** `docker compose up` works on a fresh clone. Local values (database, model names, development secrets and credentials) get defaults in `docker-compose.yml`; only keys the product owner must provide, like external API keys, go into `.env` and are listed in `.env.example` without a value. Never ask for what the project can define.
-4. **Secrets never go into code.** Real keys come from `.env`, read only through `src/shared/config/env.ts`.
+3. **Runs locally with no setup.** `docker compose up` works on a fresh clone. Local values (database, model names, development secrets) get defaults in `docker-compose.yml`; keys the product owner must provide, like external API keys, and credentials of people, like an admin login, go only into `.env` and are listed in `.env.example` without a value. Never ask for what the project can define.
+4. **Secrets and credentials never go into code, prompts or the conversation.** Real keys and logins come from `.env`, chosen by the product owner and read only through `src/shared/config/env.ts`; Claude never reads `.env` and never suggests passwords.
 5. **External API keys only on the server.** Never in `"use client"` components or `NEXT_PUBLIC_` variables.
 6. **Every change comes with tests.** Unit tests for rules and use cases, integration tests for repositories, both through the `tester` subagent. Every feature ends with Claude testing all done criteria in the browser (`test-in-browser`).
 7. **Small deliveries.** One plan stage at a time, one commit per stage, in English.

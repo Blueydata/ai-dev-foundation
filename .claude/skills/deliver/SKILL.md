@@ -17,7 +17,7 @@ Check each item and show the result as a list with ✓ or ✗:
 3. **Review:** the review was done (phase 4 of `/new-feature`, or the reviewers called in the change or fix) and no high-severity finding is left.
 4. **Documentation:** the changelog (`docs/business/en/` and `docs/business/pt-BR/`) has the entry for this delivery and `docs/technical/` reflects what changed, following the `technical-docs` checklist (module page, folder tree, data model, API, configuration).
 5. **Secrets:** run `docker compose exec -T app npm run check:secrets` (the same check as CI) and confirm `.env` is not in the diff.
-6. **Environment variables:** `docker compose up` works with no `.env`; local values have defaults in `docker-compose.yml`; only user-provided keys are in `.env.example`, without a value.
+6. **Environment variables:** `docker compose up` works with no `.env`; local values have defaults in `docker-compose.yml`; only user-provided keys and credentials are in `.env.example`, without a value; no login, password or key appears in code, tests, seeds, `docker-compose.yml` or docs.
 7. **Code standards:** no comments in code and everything in English (`code-standards` skill).
 8. **Queries:** every new or changed query has an integration test, lists have a `countQueries` check, and `db:explain` showed no large sequential scan (`database-queries`).
 9. **Infrastructure:** `docker compose run --rm infra check` passes and `infra/live/dev` and `infra/live/prod` include what the delivery needs (`infrastructure-as-code`).

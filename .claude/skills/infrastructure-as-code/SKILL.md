@@ -52,7 +52,7 @@ infra/
 | The feature adds… | Change |
 | --- | --- |
 | A local configuration value (model name, feature flag) | `app_environment` in `live/dev/env.hcl` and `live/prod/env.hcl`, with the production value; never a secret |
-| A key only the product owner has (external API key, admin password) | Its name in `provided_secrets` in both `env.hcl`; the secret is created empty and filled with `aws secretsmanager put-secret-value` (see the runbook). The app receives it as an environment variable with the same name |
+| A key or credential only the product owner has (external API key, admin e-mail and password) | Its name in `provided_secrets` in both `env.hcl`; the secret is created empty and filled with `aws secretsmanager put-secret-value` (see the runbook). The app receives it as an environment variable with the same name |
 | A secret the system can generate (session key, signing key) | Its name in `generated_secrets` in both `env.hcl` |
 | Tables, columns, indexes | Nothing in `infra/`: migrations run when the container starts (`scripts/start.mjs`) |
 | More traffic or heavier work | `app` sizes and task limits, or `database` capacity, in `env.hcl` |

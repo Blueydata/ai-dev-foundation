@@ -105,19 +105,20 @@ infrastructure ──→ application (implements ports), domain, shared
 
 ## Configuration: runs locally with no setup
 
-`docker compose up` must work on a fresh clone with no `.env` and no questions to the product owner. Split every new variable into one of two kinds:
+`docker compose up` must work on a fresh clone with no `.env` and no questions to the product owner. Split every new variable into one of three kinds:
 
 | Kind | Examples | Where its value lives |
 | --- | --- | --- |
-| **Local value the project can define** | Database URL, ports, model names, feature flags, session secrets for development, development admin credentials, seed options | A working development value in `docker-compose.yml` under `app.environment`. Never ask the product owner for these |
+| **Local value the project can define** | Database URL, ports, model names, feature flags, session secrets for development, seed options | A working development value in `docker-compose.yml` under `app.environment`. Never ask the product owner for these |
 | **Value only the product owner can provide** | External API keys and tokens (OpenAI, Stripe, e-mail providers), anything tied to a real account | `.env`, which is never committed; the name goes into `.env.example` with an empty value |
+| **Credentials of people** | Admin e-mail and password, any login a person types | `.env` only, chosen by the product owner; the name goes into `.env.example` with an empty value. **Never** in code, tests, seeds, `docker-compose.yml`, documentation, prompts or the conversation, not even for development. Never ask for them and never suggest values |
 
 Rules:
 
 1. Add every variable to the zod schema in `src/shared/config/env.ts`. Local values are required (Compose always provides them); user-provided keys are `.optional()`.
-2. The app starts and every screen that does not need a missing key works. Code that needs a user-provided key checks it when used and throws `UnavailableError` (`src/shared/kernel/errors.ts`) with the service name, so only that feature fails, with a clear message.
+2. The app starts and every screen that does not need a missing key works. Code that needs a user-provided key checks it when used and throws `UnavailableError` (`src/shared/kernel/errors.ts`) with the service name, so only that feature fails, with a clear message. A restricted area whose credentials are missing shows that access is not configured and which variable names to set in `.env`; it never falls back to a default login.
 3. Development values in `docker-compose.yml` are for local use only and are documented in `docs/technical/runtime-and-configuration.md` (Environment variables) as values that production must replace.
-4. When a feature needs a user-provided key, say so once in your answer: which name to add to `.env` and where to get it. `docker compose exec -T app npm run check:env` lists the names still missing, never the values.
+4. When a feature needs a user-provided key or credential, say so once in your answer: which names to add to `.env`, where to get a key, that the product owner chooses credentials, and to run `docker compose up -d` afterwards so the app reads them. `docker compose exec -T app npm run check:env` lists the names still missing, never the values. Tests use their own fake credentials passed to the use cases, never the real ones.
 
 ## Creating a module
 

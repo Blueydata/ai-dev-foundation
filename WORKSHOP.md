@@ -71,6 +71,7 @@ Se ainda não instalou nada, siga o [`PREREQUISITES.md`](PREREQUISITES.md) prime
 | 🐳 | Docker rodando (Windows e macOS: abra o Docker Desktop; Linux: o serviço do Docker já fica ativo) |
 | 📂 | Pasta `ai-dev-foundation` aberta no Claude |
 | 🔑 | Opcional: arquivo `.env` com `OPENAI_API_KEY=...` (sem chave, tudo funciona menos as respostas do chat) |
+| 🔐 | Na etapa 5, você define o seu próprio login de administrador no `.env` (`ADMIN_EMAIL` e `ADMIN_PASSWORD`) |
 | 📄 | O catálogo já está no projeto: [`workshop/torra-sul-catalog.csv`](workshop/torra-sul-catalog.csv), descrito em [`workshop/README.md`](workshop/README.md) |
 
 ---
@@ -184,16 +185,31 @@ com o login e o cadastro de pastas e produtos; depois a importação do CSV; por
 🤖 **Claude** · Prompt 6:
 
 ```
-Ajuste o plano: só existe um administrador, com e-mail e senha em variáveis de
-ambiente, sem biblioteca de autenticação e sem cadastro de usuários. Para rodar local,
-o login é admin@torrasul.local com a senha cafe-especial.
+Ajuste o plano: só existe um administrador, sem biblioteca de autenticação e sem
+cadastro de usuários. O e-mail e a senha dele vêm das variáveis de ambiente
+ADMIN_EMAIL e ADMIN_PASSWORD, que eu mesmo defino no meu .env: são credenciais, então
+nunca ficam no código, nos testes, no docker-compose, na documentação nem nesta
+conversa. Sem elas, a área do administrador avisa que o acesso não está configurado.
+No teste no navegador, quando precisar entrar, me peça para fazer o login no painel.
 ```
 
-✔️ Confira se o plano lista as tabelas, os índices, as consultas a validar e o que muda na infraestrutura de dev e prod em cada etapa. Aprove o plano.
+✔️ Confira se o plano lista as tabelas, os índices, as consultas a validar e o que muda na infraestrutura de dev e prod em cada etapa, e se o login vem de `ADMIN_EMAIL` e `ADMIN_PASSWORD`, sem nenhuma senha escrita. Aprove o plano.
+
+> [!CAUTION]
+> Credencial não entra em prompt. Repare que você não disse ao Claude qual é o e-mail nem a senha: só o **nome** das variáveis. Os valores ficam no seu `.env`, que nunca vai para o Git e que o Claude não tem permissão de ler.
 
 ## 5 · 🔒 A área do administrador
 
 > `Construir` · etapa 1 do plano
+
+🔐 **Seu login** · Antes do prompt, abra o arquivo `.env` na pasta do projeto num editor de texto (crie o arquivo se ele não existir) e acrescente duas linhas, com um e-mail e uma senha **escolhidos por você**:
+
+```
+ADMIN_EMAIL=o-seu-email
+ADMIN_PASSWORD=uma-senha-sua
+```
+
+Salve o arquivo. **Não cole esses valores no Claude.**
 
 🤖 **Claude** · Prompt 7:
 
@@ -201,11 +217,10 @@ o login é admin@torrasul.local com a senha cafe-especial.
 Pode começar a etapa 1.
 ```
 
-🌐 **Navegador** · Abra a página de login (o endereço aparece na resposta) e entre com:
+🌐 **Navegador** · Quando o Claude terminar, abra a página de login (o endereço aparece na resposta) e entre com o e-mail e a senha que **você** colocou no `.env`.
 
-| E-mail | Senha |
-| --- | --- |
-| `admin@torrasul.local` | `cafe-especial` |
+> [!TIP]
+> Se a página disser que o acesso não está configurado, confira os nomes no `.env` e rode `docker compose up -d` no terminal, na pasta do projeto, para a aplicação ler o arquivo de novo.
 
 ## 6 · 📄 A importação do catálogo
 
@@ -251,7 +266,7 @@ Pode seguir com a etapa 3.
 ```
 
 > [!TIP]
-> No fim, o Claude testa tudo sozinho no painel **Browser**: abra o painel e acompanhe.
+> No fim, o Claude testa tudo sozinho no painel **Browser**: abra o painel e acompanhe. Quando ele precisar entrar na área do administrador, ele vai pedir para **você** fazer o login no painel: digite o e-mail e a senha lá, nunca na conversa.
 
 🌐 **Navegador** · No chat, pergunte do jeito que um cliente perguntaria:
 
@@ -399,7 +414,7 @@ Troque `etapa-5-admin` pela etapa da turma:
 | 13 · A documentação | `etapa-13-docs` |
 
 > [!WARNING]
-> Isso **descarta** o que você mudou e ainda não salvou num commit. Depois de pular para `etapa-6-importacao` ou adiante, rode a importação uma vez para ter os produtos no seu banco: `docker compose exec -T app npm run catalog:import -- workshop/torra-sul-catalog.csv`.
+> Isso **descarta** o que você mudou e ainda não salvou num commit. O seu `.env` não é afetado: confira que ele tem `ADMIN_EMAIL` e `ADMIN_PASSWORD` (etapa 5). Depois de pular para `etapa-6-importacao` ou adiante, rode a importação uma vez para ter os produtos no seu banco: `docker compose exec -T app npm run catalog:import -- workshop/torra-sul-catalog.csv`.
 
 Depois, no Claude, comece uma conversa limpa e continue de onde a turma está:
 
