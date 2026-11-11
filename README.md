@@ -58,7 +58,7 @@ The step-by-step prompts used in the training, to build the workshop product alo
 ## How to work with Claude
 
 1. Fill in the "Product" section of `CLAUDE.md` with your business context.
-2. Open Claude in the project folder (`claude`) and run `/setup-project`: it checks the environment, starts the app and tells you what to do until everything is ready.
+2. Start from the template: create an empty repository (with a README) in your personal GitHub account, open a Claude Code on the web session on it and ask Claude to copy this template in, run `scripts/cloud-setup.sh`, commit and push to `main` (the exact prompt, in Brazilian Portuguese, is in step 1 of [`WORKSHOP.md`](WORKSHOP.md)). Then open a new session and run `/setup-project`: it checks the environment and tells you what to do until everything is ready. On a computer, clone the repository and run `/setup-project` in Claude Code.
 3. Ask for the first feature by saying what you want, for example: `/new-feature um chat para tirar dúvidas dos clientes`.
 
 From there, the skill drives the way and stops at each phase for your approval:

@@ -9,8 +9,8 @@ O que você precisa para usar o **Dev Foundation** e fazer o workshop "Desenvolv
 
 ```mermaid
 flowchart LR
-    A["1 · GitHub pessoal"] --> B["2 · Sua cópia do projeto"] --> C["3 · Claude Code na web"] --> D["4 · Chave da OpenAI"] --> E["5 · Vercel pessoal"] --> F["6 · /setup-project"] --> G(["✓ Tudo pronto"])
-    style G fill:#2da44e,color:#fff,stroke:#2da44e
+    A["1 · GitHub pessoal"] --> B["2 · Claude + GitHub"] --> C["3 · Chave da OpenAI"] --> D["4 · Vercel pessoal"] --> E["5 · Teste final"] --> H(["✓ Tudo pronto"])
+    style H fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
 ## O que você vai usar
@@ -51,19 +51,14 @@ flowchart LR
 
 Crie uma conta gratuita em [github.com/signup](https://github.com/signup), se ainda não tiver uma pessoal.
 
-## 2 · 📦 A sua cópia do projeto
-
-Abra [github.com/Blueydata/ai-dev-foundation](https://github.com/Blueydata/ai-dev-foundation) e clique em **Fork**. Deixe o dono como a sua conta pessoal e crie.
-
-## 3 · 🤖 Claude Code na web
+## 2 · 🤖 Claude conectado ao GitHub
 
 | Passo | O que fazer |
 | :---: | --- |
 | 1 | Entre em [claude.ai/code](https://claude.ai/code) com a sua conta do plano **Pro ou Max** |
-| 2 | Conecte o GitHub quando ele pedir e autorize o acesso ao repositório que você criou |
-| 3 | Escolha o repositório no seletor de repositórios. No seletor de ambiente, o **Default** serve |
+| 2 | Conecte o GitHub quando ele pedir, com a sua **conta pessoal**, e autorize o acesso aos seus repositórios (pode ser a todos ou só aos que você escolher) |
 
-## 4 · 🔑 Chave da OpenAI
+## 3 · 🔑 Chave da OpenAI
 
 > [!TIP]
 > A organização fornece uma chave para o dia do workshop, que é **desativada depois**. Com a sua própria chave, o app que você publicar continua respondendo no chat depois do workshop.
@@ -81,31 +76,16 @@ Depois de mudar o ambiente, **comece uma sessão nova**: as mudanças só valem 
 
 Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.
 
-## 5 · ▲ Vercel pessoal
+## 4 · ▲ Vercel pessoal
 
 Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, usando a mesma conta pessoal do GitHub, no plano **Hobby** (gratuito, sem cartão). Por enquanto é só isso: o projeto é conectado durante o workshop.
 
-## 6 · ✅ Teste final
+## 5 · ✅ Teste final
 
-Numa sessão nova do Claude Code na web, no seu repositório, digite:
-
-```
-/setup-project
-```
-
-**Está pronto quando aparecer assim:**
-
-```
-✓ Ambiente na nuvem (nada instalado no computador)
-✓ Aplicação e banco no ar
-✓ Testes e tipos
-✓ Sem segredos no código
-✓ Chave da OpenAI configurada
-✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
-```
+Abra [claude.ai/code](https://claude.ai/code) e comece uma sessão nova: no seletor de repositórios aparecem os repositórios da sua conta pessoal do GitHub. Pronto: o resto, inclusive criar o repositório do projeto, a gente faz junto no workshop.
 
 > [!TIP]
-> O "Product" é o contexto do negócio, preenchido no workshop. Os prompts, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md): não precisa fazer nada com ele antes.
+> Os prompts, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md): não precisa fazer nada com ele antes.
 
 > [!TIP]
 > **Travou?** Peça ajuda ao próprio Claude colando a mensagem de erro que apareceu.

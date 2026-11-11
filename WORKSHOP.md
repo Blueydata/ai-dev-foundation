@@ -61,15 +61,51 @@ flowchart TB
 
 ## ✅ Antes de começar
 
-Siga o [`PREREQUISITES.md`](PREREQUISITES.md): conta pessoal no GitHub, a sua cópia do projeto, Claude Code na web, chave da OpenAI (a sua, recomendado, ou a fornecida pela organização no dia) e conta na Vercel. A planilha já está no projeto: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
+Siga o [`PREREQUISITES.md`](PREREQUISITES.md): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, e a chave da OpenAI (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
 
 ---
 
 ## 1 · 🧰 O projeto
 
-> `Preparar` · o Claude confere a máquina na nuvem e sobe a aplicação
+> `Preparar` · o seu repositório, com o projeto dentro, pronto na nuvem
 
-🤖 **Claude:**
+### 📦 O seu repositório
+
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | No GitHub, clique em **New repository** ([github.com/new](https://github.com/new)) |
+| 2 | Dono: a sua conta pessoal. Nome: por exemplo `ilha-clara`. Pode ser **Private** |
+| 3 | Marque **Add a README file** (o repositório precisa ter um primeiro commit para o Claude abrir) e clique em **Create repository** |
+| 4 | Se você autorizou o Claude só para alguns repositórios, inclua este novo nas permissões do app do Claude no GitHub |
+
+### 🚀 O projeto dentro do repositório
+
+🤖 **Claude** · No [claude.ai/code](https://claude.ai/code), abra uma **sessão nova** escolhendo o repositório que você acabou de criar (o ambiente **Default** serve) e cole o prompt inicial:
+
+```
+Este repositório ainda está vazio. Monte nele o projeto a partir do template
+público https://github.com/Blueydata/ai-dev-foundation:
+1. Copie todos os arquivos da branch main do template para cá, sem a pasta
+   .git, substituindo o README.md.
+2. Rode scripts/cloud-setup.sh e confira que o app responde e que npm test
+   passa.
+3. Faça um commit "chore: start from Dev Foundation" e o push direto para a
+   branch main deste repositório: é o primeiro conteúdo dele, não precisa de
+   pull request.
+No fim, me diga em uma linha se deu tudo certo.
+```
+
+✔️ O Claude responde que deu tudo certo, e o seu repositório no GitHub passa a ter o projeto inteiro na `main`.
+
+> [!IMPORTANT]
+> Depois disso, **feche esta sessão e abra outra** no mesmo repositório. É na sessão nova que o Claude lê as regras do projeto (`CLAUDE.md`), as skills como `/setup-project` e prepara tudo sozinho ao abrir.
+
+> [!TIP]
+> Se o Claude fizer o push para outra branch em vez da `main`, peça: `Abra um pull request dessa branch para a main e me passe o link`, e faça o merge no GitHub.
+
+### ✅ Tudo pronto?
+
+🤖 **Claude** · Na sessão nova:
 
 ```
 /setup-project
@@ -311,7 +347,7 @@ Troque `etapa-6-resultado` pela etapa da turma:
 
 ## 🔁 Depois do workshop
 
-Para refazer tudo do zero no seu ritmo, faça outro fork (ou apague a branch de trabalho) e siga este arquivo do começo.
+Para refazer tudo do zero no seu ritmo, crie outro repositório e siga este arquivo do começo.
 
 ## 🎒 Para levar
 
