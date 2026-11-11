@@ -9,6 +9,19 @@ Take the person from "just cloned" to "ready to develop". Check each item in ord
 
 The computer only needs **Git**, **Docker** and **Claude**, on Windows, macOS or Linux. Node.js, the dependencies, the database and the browser all run inside Docker: never ask the person to install them.
 
+## Cloud session
+
+If `DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`, the person installed nothing: skip Git, Docker and the operating system, and check only:
+
+1. **App and database:** `curl -s http://localhost:3000/api/health` answers `"database":"ok"`. If not, run `scripts/cloud-setup.sh` (it installs, migrates and starts everything) and check again; if it still fails, read `tail -n 40 /tmp/dev-foundation-app.log` and explain the cause in one line.
+2. **Tests and types:** ask the `tester` subagent (in the cloud it runs the commands without the Docker prefix).
+3. **Secrets:** `npm run check:secrets` reports nothing.
+4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which features need them and that they go in the cloud environment's settings (environment menu of the session, **Edit**, environment variables), followed by a new session. Never ask for the values in the conversation.
+5. **Product context:** as in step 10 below.
+6. **Infrastructure tools:** not checked in the cloud (they need Docker); CI checks them on every pull request.
+
+Answer with the same checklist format, replacing the Git and Docker lines with `✓ Ambiente na nuvem (nada instalado no computador)`.
+
 ## Steps
 
 Find the operating system first (`uname -s`: `Darwin` is macOS, `Linux` is Linux, and MINGW, MSYS or similar is Windows) so every instruction matches it. Always give the instruction for the person's system.

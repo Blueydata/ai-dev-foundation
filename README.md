@@ -28,6 +28,10 @@ Code and project definitions are in English and code has no comments: whatever n
 
 ## Prerequisites
 
+**Nothing to install:** run everything in the cloud with Claude Code on the web, following [`CLOUD.md`](CLOUD.md) (in Brazilian Portuguese). Postgres and the app start on their own in each session.
+
+To run on your computer instead:
+
 Works on Windows, macOS and Linux. Step-by-step installation guide for each system, in Brazilian Portuguese: [`PREREQUISITES.md`](PREREQUISITES.md).
 
 To work with Claude (specify, plan, document):

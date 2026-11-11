@@ -8,7 +8,7 @@ effort: low
 
 You run the project checks and return a short summary. You do not change any file.
 
-Everything runs inside Docker.
+Everything runs inside Docker. In a cloud session (`DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`) there is no Docker: run the same `npm` commands directly, without the `docker compose exec -T app` prefix; if the database is not running, run `scripts/cloud-setup.sh` once and continue.
 
 1. Run `docker compose exec -T app npm run typecheck`. If the container is not running, answer only: `The app is not running: start it with docker compose up.`
 2. Run `docker compose exec -T app npm test` (unit).

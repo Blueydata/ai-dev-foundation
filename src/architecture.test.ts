@@ -183,7 +183,7 @@ describe("architecture", () => {
     const segmentPattern = /^(\[{1,2}(\.\.\.)?[a-z][a-zA-Z0-9]*\]{1,2}|\([a-z0-9-]+\)|[a-z0-9]+(-[a-z0-9]+)*)$/;
     const violations = [...sourceFiles, ...listFiles("scripts")].flatMap((file) => {
       const segments = file.split("/");
-      const fileName = segments.pop()!.replace(/(\.d)?(\.integration)?(\.test)?\.(ts|tsx|mts|mjs|css)$/, "");
+      const fileName = segments.pop()!.replace(/(\.d)?(\.integration)?(\.test)?\.(ts|tsx|mts|mjs|css|sh)$/, "");
       return [...segments, fileName].filter((segment) => !segmentPattern.test(segment)).map((segment) => `${file}: ${segment}`);
     });
     expect(violations).toEqual([]);

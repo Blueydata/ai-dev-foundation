@@ -42,6 +42,30 @@ flowchart LR
 
 `node_modules` is installed by the container into the mounted folder, so editors see the types; it must never be installed from the computer, because native packages are built for the container platform.
 
+## Cloud sessions
+
+Claude Code on the web runs each session in a temporary cloud container with no usable Docker (containers there cannot reach the npm registry through the session's egress proxy). Instead of Docker Compose, the `SessionStart` hook in `.claude/settings.json` runs `.claude/hooks/session-start.sh`, which runs `scripts/cloud-setup.sh` only when `CLAUDE_CODE_REMOTE=true`.
+
+```mermaid
+flowchart LR
+  start["Session starts"] --> hook[".claude/hooks/session-start.sh"]
+  hook --> pg["PostgreSQL installed if missing,<br/>started, role and database app"]
+  pg --> install["npm install<br/>(skipped when package files are unchanged)"]
+  install --> env["Session variables written<br/>to CLAUDE_ENV_FILE"]
+  env --> migrate["npm run db:migrate"]
+  migrate --> dev["npm run dev in the background<br/>log in /tmp/dev-foundation-app.log"]
+  dev --> healthy["/api/health = ok"]
+```
+
+| Variable | Value | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | `postgres://app:app@localhost:5432/app` | Application database on the container's Postgres |
+| `TEST_DATABASE_URL` | `postgres://app:app@localhost:5432/app_test` | Integration tests |
+| `DEV_FOUNDATION_CLOUD` | `true` | Tells Claude, skills and subagents to run commands without the Docker prefix |
+| `NODE_USE_ENV_PROXY` | `1`, only when `HTTPS_PROXY` is set | Makes server-side `fetch` (for example the AI SDK) go through the session's egress proxy |
+
+The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `OPENAI_API_KEY`, with a placeholder value in the variable). `infra check` and `infra plan` need Docker and run only in CI in this mode. The participant guide is `CLOUD.md`.
+
 ## Environment variables
 
 There are two kinds of settings: **local values** the project defines in `docker-compose.yml`, so nothing needs configuring, and **user-provided keys** that only the product owner can supply, in a `.env` file that is never committed and is listed by name in `.env.example`. All application code reads settings through `getServerEnv()` in `src/shared/config/env.ts`, which validates them with zod on first use.
@@ -81,6 +105,7 @@ All commands run inside the `app` container with the app running.
 | --- | --- |
 | `.claude/launch.json` | Lets the Claude desktop app start the stack (`docker compose up`, port 3000) and open it in its built-in browser; `autoVerify` is off so browser checks happen at the defined points of the workflow |
 | `.mcp.json` | Headless Playwright browser in Docker (`mcr.microsoft.com/playwright/mcp`) for Claude Code in the terminal; it reaches the app at `http://host.docker.internal:3000`, allowed in `next.config.ts` |
-| `.claude/settings.json` | Commands Claude may run without asking (tests, checks, compose, git read and commit) and what is denied (reading `.env`, `rm -rf`) |
+| `.claude/hooks/session-start.sh` | Prepares cloud sessions (see [Cloud sessions](#cloud-sessions)) |
+| `.claude/settings.json` | `SessionStart` hook for cloud sessions; commands Claude may run without asking (tests, checks, compose, git read and commit) and what is denied (reading `.env`, `rm -rf`) |
 
 Related: [testing and quality](testing-and-quality.md) · [security](security.md)

@@ -26,7 +26,7 @@ If any item fails, stop and explain what is missing.
 
 ## Steps
 
-1. Confirm you are on the work branch (`feature/…`, `change/…` or `fix/…`) created at the start of the work. If you are on `main`, something went wrong: create the branch now with the pending work (`git switch -c feature/short-name`) and say so in one line.
+1. Confirm you are on the work branch (`feature/…`, `change/…` or `fix/…`, or the session's branch in the cloud) created at the start of the work. If you are on `main`, something went wrong: create the branch now with the pending work (`git switch -c feature/short-name`) and say so in one line.
 2. Commit anything pending.
 3. Write the pull request description, in English:
 
@@ -51,7 +51,8 @@ If any item fails, stop and explain what is missing.
 - [x] Infrastructure for dev and prod updated and checked
 ```
 
-4. The product owner does the push. Show the commands for them to run:
+4. **Cloud session** (`DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`): the work branch is the one the session was given, and there is no computer for the product owner to push from. Push that branch yourself, open the pull request with the description above and give the product owner its link; CI runs the infrastructure check there. Items 5, 6 and 9 of the checklist run without the Docker prefix, and item 9 is left to CI.
+5. Outside the cloud, the product owner does the push. Show the commands for them to run:
 
 ```bash
 git push -u origin <branch-name>

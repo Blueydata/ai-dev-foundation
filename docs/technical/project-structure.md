@@ -8,15 +8,16 @@ The complete folder tree of the repository, with what each folder and file holds
 .
 ├── .claude/                       Claude Code setup for this project
 │   ├── agents/                    Subagents, one file each, with model and effort
+│   ├── hooks/session-start.sh     Cloud sessions only: runs scripts/cloud-setup.sh (see runtime-and-configuration.md)
 │   ├── skills/                    Skills: workflow (setup-project, new-feature, ...) and standards (code-standards, ...)
 │   ├── launch.json                Starts the app (docker compose up) in the built-in browser of the Claude desktop app
-│   └── settings.json              Permissions: commands Claude may run alone, and what is denied
+│   └── settings.json              Permissions (what Claude may run alone, what is denied) and the SessionStart hook
 ├── .github/workflows/ci.yml       CI: types, unit tests, secret scan, integration tests, infrastructure checks, production image
 ├── infra/                         Terraform modules and Terragrunt units for dev and prod (see infrastructure.md)
 ├── docs/
 │   ├── technical/                 This documentation (English)
 │   └── business/                  Business documentation in en and pt-BR (created with the first feature)
-├── scripts/                       Node tooling run inside the app container (migrations, checks, test runner)
+├── scripts/                       Node tooling run inside the app container (migrations, checks, test runner), and cloud-setup.sh for cloud sessions
 ├── src/                           All application source code (see below)
 ├── workshop/                      Training material: the Torra Sul catalog CSV and its import specification
 ├── .dockerignore                  Files left out of the production image
@@ -26,6 +27,7 @@ The complete folder tree of the repository, with what each folder and file holds
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available
 ├── .nvmrc                         Node.js major version used by CI
 ├── AGENTS.md                      Written by next dev: points agents to the docs of the installed Next.js version
+├── CLOUD.md                       Participant guide (pt-BR) to use the project and the workshop in Claude Code on the web
 ├── CLAUDE.md                      Product context, rules and workflow, read by Claude in every conversation
 ├── README.md                      How to run the project and work with Claude
 ├── components.json                shadcn/ui settings: where generated components and utilities go

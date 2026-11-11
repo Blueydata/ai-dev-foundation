@@ -13,10 +13,11 @@ This is the end-to-end test of the project. **You do the test yourself**, using 
 
 1. **The built-in browser of the Claude desktop app (preferred).** Use the preview tools: start the `app` server from `.claude/launch.json` (it runs `docker compose up` on port 3000; if the app is already running, it attaches to it) and drive the app at http://localhost:3000. Before the first step, tell the product owner in one line to open the **Browser** pane (Cmd+Shift+B on macOS, Ctrl+Shift+B on Windows) to follow along.
 2. **Fallback, when the built-in browser is not available** (for example, Claude Code in the terminal): the `playwright` server from `.mcp.json`, which runs a headless browser inside Docker. Open http://host.docker.internal:3000 (inside the container, `localhost` is the container itself) and show a screenshot of each step, since there is no window to watch.
+3. **Cloud session** (`DEV_FOUNDATION_CLOUD=true`, no Docker): drive the pre-installed Playwright (`require('playwright')`, `chromium.launch()`, nothing to install) with short Node scripts kept outside the project (the session's scratchpad or `/tmp`), against http://localhost:3000. If a tool to report a preview port exists, report port 3000 so the product owner can open the app. Save a screenshot of each scenario and send the important ones to the product owner. When a scenario needs to sign in, the script reads the login from the environment variables (`process.env.ADMIN_EMAIL`, …) and types it into the form: never print, log or screenshot those values, and never put them in the conversation.
 
 ## Before starting
 
-1. Check that the app is running: `curl -s http://localhost:3000/api/health` returns `"database":"ok"`. If not, start it (built-in browser) or ask to run `docker compose up` (fallback).
+1. Check that the app is running: `curl -s http://localhost:3000/api/health` returns `"database":"ok"`. If not, start it (built-in browser), ask to run `docker compose up` (fallback) or run `scripts/cloud-setup.sh` (cloud).
 2. Define what to test:
    - at the end of a feature: **every done criterion** approved in the interview, plus the out-of-scope items that must stay absent;
    - otherwise: what came with the command, or what changed on screen.

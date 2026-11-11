@@ -13,6 +13,9 @@ flowchart LR
     style F fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
+> [!TIP]
+> **Não quer instalar nada?** Use o Claude Code na web e faça tudo no navegador: siga o [`CLOUD.md`](CLOUD.md).
+
 ## O que instalar
 
 | | Ferramenta | Para quê | 🪟 Windows | 🍎 macOS | 🐧 Linux |

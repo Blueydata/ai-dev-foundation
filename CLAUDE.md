@@ -47,6 +47,15 @@ Everything runs inside Docker: the computer only needs Docker, Git and Claude Co
 - `docker compose exec app npx shadcn@latest add <component>`: adds a shadcn/ui component
 - `docker compose exec app npm install <package>@<version>`: adds a package (explain why first)
 
+### Cloud sessions (Claude Code on the web, Codex cloud)
+
+When `DEV_FOUNDATION_CLOUD=true` (or `CLAUDE_CODE_REMOTE=true`), the session runs in a cloud container with no Docker, set up by `scripts/cloud-setup.sh` (the SessionStart hook runs it on its own): Postgres and the app already run at http://localhost:3000, with the app log in `/tmp/dev-foundation-app.log`.
+
+- Run the same commands **without** the `docker compose exec -T app` prefix (`npm test`, `npm run db:query -- "…"`); never `docker compose`. If the app or database is down, run `scripts/cloud-setup.sh` again.
+- Keys and logins come from the cloud environment's settings (environment variables or network secrets), never from a `.env` file; `npm run check:env` lists what is missing.
+- `infra check` and `infra plan` need Docker: skip them in the cloud and say they run in CI. The browser test uses the pre-installed Playwright (`test-in-browser`).
+- Work on the branch the session was given (it replaces `feature/…`), commit and push it; the pull request is how the product owner sees the work.
+
 ## Structure
 
 Everything lives in `src/`, split into business modules with four layers. The full map, the recipes for each kind of implementation and the dependency rules are in the `project-structure` skill; `src/architecture.test.ts` enforces them.

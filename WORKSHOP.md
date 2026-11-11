@@ -64,6 +64,9 @@ flowchart TB
 
 ## ✅ Antes de começar
 
+> [!TIP]
+> **Fazendo na nuvem, sem instalar nada?** Siga o [`CLOUD.md`](CLOUD.md) em vez do `PREREQUISITES.md`: lá está o que muda em cada etapa (login nas variáveis de ambiente em vez do `.env`, navegador e entrega).
+
 Se ainda não instalou nada, siga o [`PREREQUISITES.md`](PREREQUISITES.md) primeiro.
 
 | | Checklist |
