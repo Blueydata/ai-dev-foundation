@@ -78,7 +78,12 @@ Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponíve
 
 ## 4 · ▲ Vercel pessoal
 
-Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, usando a mesma conta pessoal do GitHub, no plano **Hobby** (gratuito, sem cartão). Por enquanto é só isso: o projeto é conectado durante o workshop.
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, usando a mesma conta pessoal do GitHub, no plano **Hobby** (gratuito, sem cartão) |
+| 2 | Em [claude.ai/customize/connectors](https://claude.ai/customize/connectors), conecte o conector da **Vercel** e autorize com a sua conta da Vercel. É por ele que o Claude acompanha cada deploy, lê os erros e corrige sozinho |
+
+O projeto na Vercel é criado durante o workshop.
 
 ## 5 · ✅ Teste final
 

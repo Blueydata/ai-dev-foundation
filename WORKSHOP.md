@@ -237,7 +237,10 @@ Estreito, e do chat respondendo "tem kitnet mobiliada?".
 
 ✔️ O Claude faz o push e abre o pull request no seu repositório. O CI confere tipos, testes e o build, e a Vercel publica uma **prévia** do pull request, com a planilha carregada no banco.
 
-▲ **Vercel** · No pull request, abra o link de prévia do comentário da Vercel (ou em **Deployments**, o mais recente da branch). Se algo falhar no build, peça ao Claude: `/deploy o build da prévia falhou`.
+✔️ Pelo conector da Vercel, o Claude acompanha esse deploy sozinho: se o build falhar, ele lê o erro, corrige e faz o push de novo. Quando ficar pronto, ele te entrega o **link da prévia**.
+
+> [!TIP]
+> Sem o conector da Vercel na sessão, abra o link de prévia no comentário da Vercel no pull request e, se o build falhar, peça: `/deploy o build da prévia falhou`.
 
 > [!NOTE]
 > A prévia é do pull request. Quando você fizer o **merge** no GitHub, a Vercel publica no link oficial, o da `main`.
@@ -304,7 +307,7 @@ Liste todos os imóveis que já estão alugados.
 em destaque, e ordene do mais barato para o mais caro por padrão.
 ```
 
-✔️ O Claude muda, testa, documenta e faz o push. A prévia da Vercel se atualiza sozinha com o novo commit. Quando estiver tudo certo, faça o **merge** do pull request no GitHub e abra o link oficial.
+✔️ O Claude muda, testa, documenta, faz o push e acompanha o novo deploy até a prévia atualizada ficar pronta. Quando estiver tudo certo, faça o **merge** do pull request no GitHub e abra o link oficial.
 
 ### 💰 Quanto custou?
 

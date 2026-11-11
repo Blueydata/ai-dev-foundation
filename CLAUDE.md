@@ -22,7 +22,7 @@ This project starts from **Dev Foundation**, a base to build any kind of softwar
 - UI: Tailwind CSS, shadcn/ui, Motion and lucide-react · URL state: nuqs · Validation: zod
 - AI: Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/openai`) and Streamdown for streamed responses
 - Development: Claude Code on the web (cloud sessions, nothing installed); Docker Compose as the option on a computer
-- Deploy: Vercel with a Neon Postgres database (`deploy` skill)
+- Deploy: Vercel with a Neon Postgres database, followed through the claude.ai Vercel connector (`deploy` skill)
 - Tests: Vitest unit tests and integration tests against the real Postgres; end-to-end checks done by Claude in a real browser (`/test-in-browser`), not written as files
 - CI: GitHub Actions with types, unit tests, integration tests, read-only query checks, secret scanning and the production build
 
@@ -31,6 +31,8 @@ This project starts from **Dev Foundation**, a base to build any kind of softwar
 Cloud sessions are the default: the SessionStart hook runs `scripts/cloud-setup.sh`, which installs dependencies, starts Postgres, applies migrations and starts the app at http://localhost:3000 (log in `/tmp/dev-foundation-app.log`). If the app or the database is down, run `scripts/cloud-setup.sh` again.
 
 **Always show the app.** At the start of every cloud session, as soon as `/api/health` answers, report port 3000 with the preview port tool (`report_preview_port`, when it exists) so the product owner can open the app in the preview pane and follow along. After every change visible on screen, check it yourself in the browser (`test-in-browser`), send a screenshot and tell the product owner in one line which page to open in the preview to see it. On a computer, the built-in browser of the Claude desktop app plays the same role.
+
+**Follow every deploy.** Every push deploys on Vercel by itself. After each push, when the Vercel connector is in the session, follow the deployment, fix a failed build and give the preview or production link (`deploy` skill).
 
 - `npm test`: unit tests
 - `npm run test:integration`: integration tests on a fresh `app_test` database
