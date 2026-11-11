@@ -29,9 +29,9 @@ Code and project definitions are in English and code has no comments: whatever n
 
 ## Prerequisites and how to run
 
-**Cloud-first, nothing to install:** work with Claude Code on the web, following [`CLOUD.md`](CLOUD.md) (in Brazilian Portuguese). In each session the `SessionStart` hook runs `scripts/cloud-setup.sh`, which installs Postgres if missing, installs the dependencies, applies migrations and starts the app on http://localhost:3000 (log in `/tmp/dev-foundation-app.log`). Commands are plain `npm ...`. Keys that only you can provide are set in the cloud environment's settings, never in the repository.
+**Cloud-first, nothing to install:** work with Claude Code on the web, following [`PREREQUISITES.md`](PREREQUISITES.md) (in Brazilian Portuguese). In each session the `SessionStart` hook runs `scripts/cloud-setup.sh`, which installs Postgres if missing, installs the dependencies, applies migrations and starts the app on http://localhost:3000 (log in `/tmp/dev-foundation-app.log`). Commands are plain `npm ...`. Keys that only you can provide are set in the cloud environment's settings, never in the repository.
 
-**On your computer instead (Docker Compose):** works on Windows, macOS and Linux; the step-by-step installation guide, in Brazilian Portuguese, is [`PREREQUISITES.md`](PREREQUISITES.md). You need:
+**On your computer instead (Docker Compose):** works on Windows, macOS and Linux; the step-by-step installation guide, in Brazilian Portuguese, is [`LOCAL.md`](LOCAL.md). You need:
 
 - [Claude Code](https://code.claude.com/docs/en/quickstart), already signed in. In the Claude desktop app you watch the end-to-end checks in the built-in browser; in the terminal, Claude uses a headless browser and shows screenshots
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) on Windows and macOS, open and running (it includes Docker Compose); on Linux, [Docker Engine](https://docs.docker.com/engine/install/) with the Compose plugin, or Docker Desktop
@@ -110,7 +110,7 @@ src/
     utils/                Generic helpers
   architecture.test.ts    The architecture rules, as tests
 scripts/                  Cloud session setup, migrations, read-only queries, test runner and checks
-workshop/                 Training material: the Torra Sul catalog CSV and its specification
+workshop/                 Training material: the Ilha Clara rental listings CSV and its specification
 docs/technical/           Technical documentation (English)
 docs/business/            Business documentation (en and pt-BR)
 .claude/                  Permissions, skills and subagents

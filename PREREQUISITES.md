@@ -1,125 +1,106 @@
-# Pré-requisitos
+# Pré-requisitos — tudo na nuvem, sem instalar nada
 
-Tudo o que você precisa no computador para usar o **Dev Foundation**, no treinamento "Desenvolvimento de software com IA" ou em qualquer projeto.
+O que você precisa para usar o **Dev Foundation** e fazer o workshop "Desenvolvimento de software com IA" inteiro no navegador, com o **Claude Code na web** ([claude.ai/code](https://claude.ai/code)). Não precisa de Git, Docker nem Node no computador: o Claude trabalha numa máquina na nuvem que já vem com Node, Postgres e um navegador para os testes. Prefere rodar no seu computador? Veja o [`LOCAL.md`](LOCAL.md).
 
-![Tempo](https://img.shields.io/badge/tempo-~30%20min-1f6feb?style=for-the-badge)
-![Espaço](https://img.shields.io/badge/espa%C3%A7o-10%20GB%20livres-1f6feb?style=for-the-badge)
-![Sistema](https://img.shields.io/badge/sistema-Windows%20%7C%20macOS%20%7C%20Linux-1f6feb?style=for-the-badge)
+![Tempo](https://img.shields.io/badge/tempo-~15%20min-1f6feb?style=for-the-badge)
+![Instalar](https://img.shields.io/badge/instalar-nada-2da44e?style=for-the-badge)
+![Custo](https://img.shields.io/badge/custo-planos%20gratuitos%20%2B%20Claude%20Pro-1f6feb?style=for-the-badge)
 ![Programar](https://img.shields.io/badge/saber%20programar-n%C3%A3o%20precisa-2da44e?style=for-the-badge)
 
 ```mermaid
 flowchart LR
-    A["1 · Claude"] --> B["2 · Git"] --> C["3 · Docker"] --> D["4 · Baixar o projeto"] --> E["5 · /setup-project"] --> F(["✓ Tudo pronto"])
-    style F fill:#2da44e,color:#fff,stroke:#2da44e
+    A["1 · GitHub pessoal"] --> B["2 · Sua cópia do projeto"] --> C["3 · Claude Code na web"] --> D["4 · Chave da OpenAI"] --> E["5 · Vercel"] --> F["6 · /setup-project"] --> G(["✓ Tudo pronto"])
+    style G fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
-> [!TIP]
-> **Não quer instalar nada?** Use o Claude Code na web e faça tudo no navegador: siga o [`CLOUD.md`](CLOUD.md).
+## O que você vai usar
 
-## O que instalar
+| | Serviço | Para quê | Plano |
+| :---: | --- | --- | --- |
+| 🐙 | **GitHub** | Guardar o código e cada versão | Gratuito, **conta pessoal** |
+| 🤖 | **Claude** | A IA que constrói o software, numa máquina na nuvem | **Pro ou superior** |
+| 🔑 | **OpenAI** | A IA do chat do app que você vai construir | US$ 5 de crédito sobram |
+| ▲ | **Vercel** + **Neon** | Colocar o app no ar, com banco de dados | Gratuitos, entrando com o GitHub |
 
-| | Ferramenta | Para quê | 🪟 Windows | 🍎 macOS | 🐧 Linux |
-| :---: | --- | --- | --- | --- | --- |
-| 🤖 | **Claude** | Conversar com a IA que constrói o software | [App Claude](https://claude.ai/download) | [App Claude](https://claude.ai/download) | [App Claude (beta)](https://code.claude.com/docs/en/desktop-linux) ou [Claude Code no terminal](https://code.claude.com/docs/en/quickstart) |
-| 🌿 | **Git** | Baixar o projeto e guardar cada versão | [Git for Windows](https://git-scm.com/download/win) | Já vem no sistema | Gerenciador de pacotes |
-| 🐳 | **Docker** | Rodar a aplicação e o banco de dados | [Docker Desktop](https://www.docker.com/products/docker-desktop) | [Docker Desktop](https://www.docker.com/products/docker-desktop) | [Docker Engine](https://docs.docker.com/engine/install/) ou [Docker Desktop](https://docs.docker.com/desktop/setup/install/linux/) |
+> [!IMPORTANT]
+> Use uma **conta pessoal** do GitHub, não a da empresa. Repositórios de organizações precisam de aprovação de um administrador para o Claude e de plano pago na Vercel.
 
-> [!NOTE]
-> Só isso. Node, banco de dados e o resto rodam **dentro do Docker**: não instale mais nada.
+## Como funciona
+
+```mermaid
+flowchart LR
+    Voce(["👤 Você, no navegador"]) -->|"prompts"| Sessao["☁️ Sessão do Claude na nuvem"]
+    Sessao -->|"ao abrir, sozinho"| Setup["dependências · Postgres<br/>migrações · app"]
+    Sessao -->|"código, testes, navegador"| App["App rodando<br/>na máquina da nuvem"]
+    Sessao -->|"push e pull request"| GitHub[("🐙 Seu repositório")]
+    GitHub -->|"cada pull request e cada merge"| Vercel["▲ Vercel + Neon<br/>seu app com link público"]
+```
+
+- Ao abrir cada sessão, o projeto se prepara sozinho (o hook `.claude/hooks/session-start.sh` roda o [`scripts/cloud-setup.sh`](scripts/cloud-setup.sh)). Na primeira vez leva cerca de 1 minuto; depois, segundos.
+- O Claude testa o app com um navegador da própria máquina na nuvem e mostra capturas de tela.
+- O seu trabalho fica salvo no GitHub: cada sessão trabalha numa branch própria e termina num pull request. A Vercel publica cada pull request num link de prévia e, depois do merge, no link oficial.
+
+> [!IMPORTANT]
+> A máquina da sessão é temporária: o que não estiver no GitHub se perde quando a sessão termina. O Claude faz o commit e o push por você.
 
 ---
 
-## 1 · 🤖 Claude
+## 1 · 🐙 GitHub pessoal
 
-| 🪟 Windows | 🍎 macOS | 🐧 Linux |
-| --- | --- | --- |
-| Baixe e instale o app em [claude.ai/download](https://claude.ai/download) | Baixe e instale o app em [claude.ai/download](https://claude.ai/download) | **Ubuntu 22.04+ ou Debian 12+:** instale o [app Claude para Linux (beta)](https://code.claude.com/docs/en/desktop-linux) via `apt`. **Outras distribuições:** use o [Claude Code no terminal](https://code.claude.com/docs/en/quickstart) |
+Crie uma conta gratuita em [github.com/signup](https://github.com/signup), se ainda não tiver uma pessoal.
 
-Depois, faça login com a sua conta e abra a aba **Code**: é ali que você vai trabalhar (no terminal, rode `claude` dentro da pasta do projeto).
+## 2 · 📦 A sua cópia do projeto
 
-> [!IMPORTANT]
-> A conta precisa ser do plano **Pro ou superior**, que é o que dá acesso ao Claude Code.
+Abra [github.com/Blueydata/ai-dev-foundation](https://github.com/Blueydata/ai-dev-foundation) e clique em **Fork**. Deixe o dono como a sua conta pessoal e crie.
 
-## 2 · 🌿 Git
+## 3 · 🤖 Claude Code na web
 
-| 🪟 Windows | 🍎 macOS | 🐧 Linux |
-| --- | --- | --- |
-| Instale o [Git for Windows](https://git-scm.com/download/win) com as opções padrão | No Terminal, rode `git --version`. Se não estiver instalado, o macOS oferece a instalação: aceite | Ubuntu/Debian: `sudo apt install git` · Fedora: `sudo dnf install git` |
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Entre em [claude.ai/code](https://claude.ai/code) com a conta do plano **Pro ou superior** |
+| 2 | Conecte o GitHub quando ele pedir e autorize o acesso ao repositório que você criou |
+| 3 | Escolha o repositório no seletor de repositórios. No seletor de ambiente, o **Default** serve |
 
-## 3 · 🐳 Docker
+## 4 · 🔑 Chave da OpenAI
 
-| 🪟 Windows | 🍎 macOS | 🐧 Linux |
-| --- | --- | --- |
-| Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop), abra e espere ele indicar que está **rodando** | Instale o [Docker Desktop](https://www.docker.com/products/docker-desktop), abra e espere ele indicar que está **rodando** | Instale o [Docker Engine com o plugin Compose](https://docs.docker.com/engine/install/) e rode `sudo usermod -aG docker $USER`; saia e entre de novo na sessão. Ou use o [Docker Desktop para Linux](https://docs.docker.com/desktop/setup/install/linux/) |
+| Passo | O que fazer |
+| :---: | --- |
+| 1 | Crie uma conta em [platform.openai.com](https://platform.openai.com), adicione um pouco de crédito (US$ 5 sobram) e gere uma chave em **API keys**. Guarde a chave num lugar seguro: você vai usá-la de novo na Vercel |
+| 2 | No Claude Code na web, abra o menu do ambiente da sessão e clique em **Edit**. Em **Network secrets** (ou **API credentials**), salve a chave para o host `api.openai.com`, no cabeçalho `Authorization`, com o prefixo `Bearer`. Isso também libera o acesso da sessão ao `api.openai.com` |
+| 3 | Nas **variáveis de ambiente** do mesmo ambiente, acrescente `OPENAI_API_KEY=via-network-secret`. O app precisa de um valor ali, e a chave de verdade é colocada no caminho pela rede da nuvem, sem nunca entrar na máquina |
 
-> [!WARNING]
-> **Windows:** o instalador pode pedir para ativar o **WSL 2**. Aceite e reinicie o computador.
->
-> **Linux:** confira com `docker compose version`. Sem o `usermod`, o Docker só funciona com `sudo`.
+Depois de mudar o ambiente, **comece uma sessão nova**: as mudanças só valem para sessões abertas depois delas.
 
-## 4 · 📦 Baixar o projeto
+> [!CAUTION]
+> **Nunca cole a chave na conversa** com o Claude, nem em arquivos do projeto. Se o Claude precisar dela, ele mesmo abre um cartão seguro para você salvar.
 
-No PowerShell (Windows) ou no Terminal (macOS e Linux):
+Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.
 
-```bash
-git clone https://github.com/Blueydata/ai-dev-foundation.git
-```
+## 5 · ▲ Vercel
 
-## 5 · ✅ Teste final
+Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, no plano **Hobby** (gratuito, sem cartão). Por enquanto é só isso: o projeto é conectado durante o workshop.
 
-Com o Docker rodando, abra a pasta `ai-dev-foundation` no Claude (app: aba **Code**; terminal: `cd ai-dev-foundation` e `claude`) e digite:
+## 6 · ✅ Teste final
+
+Numa sessão nova do Claude Code na web, no seu repositório, digite:
 
 ```
 /setup-project
 ```
 
-Ele confere tudo, sobe o projeto e diz o que fazer se faltar algo. Na primeira vez leva alguns minutos, baixando o que o projeto usa. **Está pronto quando aparecer assim:**
+**Está pronto quando aparecer assim:**
 
 ```
-✓ Git
-✓ Docker instalado e rodando
-✓ Aplicação e banco no ar (http://localhost:3000)
-✓ Ferramentas de infraestrutura
+✓ Ambiente na nuvem (nada instalado no computador)
+✓ Aplicação e banco no ar
 ✓ Testes e tipos
 ✓ Sem segredos no código
-– Chave da OpenAI não configurada (opcional: só o chat precisa dela)
+✓ Chave da OpenAI configurada
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```
 
 > [!TIP]
-> O "Product" é o contexto do negócio, preenchido depois (no treinamento, a gente preenche junto). Abra http://localhost:3000: deve aparecer **"Banco de dados: conectado"**.
-
-| Quero… | 🪟 Windows | 🍎 macOS | 🐧 Linux |
-| --- | --- | --- | --- |
-| Ver a aplicação dentro do app Claude | Painel **Browser**: `Ctrl+Shift+B` | Painel **Browser**: `Cmd+Shift+B` | Painel **Browser**: `Ctrl+Shift+B` (no terminal, use o seu navegador) |
-| Desligar | Feche o Docker Desktop | Feche o Docker Desktop | `docker compose stop` na pasta do projeto |
-| Voltar a trabalhar | Abra o Docker Desktop e rode `/setup-project` | Abra o Docker Desktop e rode `/setup-project` | Rode `/setup-project` |
-
-Os prompts do treinamento, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md). Não precisa fazer nada com ele antes.
-
----
-
-<details>
-<summary><strong>🔑 Opcional: chave da OpenAI, para o chat com IA responder</strong></summary>
-
-<br>
-
-| Passo | O que fazer |
-| :---: | --- |
-| 1 | Crie uma conta em [platform.openai.com](https://platform.openai.com) e adicione um pouco de crédito (US$ 5 sobram) |
-| 2 | Gere uma chave em **API keys** |
-| 3 | Na pasta do projeto, crie um arquivo `.env` com a linha abaixo |
-
-```
-OPENAI_API_KEY=a-sua-chave
-```
-
-Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.
-
-> [!CAUTION]
-> O `.env` nunca vai para o Git. **Não mande a sua chave para ninguém**, nem cole em conversas.
-
-</details>
+> O "Product" é o contexto do negócio, preenchido no workshop. Os prompts, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md): não precisa fazer nada com ele antes.
 
 > [!TIP]
 > **Travou?** Peça ajuda ao próprio Claude colando a mensagem de erro que apareceu.

@@ -24,7 +24,7 @@ flowchart LR
 | `DEV_FOUNDATION_CLOUD` | `true` | Tells Claude, skills and subagents to run commands without the Docker prefix |
 | `NODE_USE_ENV_PROXY` | `1`, only when `HTTPS_PROXY` is set | Makes server-side `fetch` (for example the AI SDK) go through the session's egress proxy |
 
-The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `OPENAI_API_KEY`, with a placeholder value in the variable). The participant guide is `CLOUD.md`.
+The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `OPENAI_API_KEY`, with a placeholder value in the variable). The participant guide is `PREREQUISITES.md`.
 
 ## Docker Compose
 

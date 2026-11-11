@@ -18,15 +18,15 @@ The complete folder tree of the repository, with what each folder and file holds
 │   └── business/                  Business documentation in en and pt-BR (created with the first feature)
 ├── scripts/                       Node tooling (migrations, checks, test runner, local-env) and cloud-setup.sh for cloud sessions
 ├── src/                           All application source code (see below)
-├── workshop/                      Training material: the Torra Sul catalog CSV and its import specification
+├── workshop/                      Training material: the Ilha Clara rental listings CSV and its specification (pt-BR)
 ├── .env.example                   Names of keys only the product owner can provide; empty means none needed
 ├── .gitignore                     Keeps .env, build output and dependencies out of git
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available
 ├── .nvmrc                         Node.js major version used by CI
 ├── AGENTS.md                      Written by next dev: points agents to the docs of the installed Next.js version
-├── CLOUD.md                       Participant guide (pt-BR) to use the project and the workshop in Claude Code on the web
+├── LOCAL.md                       Optional guide (pt-BR) to run on a computer with Docker, Git and Claude Code
 ├── CLAUDE.md                      Product context, rules and workflow, read by Claude in every conversation
-├── PREREQUISITES.md               Guide (pt-BR) to install Docker, Git and Claude Code to run on a computer
+├── PREREQUISITES.md               Participant guide (pt-BR): use the project and the workshop in Claude Code on the web, nothing installed
 ├── WORKSHOP.md                    Step-by-step prompts of the workshop (pt-BR)
 ├── README.md                      How to run the project and work with Claude
 ├── components.json                shadcn/ui settings: where generated components and utilities go
