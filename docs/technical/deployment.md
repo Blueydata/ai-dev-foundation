@@ -30,7 +30,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | `DATABASE_URL` | Neon integration, for every environment | `src/shared/config/env.ts` (the app) | Pooled connection used while the app runs |
 | `DATABASE_URL_UNPOOLED` | Neon integration, for every environment | `scripts/migrate.mjs` | Direct connection used to apply migrations; `selectMigrationUrl` prefers it over `DATABASE_URL` |
-| Names listed in `.env.example` (for example `OPENAI_API_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`) | The product owner, in Vercel under Settings, Environment Variables | `getServerEnv()` | Keys and logins that only a person can provide |
+| Names listed in `.env.example` (for example `OPENAI_API_KEY`) | The product owner, in Vercel under Settings, Environment Variables | `getServerEnv()` | Keys and logins that only a person can provide |
 
 Local values that have a default in `docker-compose.yml` (model names, flags) must also be added in Vercel when the app needs them online. A feature that adds a variable lists its name in the final report so it can be added in the right environments. Values never go into the repository.
 
