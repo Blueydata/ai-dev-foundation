@@ -22,7 +22,7 @@ São **três contas pessoais** e **uma chave**:
 | 🐙 | **GitHub**, pessoal | Guardar o código e cada versão | Gratuito |
 | ▲ | **Vercel**, pessoal, criada com o login do GitHub | Colocar o app no ar; o banco de dados (Neon) é criado dentro dela, sem outra conta | Hobby, gratuito, sem cartão |
 | 🤖 | **Claude**, pessoal | A IA que constrói o software, numa máquina na nuvem | **Pro ou Max** (um plano Team ou Enterprise da empresa também serve, se o Claude Code na web estiver liberado) |
-| 🔑 | **Chave da OpenAI** | A IA do chat do app que você vai construir | US$ 5 de crédito sobram |
+| 🔑 | **Chave da OpenAI** | A IA do chat do app que você vai construir | A organização fornece uma no dia; **recomendado levar a sua** (US$ 5 de crédito sobram) |
 
 > [!IMPORTANT]
 > Use a **conta pessoal** do GitHub, não a da empresa: repositórios de organizações precisam de aprovação de um administrador para o Claude e de plano pago na Vercel.
@@ -65,9 +65,12 @@ Abra [github.com/Blueydata/ai-dev-foundation](https://github.com/Blueydata/ai-de
 
 ## 4 · 🔑 Chave da OpenAI
 
+> [!TIP]
+> A organização fornece uma chave para o dia do workshop, que é **desativada depois**. Com a sua própria chave, o app que você publicar continua respondendo no chat depois do workshop.
+
 | Passo | O que fazer |
 | :---: | --- |
-| 1 | Crie uma conta em [platform.openai.com](https://platform.openai.com), adicione um pouco de crédito (US$ 5 sobram) e gere uma chave em **API keys**. Guarde a chave num lugar seguro: você vai usá-la de novo na Vercel |
+| 1 | **Recomendado:** crie uma conta em [platform.openai.com](https://platform.openai.com), adicione um pouco de crédito (US$ 5 sobram) e gere uma chave em **API keys**. Sem chave própria, use a que a organização vai fornecer no dia do workshop. Guarde a chave num lugar seguro: você vai usá-la de novo na Vercel |
 | 2 | No Claude Code na web, abra o menu do ambiente da sessão e clique em **Edit**. Em **Network secrets** (ou **API credentials**), salve a chave para o host `api.openai.com`, no cabeçalho `Authorization`, com o prefixo `Bearer`. Isso também libera o acesso da sessão ao `api.openai.com` |
 | 3 | Nas **variáveis de ambiente** do mesmo ambiente, acrescente `OPENAI_API_KEY=via-network-secret`. O app precisa de um valor ali, e a chave de verdade é colocada no caminho pela rede da nuvem, sem nunca entrar na máquina |
 

@@ -61,7 +61,7 @@ flowchart TB
 
 ## ✅ Antes de começar
 
-Siga o [`PREREQUISITES.md`](PREREQUISITES.md): conta pessoal no GitHub, a sua cópia do projeto, Claude Code na web, chave da OpenAI e conta na Vercel. A planilha já está no projeto: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
+Siga o [`PREREQUISITES.md`](PREREQUISITES.md): conta pessoal no GitHub, a sua cópia do projeto, Claude Code na web, chave da OpenAI (a sua, recomendado, ou a fornecida pela organização no dia) e conta na Vercel. A planilha já está no projeto: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
 
 ---
 
