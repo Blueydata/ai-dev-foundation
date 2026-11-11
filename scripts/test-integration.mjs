@@ -28,7 +28,7 @@ async function recreateDatabase(databaseUrl) {
 async function runIntegrationTests() {
   const databaseUrl = process.env.TEST_DATABASE_URL;
   if (!databaseUrl) {
-    throw new Error("TEST_DATABASE_URL is not set. Run this inside the app container: docker compose exec app npm run test:integration");
+    throw new Error("TEST_DATABASE_URL is not set. Run scripts/cloud-setup.sh first (or, with Docker, docker compose exec app npm run test:integration)");
   }
   await recreateDatabase(databaseUrl);
   await runMigrations(databaseUrl);

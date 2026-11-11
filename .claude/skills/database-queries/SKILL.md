@@ -75,9 +75,9 @@ A stage that adds or changes a query is only done when the query is proven corre
 | --- | --- | --- |
 | Correct results | Integration test next to the repository (`*.integration.test.ts`), with enough rows to exercise filters, sort, pagination and the empty case | The SQL returns exactly what the use case expects |
 | No N+1 | `countQueries` from `src/shared/database/query-counter.ts` in the integration test: list 3 and 30 items and assert the **same** number of queries | The number of queries does not grow with the data |
-| Uses indexes | `docker compose exec -T app npm run db:explain -- "<query with literal values>"` on the development database with realistic data | The plan, the execution time and any large sequential scan |
+| Uses indexes | `npm run db:explain -- "<query with literal values>"` on the development database with realistic data | The plan, the execution time and any large sequential scan |
 | Index can serve it | Same command with `--force-index` | On small tables Postgres prefers a sequential scan; forcing shows whether an index exists for the query |
-| Real data | `docker compose exec -T app npm run db:query -- "<SELECT …>"` | What is actually stored (counts, distributions, samples) |
+| Real data | `npm run db:query -- "<SELECT …>"` | What is actually stored (counts, distributions, samples) |
 
 `db:query` and `db:explain` only run **one read statement** inside a read-only transaction with a 5-second timeout, then roll back: they can never change data. Use them freely to look at the data and the plans; change data only through migrations and use cases.
 

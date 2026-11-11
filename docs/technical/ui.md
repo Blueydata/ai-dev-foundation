@@ -38,7 +38,7 @@ flowchart TB
   panel --> typing["TypingIndicator"]
 ```
 
-New shadcn/ui components are added with `docker compose exec app npx shadcn@latest add <name>` and land in `src/shared/ui/` (`components.json`).
+New shadcn/ui components are added with `npx shadcn@latest add <name>` and land in `src/shared/ui/` (`components.json`).
 
 ## Screen states
 

@@ -1,71 +1,42 @@
 ---
 name: setup-project
-description: Guided setup of the project - checks Git and Docker, starts the app with Docker Compose, checks database, tests, secrets, keys and product context, and guides the person step by step until everything is ready. Use on first use, after cloning Dev Foundation, before a workshop, or when something stops working.
+description: Guided setup of the project - checks that the app, database, tests, secrets, keys and product context are ready, in a cloud session or on a computer with Docker, and guides the person step by step until everything is ready. Use on first use, before a workshop, or when something stops working.
 ---
 
 # Setup project
 
-Take the person from "just cloned" to "ready to develop". Check each item in order; when something is missing, give the exact next step for their operating system, wait for them to say it is done, and check again. Do what you safely can yourself (starting the containers); never install software, change system settings or read `.env`.
+Take the person from "just opened" to "ready to develop". Check each item in order; fix what you safely can yourself; for anything only the person can do, give the exact next step and wait. Never read `.env` and never ask for keys or passwords in the conversation.
 
-The computer only needs **Git**, **Docker** and **Claude**, on Windows, macOS or Linux. Node.js, the dependencies, the database and the browser all run inside Docker: never ask the person to install them.
+## Cloud session (the default)
 
-## Cloud session
+`DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`: the person installed nothing and the SessionStart hook already ran `scripts/cloud-setup.sh`.
 
-If `DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`, the person installed nothing: skip Git, Docker and the operating system, and check only:
-
-1. **App and database:** `curl -s http://localhost:3000/api/health` answers `"database":"ok"`. If not, run `scripts/cloud-setup.sh` (it installs, migrates and starts everything) and check again; if it still fails, read `tail -n 40 /tmp/dev-foundation-app.log` and explain the cause in one line.
-2. **Tests and types:** ask the `tester` subagent (in the cloud it runs the commands without the Docker prefix).
+1. **App and database:** `curl -s http://localhost:3000/api/health` answers `"database":"ok"`. If not, run `scripts/cloud-setup.sh` and check again; if it still fails, read `tail -n 40 /tmp/dev-foundation-app.log` and explain the cause and the fix in one line each.
+2. **Tests and types:** the `tester` subagent.
 3. **Secrets:** `npm run check:secrets` reports nothing.
-4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which features need them and that they go in the cloud environment's settings (environment menu of the session, **Edit**, environment variables), followed by a new session. Never ask for the values in the conversation.
-5. **Product context:** as in step 10 below.
-6. **Infrastructure tools:** not checked in the cloud (they need Docker); CI checks them on every pull request.
+4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which feature needs each one and that it goes in the cloud environment settings (environment menu of the session, **Edit**: environment variables, or network secrets for API keys), followed by a new session. The guide is `PREREQUISITES.md`.
+5. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
 
-Answer with the same checklist format, replacing the Git and Docker lines with `✓ Ambiente na nuvem (nada instalado no computador)`.
+## On a computer with Docker
 
-## Steps
+Only when the session is not in the cloud. The computer needs Git, Docker and Claude; the full guide, per operating system, is `LOCAL.md`. Find the system with `uname -s` and give instructions for it.
 
-Find the operating system first (`uname -s`: `Darwin` is macOS, `Linux` is Linux, and MINGW, MSYS or similar is Windows) so every instruction matches it. Always give the instruction for the person's system.
-
-1. **Git:** `git --version`.
-   - Missing on macOS: run `git --version` in the Terminal and accept the installation the system offers.
-   - Missing on Windows: install Git for Windows from https://git-scm.com/download/win with the default options, then reopen the app.
-   - Missing on Linux: `sudo apt install git` (Ubuntu, Debian) or `sudo dnf install git` (Fedora).
-2. **Docker installed:** `docker --version`.
-   - Missing on Windows or macOS: install Docker Desktop from https://www.docker.com/products/docker-desktop (on Windows, accept enabling WSL 2 and restart).
-   - Missing on Linux: install Docker Engine with the Compose plugin (https://docs.docker.com/engine/install/), then `sudo usermod -aG docker $USER` and log out and back in. Docker Desktop for Linux also works.
-3. **Docker running:** `docker info --format "{{.ServerVersion}}"`.
-   - Fails on Windows or macOS: open Docker Desktop and wait until it says it is running, then say "pronto".
-   - Fails on Linux: `sudo systemctl start docker`; a permission error means the `usermod` step above is missing (log out and back in after it).
-4. **Project folder:** `test -f docker-compose.yml`. If it fails, the app was opened in the wrong folder: tell the person to open the project folder (the folder created by `git clone`, `ai-dev-foundation` by default).
-5. **App and database running:** `curl -s http://localhost:3000/api/health`.
-   - If it does not answer with `"database":"ok"`, start everything yourself: `docker compose up -d --wait` with a long timeout (the first run downloads the images and installs the dependencies, which can take several minutes; say so before starting). Then check the health again.
-   - If it still fails, read `docker compose logs --tail 40 app`, explain the cause in one line and the fix. A busy port 3000 means another program is using it: ask the person to close it.
-6. **Infrastructure tools:** `docker compose run --rm infra check`. The first run builds the image with Terraform, Terragrunt and the checkers (a few minutes; say so before starting). It needs no AWS account.
-7. **Tests and types:** ask the `tester` subagent.
-8. **Secrets:** `docker compose exec -T app npm run check:secrets` reports nothing.
-9. **User-provided keys:** `docker compose exec -T app npm run check:env`. Missing keys are **optional** for setup: say which features need them, where to get each key, and that it goes into a `.env` file in the project folder (then `docker compose up -d` again).
-10. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
-11. **Built-in browser:** in the Claude desktop app, tell the person they can open the **Browser** pane (Ctrl+Shift+B on Windows and Linux, Cmd+Shift+B on macOS) to see the app at http://localhost:3000; in the terminal, they open that address in their own browser.
+1. **Git:** `git --version`. **Docker:** `docker info --format "{{.ServerVersion}}"`; if it fails, Docker Desktop must be open (Windows, macOS) or the service started (`sudo systemctl start docker` on Linux).
+2. **App and database:** `curl -s http://localhost:3000/api/health`. If it does not answer `"database":"ok"`, run `docker compose up -d --wait` with a long timeout (the first run takes minutes; say so). If it still fails, read `docker compose logs --tail 40 app`.
+3. **Tests, secrets, keys and product context:** as in the cloud, running each command as `docker compose exec -T app <command>`; missing keys go in a `.env` file, followed by `docker compose up -d`.
+4. **Infrastructure tools (optional):** `docker compose run --rm infra check`.
 
 ## How to answer
 
-In the conversation language (`CLAUDE.md`), short:
-
-- While something is missing: show the list so far with ✓ or ✗ and, for the **first** ✗ only, the exact steps to fix it. End with: `Me avise quando terminar que eu confiro de novo.`
-- When the person says it is done, check again from that item on.
-- When everything is ready:
+In the conversation language, short. While something is missing: the list with ✓ or ✗ and, for the **first** ✗ only, the exact steps. When everything is ready:
 
 ```
-✓ Git
-✓ Docker instalado e rodando
-✓ Aplicação e banco no ar (http://localhost:3000)
-✓ Ferramentas de infraestrutura
+✓ Ambiente na nuvem (nada instalado no computador)
+✓ Aplicação e banco no ar
 ✓ Testes e tipos
 ✓ Sem segredos no código
 – Chave da OpenAI não configurada (opcional: só o chat precisa dela)
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```
 
-Then one line: ready to develop, start by filling in the "Product" section, then `/new-feature` and what you want.
-
-Do not explain what each item is unless asked.
+Then one line: ready to develop; fill in "Product", then `/new-feature` and what you want.

@@ -42,8 +42,8 @@ Two layers of automated tests live in the code. The end-to-end check is done by 
 
 | Layer | What it proves | Where | Run with |
 | --- | --- | --- | --- |
-| **Unit** | Domain rules and use cases, with fake dependencies; parsers, schemas, helpers | Next to the file: `get-order.ts` → `get-order.test.ts` | `docker compose exec -T app npm test` |
-| **Integration** | Repositories and adapters against the real Postgres, with the migrations applied | Next to the file: `order-repository.ts` → `order-repository.integration.test.ts` (only in `infrastructure/` or `shared/database/`) | `docker compose exec -T app npm run test:integration` |
+| **Unit** | Domain rules and use cases, with fake dependencies; parsers, schemas, helpers | Next to the file: `get-order.ts` → `get-order.test.ts` | `npm test` |
+| **Integration** | Repositories and adapters against the real Postgres, with the migrations applied | Next to the file: `order-repository.ts` → `order-repository.integration.test.ts` (only in `infrastructure/` or `shared/database/`) | `npm run test:integration` |
 | **End to end** | The whole product working for the user, every done criterion on screen | Not in the code: Claude uses the app in the built-in browser | `test-in-browser` skill |
 
 - **Every rule and use case gets a unit test**, with fake dependencies (see `src/modules/system-status/application/use-cases/get-system-status.test.ts`). External services are never called: for AI, use `MockLanguageModelV4` from `ai/test` (see `src/shared/ai/stream.test.ts`).

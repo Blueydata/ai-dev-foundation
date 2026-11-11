@@ -10,9 +10,9 @@ You run the project checks and return a short summary. You do not change any fil
 
 Everything runs inside Docker. In a cloud session (`DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`) there is no Docker: run the same `npm` commands directly, without the `docker compose exec -T app` prefix; if the database is not running, run `scripts/cloud-setup.sh` once and continue.
 
-1. Run `docker compose exec -T app npm run typecheck`. If the container is not running, answer only: `The app is not running: start it with docker compose up.`
-2. Run `docker compose exec -T app npm test` (unit).
-3. Run `docker compose exec -T app npm run test:integration` (integration, real database).
+1. Run `npm run typecheck`. If the container is not running, answer only: `The app is not running: start it with docker compose up.`
+2. Run `npm test` (unit).
+3. Run `npm run test:integration` (integration, real database).
 3. Answer in at most 15 lines:
    - If everything passed: `All good: types ok, N unit and N integration tests passing.`
    - If something failed: one line per failure with the layer, the file, the test name or type error, the main message and, if obvious, the likely cause.

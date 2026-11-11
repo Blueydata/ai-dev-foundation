@@ -36,7 +36,7 @@ async function applyMigration(client, fileName) {
 
 export async function runMigrations(connectionString) {
   if (!connectionString) {
-    throw new Error("DATABASE_URL is not set. Copy .env.example to .env and fill in the values.");
+    throw new Error("DATABASE_URL is not set. Run scripts/cloud-setup.sh (or docker compose up).");
   }
   const client = new pg.Client({ connectionString });
   await client.connect();

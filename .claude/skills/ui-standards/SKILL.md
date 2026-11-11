@@ -20,7 +20,7 @@ Every screen must look like part of a real product with its own identity, never 
 | Icons | lucide-react | in components |
 | Screen state in the URL | nuqs (`url-state` skill) | module `presentation/url-state.ts` |
 
-Missing a shadcn/ui component (`dialog`, `select`, `dropdown-menu`, `sonner`, `tabs`…)? Add it with `docker compose exec app npx shadcn@latest add <name>`; it lands in `src/shared/ui/`. **Do not add other UI libraries** without asking the product owner first.
+Missing a shadcn/ui component (`dialog`, `select`, `dropdown-menu`, `sonner`, `tabs`…)? Add it with `npx shadcn@latest add <name>`; it lands in `src/shared/ui/`. **Do not add other UI libraries** without asking the product owner first.
 
 ## Brand first
 

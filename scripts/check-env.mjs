@@ -20,7 +20,7 @@ function checkEnvironment() {
     console.log(names.length === 0 ? "No user-provided variables are needed." : `All ${names.length} user-provided variables are set.`);
     return;
   }
-  console.error(`Missing in .env: ${missing.join(", ")}`);
+  console.error(`Missing: ${missing.join(", ")}. Set them in the cloud environment settings (or in .env when running with Docker).`);
   process.exit(1);
 }
 

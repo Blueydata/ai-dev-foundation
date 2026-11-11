@@ -87,16 +87,16 @@ All commands run inside the `app` container with the app running.
 | Command | What it does |
 | --- | --- |
 | `docker compose up` | Starts everything (add `-d --wait` to run in the background until healthy) |
-| `docker compose exec -T app npm test` | Unit tests |
-| `docker compose exec -T app npm run test:integration` | Integration tests on a fresh `app_test` database |
-| `docker compose exec -T app npm run typecheck` | TypeScript check |
-| `docker compose exec -T app npm run check:secrets` | Secret scan |
-| `docker compose exec -T app npm run check:env` | Missing user-provided keys, by name |
-| `docker compose exec -T app npm run db:migrate` | Applies pending migrations |
-| `docker compose exec -T app npm run db:query -- "<SELECT …>"` | Runs one read statement on the development database, read-only with a 5-second timeout |
-| `docker compose exec -T app npm run db:explain -- "<SELECT …>"` | Prints the execution plan and warns about large sequential scans; `--force-index` disables sequential scans |
-| `docker compose exec -T app npm run build` | Production build |
-| `docker compose exec app npx shadcn@latest add <name>` | Adds a shadcn/ui component to `src/shared/ui/` |
+| `npm test` | Unit tests |
+| `npm run test:integration` | Integration tests on a fresh `app_test` database |
+| `npm run typecheck` | TypeScript check |
+| `npm run check:secrets` | Secret scan |
+| `npm run check:env` | Missing user-provided keys, by name |
+| `npm run db:migrate` | Applies pending migrations |
+| `npm run db:query -- "<SELECT …>"` | Runs one read statement on the development database, read-only with a 5-second timeout |
+| `npm run db:explain -- "<SELECT …>"` | Prints the execution plan and warns about large sequential scans; `--force-index` disables sequential scans |
+| `npm run build` | Production build |
+| `npx shadcn@latest add <name>` | Adds a shadcn/ui component to `src/shared/ui/` |
 | `docker compose down -v` | Stops everything and erases the database volume |
 
 ## Claude Code integration

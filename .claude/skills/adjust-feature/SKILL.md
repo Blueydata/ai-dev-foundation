@@ -5,21 +5,15 @@ description: Changes the behavior of an existing feature - a rule, a text, a fie
 
 # Adjust an existing feature
 
-Adjustments look small, but they are where working things break most often. The goal is to change only what is needed, prove it with a test and keep the documentation accurate.
+Change only what is needed, prove it with a test and keep the documentation accurate.
 
-## Steps
+1. **Understand what exists:** `docs/business/en/features.md` and, to locate files, the `explorer` subagent.
+2. **Confirm only when it is ambiguous:** if the request leaves the new behavior unclear or contradicts a documented business rule, answer "Hoje: … Depois: … Impacto: …" and wait. If it is clear, go ahead. If it is large (more than a day of work), suggest `/new-feature`.
+3. **Branch:** the session's branch in the cloud; otherwise `change/<short-name>` (never on `main`).
+4. **Test first:** update or write the tests for the new behavior, then change the code with the smallest change that makes them pass, following the skills that apply. Queries changed: `db:explain` and `countQueries`. Configuration changed: update `infra/` for `dev` and `prod`.
+5. **Confirm:** the `tester` subagent passes; if the change is visible on screen, check it with `test-in-browser`.
+6. **Review only when it matters:** if it touches routes, customer data, integrations or AI, call the `reviewer` once and fix high findings.
+7. **Document:** call the `documenter` (changelog entry with "Change:"/"Ajuste:" and the features update).
+8. Commit `feat: [what changed]` and answer in up to 5 lines: what changed and how to see it on screen.
 
-1. **Understand what exists.** Read the feature in `docs/business/en/features.md` and ask the `explorer` subagent for the files involved.
-2. **Confirm the change.** Answer, in the conversation language, with "Today: [current behavior]. After: [new behavior]. Impact: [what else may be affected]." **Stop and wait for confirmation.** If the change is large (more than a day of work), suggest handling it as `/new-feature`.
-3. **Branch.** Never change code on `main`: after the confirmation, if you are on `main`, run `git status` (stop and ask if there are uncommitted changes) and create `git switch -c change/<short-name>`.
-4. **Test first.** Update or create the tests that describe the new behavior, in the layers it touches (unit, integration), and confirm with the `tester` subagent that they fail.
-5. **Change the code** with the smallest possible change, following `code-standards` (and `ui-standards` and `url-state` if it touches screens, `ai-integration` if it touches AI, `database-queries` if it touches data). If a query changed, validate it with `db:explain` and `countQueries`. If configuration changed, call the `infrastructure-engineer` to update `infra/` for `dev` and `prod`.
-6. **Confirm** with the `tester` that everything passes, including the existing tests. If the change is visible on screen, check it in the browser with `test-in-browser`, before and after showing the new behavior.
-7. **Review:** if the change touches routes, customer data or integrations, ask the `security-reviewer`; if it touches screens, the `ux-reviewer`.
-8. **Document:** call in parallel the `business-documenter` (features and changelog in both languages, with "Change:") and, if something technical changed, the `technical-documenter`.
-9. Commit: `feat: [what changed]`, and answer with the summary and how to test it on screen.
-
-## Rules
-
-- Do not use the change as an excuse to touch other things.
-- If the change contradicts a business rule documented in `docs/business/en/features.md`, warn before going on.
+Do not use the change as an excuse to touch other things.

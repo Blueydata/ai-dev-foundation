@@ -84,7 +84,7 @@ infrastructure ──→ application (implements ports), domain, shared
 | --- | --- |
 | **A business rule** | `domain/<concept>.ts` function + test. Use cases call it |
 | **A new action** (create order, approve refund) | `application/schemas.ts` input → `application/use-cases/<verb-noun>.ts` → port in `ports.ts` if it needs I/O → implementation in `infrastructure/` → wire in `index.ts` |
-| **Persistence** | Migration `shared/database/migrations/NNNN-create-<table>.sql` (apply with `docker compose exec -T app npm run db:migrate`) → port `<Name>Repository` in `ports.ts` → `infrastructure/<name>-repository.ts` with parameterized SQL. Never edit an applied migration |
+| **Persistence** | Migration `shared/database/migrations/NNNN-create-<table>.sql` (apply with `npm run db:migrate`) → port `<Name>Repository` in `ports.ts` → `infrastructure/<name>-repository.ts` with parameterized SQL. Never edit an applied migration |
 | **A page** | `app/<route>/page.tsx` (English, kebab-case, plural: `url-state` skill) → calls `index.ts` → renders `presentation/components/` |
 | **A form** | Client form in `presentation/components/` → server action in `presentation/actions/<verb-noun>.ts` that parses with the `application/schemas.ts` schema and calls the use case from `index.ts` → `revalidatePath` or redirect |
 | **An API endpoint** | `app/api/<resource>/route.ts`: `withErrorHandling`, `parseJsonBody(request, schema)`, call the use case, `Response.json` |
@@ -97,7 +97,7 @@ infrastructure ──→ application (implements ports), domain, shared
 | **Screen state in the URL** | `presentation/url-state.ts` (`url-state` skill) |
 | **Scheduled job** | Use case in the module → `app/api/jobs/<job-name>/route.ts` protected by a secret from `env.ts`, called by the scheduler |
 | **Authentication and access** | An `access` or `auth` module: domain rules for who can do what, infrastructure for sessions in signed, `httpOnly` cookies (never in server memory: the app runs as several copies behind a load balancer); other modules declare an `AccessChecker` port. Shared route protection in `app/` layouts or `src/proxy.ts` |
-| **A UI piece used by many modules** | `shared/ui/` (shadcn: `docker compose exec app npx shadcn@latest add <name>`) or `shared/ui/layout/` |
+| **A UI piece used by many modules** | `shared/ui/` (shadcn: `npx shadcn@latest add <name>`) or `shared/ui/layout/` |
 | **A generic helper** | `shared/utils/` only if it has no business meaning; otherwise it belongs to a module `domain` |
 | **Tests for a feature** | Unit next to domain and use cases; `*.integration.test.ts` next to each repository; the done criteria checked in the browser with `test-in-browser` |
 | **A new environment variable** | Schema in `shared/config/env.ts` + a local value in `docker-compose.yml`, or `.env.example` when only the product owner can provide it (see "Configuration") + the value for `dev` and `prod` in `infra/live/<env>/env.hcl` or a secret (`infrastructure-as-code`) |
@@ -118,7 +118,7 @@ Rules:
 1. Add every variable to the zod schema in `src/shared/config/env.ts`. Local values are required (Compose always provides them); user-provided keys are `.optional()`.
 2. The app starts and every screen that does not need a missing key works. Code that needs a user-provided key checks it when used and throws `UnavailableError` (`src/shared/kernel/errors.ts`) with the service name, so only that feature fails, with a clear message. A restricted area whose credentials are missing shows that access is not configured and which variable names to set in `.env`; it never falls back to a default login.
 3. Development values in `docker-compose.yml` are for local use only and are documented in `docs/technical/runtime-and-configuration.md` (Environment variables) as values that production must replace.
-4. When a feature needs a user-provided key or credential, say so once in your answer: which names to add to `.env`, where to get a key, that the product owner chooses credentials, and to run `docker compose up -d` afterwards so the app reads them. `docker compose exec -T app npm run check:env` lists the names still missing, never the values. Tests use their own fake credentials passed to the use cases, never the real ones.
+4. When a feature needs a user-provided key or credential, say so once in your answer: which names to add to `.env`, where to get a key, that the product owner chooses credentials, and to run `docker compose up -d` afterwards so the app reads them. `npm run check:env` lists the names still missing, never the values. Tests use their own fake credentials passed to the use cases, never the real ones.
 
 ## Creating a module
 

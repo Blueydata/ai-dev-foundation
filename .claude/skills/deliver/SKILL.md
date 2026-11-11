@@ -1,34 +1,19 @@
 ---
 name: deliver
-description: Checks tests, review, documentation and secrets, and prepares the branch, the commit and the pull request description. Use when a feature, change or fix is ready to go into the project.
+description: Runs the final checks and opens the pull request for a finished feature, change or fix. Use when the work is ready to go into the project.
 disable-model-invocation: true
 ---
 
 # Deliver
 
-Nothing goes into the project without passing the checklist, and the pull request description explains the change to the business and to the technical team.
-
-## Checklist
-
-Check each item and show the result as a list with ✓ or ✗:
-
-1. **Tests and types:** ask the `tester` subagent (types, unit and integration).
-2. **End to end:** the browser test (`test-in-browser`) ran after the last change visible on screen, with every done criterion ✓.
-3. **Review:** the review was done (phase 4 of `/new-feature`, or the reviewers called in the change or fix) and no high-severity finding is left.
-4. **Documentation:** the changelog (`docs/business/en/` and `docs/business/pt-BR/`) has the entry for this delivery and `docs/technical/` reflects what changed, following the `technical-docs` checklist (module page, folder tree, data model, API, configuration).
-5. **Secrets:** run `docker compose exec -T app npm run check:secrets` (the same check as CI) and confirm `.env` is not in the diff.
-6. **Environment variables:** `docker compose up` works with no `.env`; local values have defaults in `docker-compose.yml`; only user-provided keys and credentials are in `.env.example`, without a value; no login, password or key appears in code, tests, seeds, `docker-compose.yml` or docs.
-7. **Code standards:** no comments in code and everything in English (`code-standards` skill).
-8. **Queries:** every new or changed query has an integration test, lists have a `countQueries` check, and `db:explain` showed no large sequential scan (`database-queries`).
-9. **Infrastructure:** `docker compose run --rm infra check` passes and `infra/live/dev` and `infra/live/prod` include what the delivery needs (`infrastructure-as-code`).
-
-If any item fails, stop and explain what is missing.
-
-## Steps
-
-1. Confirm you are on the work branch (`feature/…`, `change/…` or `fix/…`, or the session's branch in the cloud) created at the start of the work. If you are on `main`, something went wrong: create the branch now with the pending work (`git switch -c feature/short-name`) and say so in one line.
-2. Commit anything pending.
-3. Write the pull request description, in English:
+1. **Checks** (show ✓ or ✗ for each; stop only on a ✗ you cannot fix yourself):
+   - the `tester` subagent: types, unit and integration tests;
+   - `npm run check:secrets` reports nothing and no `.env` is in the diff;
+   - the browser test ran after the last change visible on screen;
+   - the review left no high finding and `docs/` has the entry for this delivery.
+   Fix what is missing yourself (a failing test, a missing changelog line) and commit it.
+2. **Branch:** commit anything pending on the work branch (the session's branch in the cloud; `feature/…`, `change/…` or `fix/…` otherwise). Never on `main`.
+3. **Pull request**, description in English:
 
 ```markdown
 ## Summary
@@ -39,24 +24,13 @@ If any item fails, stop and explain what is missing.
 
 ## How to test
 1. [Step]
-
-## Checklist
-- [x] Types, unit and integration tests
-- [x] End-to-end check in the browser, all done criteria ok
-- [x] Review with no high-severity findings
-- [x] Documentation updated
-- [x] No secrets in code
-- [x] Runs locally with no setup; user-provided keys listed in .env.example
-- [x] Queries validated (integration tests, query count, EXPLAIN)
-- [x] Infrastructure for dev and prod updated and checked
 ```
 
-4. **Cloud session** (`DEV_FOUNDATION_CLOUD=true` or `CLAUDE_CODE_REMOTE=true`): the work branch is the one the session was given, and there is no computer for the product owner to push from. Push that branch yourself, open the pull request with the description above and give the product owner its link; CI runs the infrastructure check there. Items 5, 6 and 9 of the checklist run without the Docker prefix, and item 9 is left to CI.
-5. Outside the cloud, the product owner does the push. Show the commands for them to run:
+4. **Cloud session:** push the branch and open the pull request yourself; give the product owner its link and say that CI checks types, tests, queries, secrets, infrastructure and the production image there. **On a computer:** show the product owner the commands to run:
 
 ```bash
 git push -u origin <branch-name>
 gh pr create --fill
 ```
 
-And hand over the description above to paste into the pull request.
+Then one line: after the merge, `/clear` and the next feature.

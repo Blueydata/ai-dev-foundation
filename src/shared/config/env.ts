@@ -10,7 +10,7 @@ export function parseServerEnv(source: Record<string, string | undefined>): Serv
   const result = serverEnvSchema.safeParse(source);
   if (!result.success) {
     const invalidNames = result.error.issues.map((issue) => issue.path.join(".")).join(", ");
-    throw new Error(`Missing or invalid environment variables: ${invalidNames}. Copy .env.example to .env and fill in the values.`);
+    throw new Error(`Missing or invalid environment variables: ${invalidNames}. Set them in the cloud environment settings (or in .env when running with Docker); .env.example lists the names.`);
   }
   return result.data;
 }

@@ -14,8 +14,8 @@ flowchart TB
 
 | Layer | Proves | Where | Run with | Config |
 | --- | --- | --- | --- | --- |
-| Unit | Rules and use cases, with fake dependencies; parsers, schemas, scripts | Next to the file, `*.test.ts`; `scripts/*.test.ts` | `docker compose exec -T app npm test` | `vitest.config.ts` |
-| Integration | Repositories and adapters against the real database with migrations applied | Next to the file, `*.integration.test.ts`, only in `infrastructure/` or `shared/database/` | `docker compose exec -T app npm run test:integration` | `vitest.integration.config.ts` |
+| Unit | Rules and use cases, with fake dependencies; parsers, schemas, scripts | Next to the file, `*.test.ts`; `scripts/*.test.ts` | `npm test` | `vitest.config.ts` |
+| Integration | Repositories and adapters against the real database with migrations applied | Next to the file, `*.integration.test.ts`, only in `infrastructure/` or `shared/database/` | `npm run test:integration` | `vitest.integration.config.ts` |
 | End to end | The whole product on screen, every done criterion, mobile, URLs, console | Not in the code | `test-in-browser` skill | `.claude/launch.json`, `.mcp.json` |
 
 Unit tests never call external services: AI calls use `MockLanguageModelV4` from `ai/test`. End-to-end checks are not written as test files; the result table goes into the review of the feature.

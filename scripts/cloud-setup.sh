@@ -3,8 +3,6 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-DATABASE_URL="postgres://app:app@localhost:5432/app"
-TEST_DATABASE_URL="postgres://app:app@localhost:5432/app_test"
 LOG_FILE="/tmp/dev-foundation-app.log"
 MODE="${1:-full}"
 
@@ -42,25 +40,19 @@ install_dependencies() {
 
 write_environment() {
   local exports
-  exports=$(cat <<EOF
-export DATABASE_URL="$DATABASE_URL"
-export TEST_DATABASE_URL="$TEST_DATABASE_URL"
-export DEV_FOUNDATION_CLOUD=true
-EOF
-)
+  exports="$(node scripts/local-env.mjs)
+export DEV_FOUNDATION_CLOUD=true"
   if [ -n "${HTTPS_PROXY:-}${https_proxy:-}" ]; then
     exports="$exports
 export NODE_USE_ENV_PROXY=1
-export NODE_OPTIONS=\"\${NODE_OPTIONS:-} --disable-warning=UNDICI-EHPA\""
+case \" \${NODE_OPTIONS:-} \" in *UNDICI-EHPA*) ;; *) export NODE_OPTIONS=\"\${NODE_OPTIONS:-} --disable-warning=UNDICI-EHPA\" ;; esac"
   fi
   if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
     echo "$exports" >> "$CLAUDE_ENV_FILE"
   fi
-  if [ -w /etc/profile.d ]; then
-    echo "$exports" > /etc/profile.d/dev-foundation.sh
-  fi
-  if ! grep -q "dev-foundation-cloud" "$HOME/.bashrc" 2>/dev/null; then
-    printf '\n# dev-foundation-cloud\n%s\n' "$exports" >> "$HOME/.bashrc"
+  echo "$exports" > "$HOME/.dev-foundation-env"
+  if ! grep -q "dev-foundation-env" "$HOME/.bashrc" 2>/dev/null; then
+    printf '\n[ -f "$HOME/.dev-foundation-env" ] && . "$HOME/.dev-foundation-env"\n' >> "$HOME/.bashrc"
   fi
   eval "$exports"
 }
