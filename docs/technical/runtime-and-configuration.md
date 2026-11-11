@@ -81,6 +81,6 @@ All commands run inside the `app` container with the app running.
 | --- | --- |
 | `.claude/launch.json` | Lets the Claude desktop app start the stack (`docker compose up`, port 3000) and open it in its built-in browser; `autoVerify` is off so browser checks happen at the defined points of the workflow |
 | `.mcp.json` | Headless Playwright browser in Docker (`mcr.microsoft.com/playwright/mcp`) for Claude Code in the terminal; it reaches the app at `http://host.docker.internal:3000`, allowed in `next.config.ts` |
-| `.claude/settings.json` | Commands Claude may run without asking (tests, checks, compose, git read and commit) and what is denied (reading `.env`, `git push`, `rm -rf`) |
+| `.claude/settings.json` | Commands Claude may run without asking (tests, checks, compose, git read and commit) and what is denied (reading `.env`, `rm -rf`) |
 
 Related: [testing and quality](testing-and-quality.md) · [security](security.md)

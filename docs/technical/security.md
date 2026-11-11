@@ -22,7 +22,7 @@ flowchart LR
 | SQL injection | SQL only in repositories, always with `$1`, `$2` parameters | module `infrastructure/` |
 | AI reading data it should not | Tools with typed filters call use cases; the model never writes SQL; visibility and permission rules in the query | module `infrastructure/ai/`, `ai-integration` skill |
 | Changing data while inspecting it | `db:query` and `db:explain` accept one read statement, inside a read-only transaction with a timeout, always rolled back | `scripts/db-query.mjs`, CI |
-| Agent with too much power | Claude Code permissions: tests and checks allowed, `.env` reads, `git push` and `rm -rf` denied; push done by a person | `.claude/settings.json` |
+| Agent with too much power | Claude Code permissions: tests and checks allowed, `.env` reads and `rm -rf` denied; `git push` asks for confirmation | `.claude/settings.json` |
 | Prompt injection | Assistant instructions in `system`/`instructions`, user text only in messages; tools call use cases with their own validation | `ai-integration` skill, module `infrastructure/ai/` |
 | Abuse of public routes and AI cost | Message size and count limits, agent step limits, rate limiting on public routes | per feature, see [ai](ai.md) |
 | Customer data (LGPD) | Keep only what is needed; no message content or personal data in logs or URLs | `CLAUDE.md` rules, [data model](data-model.md) |
