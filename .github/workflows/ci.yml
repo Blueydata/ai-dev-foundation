@@ -42,26 +42,26 @@ jobs:
       - if: failure()
         run: docker compose logs app
 
-  infrastructure:
-    name: Infrastructure
+  build:
+    name: Production build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - run: docker compose run --rm -T infra check
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
 
-  image:
-    name: Production image
+  cloud-setup:
+    name: Cloud session setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - run: docker build -t ai-dev-foundation:ci .
-      - run: docker compose up -d --wait db
-      - run: |
-          NETWORK=$(docker inspect -f '{{range $name, $network := .NetworkSettings.Networks}}{{$name}}{{end}}' "$(docker compose ps -q db)")
-          docker run -d --name production-image --network "$NETWORK" -p 3001:3000 -e DATABASE_URL=postgres://app:app@db:5432/app ai-dev-foundation:ci
-          for attempt in $(seq 1 30); do
-            if curl -fsS http://localhost:3001/api/health; then exit 0; fi
-            sleep 2
-          done
-          docker logs production-image
-          exit 1
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - run: sudo -E env "PATH=$PATH" HOME="$HOME" bash -c 'scripts/cloud-setup.sh && . "$HOME/.dev-foundation-env" && curl -fsS http://localhost:3000/api/health && npm run test:integration'
+      - if: failure()
+        run: cat /tmp/dev-foundation-app.log || true

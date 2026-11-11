@@ -34,6 +34,10 @@ async function applyMigration(client, fileName) {
   }
 }
 
+export function selectMigrationUrl(environment) {
+  return environment.DATABASE_URL_UNPOOLED || environment.DATABASE_URL;
+}
+
 export async function runMigrations(connectionString) {
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set. Run scripts/cloud-setup.sh (or docker compose up).");
@@ -59,7 +63,7 @@ export async function runMigrations(connectionString) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  runMigrations(process.env.DATABASE_URL).catch((error) => {
+  runMigrations(selectMigrationUrl(process.env)).catch((error) => {
     console.error(error.message);
     process.exit(1);
   });

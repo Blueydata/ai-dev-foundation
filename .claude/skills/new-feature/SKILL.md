@@ -29,7 +29,7 @@ The understanding and the plan live in this conversation; do not create specific
 1. [stage]: [what it delivers] — [main files or module]
 ```
 
-   At most 4 stages, each one testable on its own. Mention only what the product owner should weigh: new tables, new packages (with the reason), keys they must provide, what changes in AWS, and decisions to record. The skills (`project-structure`, `code-standards`, `database-queries`, `ui-standards`, `url-state`, `ai-integration`, `infrastructure-as-code`) are followed during implementation and do not need to be restated in the plan.
+   At most 4 stages, each one testable on its own. Mention only what the product owner should weigh: new tables, new packages (with the reason), keys they must provide, and decisions to record. The skills (`project-structure`, `code-standards`, `database-queries`, `ui-standards`, `url-state`, `ai-integration`) are followed during implementation and do not need to be restated in the plan.
 3. **Stop and wait for approval.** Adjust as many times as needed. If the product owner is in plan mode, they approve on the plan mode screen.
 
 ## 3 — Build (no stops)
@@ -38,7 +38,7 @@ The understanding and the plan live in this conversation; do not create specific
 2. For each stage, in order, saying in one line which stage you are on:
    - write the code with its unit and integration tests, following the skills that apply;
    - validate new queries (`database-queries`: integration test, `countQueries` on lists, `npm run db:explain`);
-   - new environment variables follow "Configuration" in `project-structure`; what the stage needs in AWS goes into `infra/` for `dev` and `prod` (`infrastructure-as-code`);
+   - new environment variables follow "Configuration" in `project-structure`;
    - run the `tester` subagent and fix until it passes (after 3 failed attempts, stop and explain);
    - commit `feat: [what the stage delivers]`.
 3. **Browser test:** run `test-in-browser` with every done criterion and the out-of-scope items. Fix what fails (with a test when the cause is in a rule or repository) and repeat those scenarios.
@@ -51,7 +51,7 @@ Answer in up to 12 lines:
 
 - the browser test table (done criteria ✓/✗);
 - what the review found and what was fixed; medium findings left, one line each, if any;
-- how to see it on screen;
+- how to see it on screen, and the new variables to add in Vercel, if any (`deploy`);
 - next step: `/deliver` (and, after it, `/clear` for the next feature).
 
 ## Rules

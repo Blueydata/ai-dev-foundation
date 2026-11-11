@@ -44,7 +44,6 @@ src/
     hooks/                               Generic client hooks
   architecture.test.ts                   The rules of this file, as tests
 scripts/                                 Tooling: migrate, read-only db:query and db:explain, check-secrets, check-env, test runner
-infra/                                   Terraform modules and Terragrunt units for dev and prod (infrastructure-as-code skill)
 ```
 
 Unit tests sit next to the file they test (`get-order.ts` → `get-order.test.ts`) and integration tests next to repositories (`*.integration.test.ts`). The end-to-end check is done by Claude in the browser (`test-in-browser`), not written as files. See "Tests" in `code-standards`. Create folders and files on demand; never create empty ones.
@@ -100,32 +99,32 @@ infrastructure ──→ application (implements ports), domain, shared
 | **A UI piece used by many modules** | `shared/ui/` (shadcn: `npx shadcn@latest add <name>`) or `shared/ui/layout/` |
 | **A generic helper** | `shared/utils/` only if it has no business meaning; otherwise it belongs to a module `domain` |
 | **Tests for a feature** | Unit next to domain and use cases; `*.integration.test.ts` next to each repository; the done criteria checked in the browser with `test-in-browser` |
-| **A new environment variable** | Schema in `shared/config/env.ts` + a local value in `docker-compose.yml`, or `.env.example` when only the product owner can provide it (see "Configuration") + the value for `dev` and `prod` in `infra/live/<env>/env.hcl` or a secret (`infrastructure-as-code`) |
-| **A new cloud resource** (bucket, queue, scheduled job) | Terraform module in `infra/modules/` + units in `infra/live/dev` and `infra/live/prod`, by the `infrastructure-engineer` (`infrastructure-as-code`) |
+| **A new environment variable** | Schema in `shared/config/env.ts` + a local value in `docker-compose.yml`, or `.env.example` when only the product owner can provide it (see "Configuration") + the same name in Vercel's environment variables (`deploy`) |
+| **A new external service** (storage, e-mail, queue) | A gateway in the module `infrastructure/`; prefer a Vercel Marketplace integration so its keys arrive as environment variables (`deploy`); explain the choice first |
 
-## Configuration: runs locally with no setup
+## Configuration: runs with no setup
 
-`docker compose up` must work on a fresh clone with no `.env` and no questions to the product owner. Split every new variable into one of three kinds:
+A cloud session (`scripts/cloud-setup.sh`) and `docker compose up` must work on a fresh clone with no keys and no questions to the product owner. Split every new variable into one of three kinds:
 
 | Kind | Examples | Where its value lives |
 | --- | --- | --- |
-| **Local value the project can define** | Database URL, ports, model names, feature flags, session secrets for development, seed options | A working development value in `docker-compose.yml` under `app.environment`. Never ask the product owner for these |
-| **Value only the product owner can provide** | External API keys and tokens (OpenAI, Stripe, e-mail providers), anything tied to a real account | `.env`, which is never committed; the name goes into `.env.example` with an empty value |
-| **Credentials of people** | Admin e-mail and password, any login a person types | `.env` only, chosen by the product owner; the name goes into `.env.example` with an empty value. **Never** in code, tests, seeds, `docker-compose.yml`, documentation, prompts or the conversation, not even for development. Never ask for them and never suggest values |
+| **Local value the project can define** | Database URL, ports, model names, feature flags, session secrets for development, seed options | A working development value in `docker-compose.yml` under `app.environment` (cloud sessions read it from there too). Never ask the product owner for these |
+| **Value only the product owner can provide** | External API keys and tokens (OpenAI, Stripe, e-mail providers), anything tied to a real account | The cloud environment settings (or `.env` with Docker, never committed) and Vercel; the name goes into `.env.example` with an empty value |
+| **Credentials of people** | Admin e-mail and password, any login a person types | The same places, chosen by the product owner; the name goes into `.env.example` with an empty value. **Never** in code, tests, seeds, `docker-compose.yml`, documentation, prompts or the conversation, not even for development. Never ask for them and never suggest values |
 
 Rules:
 
 1. Add every variable to the zod schema in `src/shared/config/env.ts`. Local values are required (Compose always provides them); user-provided keys are `.optional()`.
-2. The app starts and every screen that does not need a missing key works. Code that needs a user-provided key checks it when used and throws `UnavailableError` (`src/shared/kernel/errors.ts`) with the service name, so only that feature fails, with a clear message. A restricted area whose credentials are missing shows that access is not configured and which variable names to set in `.env`; it never falls back to a default login.
+2. The app starts and every screen that does not need a missing key works. Code that needs a user-provided key checks it when used and throws `UnavailableError` (`src/shared/kernel/errors.ts`) with the service name, so only that feature fails, with a clear message. A restricted area whose credentials are missing shows that access is not configured and which variable names to set; it never falls back to a default login.
 3. Development values in `docker-compose.yml` are for local use only and are documented in `docs/technical/runtime-and-configuration.md` (Environment variables) as values that production must replace.
-4. When a feature needs a user-provided key or credential, say so once in your answer: which names to add to `.env`, where to get a key, that the product owner chooses credentials, and to run `docker compose up -d` afterwards so the app reads them. `npm run check:env` lists the names still missing, never the values. Tests use their own fake credentials passed to the use cases, never the real ones.
+4. When a feature needs a user-provided key or credential, say so once in your answer: which names to add (cloud environment settings and a new session, or `.env` and `docker compose up -d`; and in Vercel), where to get a key, and that the product owner chooses credentials. `npm run check:env` lists the names still missing, never the values. Tests use their own fake credentials passed to the use cases, never the real ones.
 
 ## Creating a module
 
 1. Name it with the product owner's vocabulary, in English, kebab-case: `orders`, `customer-support`, `billing`.
 2. Build inside out: `domain` (concepts and rules, with tests) → `application` (schemas, ports, use cases with fake dependencies in tests) → `infrastructure` (migration, repository, gateways, AI) → `index.ts` (wiring) → `presentation` and the routes in `app/`.
 3. Only create the layers and files the module needs. A module without data has no repository; a module without screens has no presentation.
-4. The `technical-documenter` creates `docs/technical/modules/<module>.md` and updates the other pages (`technical-docs` skill).
+4. The `documenter` creates `docs/technical/modules/<module>.md` and updates the other pages (`technical-docs` skill).
 
 `src/modules/system-status/` is the reference module: a domain rule, a port, a use case with a fake in the test, a Postgres adapter, the wiring in `index.ts`, a presentation component, the page and the `/api/health` route.
 

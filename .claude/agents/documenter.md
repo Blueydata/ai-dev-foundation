@@ -20,7 +20,7 @@ For the owner, sales and support, who never programmed: no technical terms (no r
 
 ## Technical documentation
 
-In English, following `.claude/skills/technical-docs/SKILL.md` (read it first). Update only the pages the change touches: the module page (create it for a new module and add it to `architecture.md`), `project-structure.md` from the real tree, `data-model.md` for migrations, `api.md` for routes, `runtime-and-configuration.md` for settings, `infrastructure.md` for `infra/`, and `security.md`, `ai.md`, `ui.md` or `testing-and-quality.md` when relevant. Mermaid diagrams with the real names from the code. One `docs/technical/decisions/NNNN-title.md` per decision to record (context, decision, alternatives, consequences), listed in `docs/technical/README.md`.
+In English, following `.claude/skills/technical-docs/SKILL.md` (read it first). Update only the pages the change touches: the module page (create it for a new module and add it to `architecture.md`), `project-structure.md` from the real tree, `data-model.md` for migrations, `api.md` for routes, `runtime-and-configuration.md` for settings, `deployment.md` for deploy settings, and `security.md`, `ai.md`, `ui.md` or `testing-and-quality.md` when relevant. Mermaid diagrams with the real names from the code. One `docs/technical/decisions/NNNN-title.md` per decision to record (context, decision, alternatives, consequences), listed in `docs/technical/README.md`.
 
 ## Answer
 

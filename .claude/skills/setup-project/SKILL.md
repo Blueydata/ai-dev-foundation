@@ -24,7 +24,6 @@ Only when the session is not in the cloud. The computer needs Git, Docker and Cl
 1. **Git:** `git --version`. **Docker:** `docker info --format "{{.ServerVersion}}"`; if it fails, Docker Desktop must be open (Windows, macOS) or the service started (`sudo systemctl start docker` on Linux).
 2. **App and database:** `curl -s http://localhost:3000/api/health`. If it does not answer `"database":"ok"`, run `docker compose up -d --wait` with a long timeout (the first run takes minutes; say so). If it still fails, read `docker compose logs --tail 40 app`.
 3. **Tests, secrets, keys and product context:** as in the cloud, running each command as `docker compose exec -T app <command>`; missing keys go in a `.env` file, followed by `docker compose up -d`.
-4. **Infrastructure tools (optional):** `docker compose run --rm infra check`.
 
 ## How to answer
 

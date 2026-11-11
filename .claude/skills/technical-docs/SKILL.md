@@ -22,7 +22,7 @@ docs/technical/
   testing-and-quality.md        Test layers, how to run them, CI pipeline, architecture rules, secret scan
   security.md                   Threats and the control that handles each one, where it lives in the code
   ai.md                         Models, agents, tools, instructions, streaming pipeline, limits, cost (when the product uses AI)
-  infrastructure.md             AWS deployment diagram, Terraform modules, Terragrunt units, dev and prod, deploy runbook, costs
+  deployment.md                 Vercel and Neon: how the app is published, environments, variables, migrations on build
   ui.md                         Theme tokens, typeface, shared components and layouts, screen states, URL state
   decisions/NNNN-title.md       One decision record per relevant technical decision
 ```
@@ -87,7 +87,7 @@ Every module in `src/modules/` has `docs/technical/modules/<module>.md` with the
 
 ## Keeping it in sync
 
-- After every delivery, the `technical-documenter` updates every page the change touches; a new module gets its module page, a new table updates `data-model.md`, a new route updates `api.md`, a new variable updates `runtime-and-configuration.md`, a new folder updates `project-structure.md`, a change in `infra/` updates `infrastructure.md`.
+- After every delivery, the `documenter` updates every page the change touches; a new module gets its module page, a new table updates `data-model.md`, a new route updates `api.md`, a new variable updates `runtime-and-configuration.md`, a new folder updates `project-structure.md`, a change in `infra/` updates `infrastructure.md`.
 - Decisions with alternatives (a library, a data model, a security approach) get a record in `decisions/`, listed in `README.md`.
 - Facts come from the code and the commands' output, never from the plan alone. If the code and the plan differ, document the code and say so in the answer.
 - Never write secret values, only variable names.

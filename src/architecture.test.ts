@@ -210,10 +210,9 @@ describe("architecture", () => {
       ...listFiles("src").filter((file) => /\.(css|sql)$/.test(file)),
       "docker-compose.yml",
       ".env.example",
-      "Dockerfile",
-      ".dockerignore",
       ...listFiles(".github/workflows"),
-      ...listFiles("infra").filter((file) => /(\.(tf|hcl|sh|yml)|Dockerfile)$/.test(file)),
+      ...listFiles("scripts").filter((file) => file.endsWith(".sh")),
+      ...listFiles(".claude/hooks"),
     ];
     const otherComments = otherFiles.flatMap((file) =>
       read(file)
@@ -221,7 +220,7 @@ describe("architecture", () => {
         .filter((line) => {
           const code = line.replace(/"[^"]*"/g, "");
           if (file.endsWith(".sql")) return /^\s*--/.test(line) || code.includes("/*");
-          if (/\.(tf|hcl)$/.test(file)) return /^\s*#/.test(line) || code.includes("//") || code.includes("/*");
+          if (file.endsWith(".sh")) return /^\s*#(?!!)/.test(line);
           return /^\s*#/.test(line) || code.includes("/*");
         })
         .map((line) => `${file}: ${line.trim()}`),
