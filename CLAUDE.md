@@ -30,6 +30,8 @@ This project starts from **Dev Foundation**, a base to build any kind of softwar
 
 Cloud sessions are the default: the SessionStart hook runs `scripts/cloud-setup.sh`, which installs dependencies, starts Postgres, applies migrations and starts the app at http://localhost:3000 (log in `/tmp/dev-foundation-app.log`). If the app or the database is down, run `scripts/cloud-setup.sh` again.
 
+**Always show the app.** At the start of every cloud session, as soon as `/api/health` answers, report port 3000 with the preview port tool (`report_preview_port`, when it exists) so the product owner can open the app in the preview pane and follow along. After every change visible on screen, check it yourself in the browser (`test-in-browser`), send a screenshot and tell the product owner in one line which page to open in the preview to see it. On a computer, the built-in browser of the Claude desktop app plays the same role.
+
 - `npm test`: unit tests
 - `npm run test:integration`: integration tests on a fresh `app_test` database
 - `npm run typecheck`: checks types

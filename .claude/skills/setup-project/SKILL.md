@@ -15,7 +15,8 @@ Take the person from "just opened" to "ready to develop". Check each item in ord
 2. **Tests and types:** the `tester` subagent.
 3. **Secrets:** `npm run check:secrets` reports nothing.
 4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which feature needs each one and that it goes in the cloud environment settings (environment menu of the session, **Edit**: environment variables, or network secrets for API keys), followed by a new session. The guide is `PREREQUISITES.md`.
-5. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
+5. **Preview:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
+6. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
 
 ## On a computer with Docker
 

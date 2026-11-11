@@ -40,6 +40,7 @@ The understanding and the plan live in this conversation; do not create specific
    - validate new queries (`database-queries`: integration test, `countQueries` on lists, `npm run db:explain`);
    - new environment variables follow "Configuration" in `project-structure`;
    - run the `tester` subagent and fix until it passes (after 3 failed attempts, stop and explain);
+   - if the stage changed something on screen, check it in the browser right away (a quick pass of `test-in-browser` on what the stage delivered), send a screenshot and say in one line which page to open in the preview to try it;
    - commit `feat: [what the stage delivers]`.
 3. **Browser test:** run `test-in-browser` with every done criterion and the out-of-scope items. Fix what fails (with a test when the cause is in a rule or repository) and repeat those scenarios.
 4. **Review:** call the `reviewer` subagent once, passing the done criteria, the out-of-scope list, a summary of what was built and the browser test table. Fix the **high** findings right away (with a test and a commit) and keep the medium ones for the report.
