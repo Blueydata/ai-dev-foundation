@@ -27,8 +27,8 @@ flowchart LR
 | Abuse of public routes and AI cost | Message size and count limits, agent step limits, rate limiting on public routes | per feature, see [ai](ai.md) |
 | Customer data (LGPD) | Keep only what is needed; no message content or personal data in logs or URLs | `CLAUDE.md` rules, [data model](data-model.md) |
 | Unsafe dependencies | Exact versions pinned; new packages only with a stated reason; review in pull requests | `package.json`, `code-reviewer` |
-| Development credentials in production | Local values in `docker-compose.yml` are development only and must be replaced; logins of people are never local defaults: they come only from `.env` (local) or Secrets Manager (AWS) | [runtime](runtime-and-configuration.md#environment-variables) |
+| Development credentials in production | Local values in `docker-compose.yml` are development only and must be replaced; logins of people are never local defaults: they come only from `.env` (Docker), the cloud session settings, or the Vercel environment variables (online) | [runtime](runtime-and-configuration.md#environment-variables) |
 | Credentials leaking through the AI | Claude cannot read `.env` (`.claude/settings.json`), never asks for or suggests passwords, and the browser test asks the product owner to sign in in the browser pane | `CLAUDE.md`, `test-in-browser` skill |
-| Cloud exposure and leaked cloud secrets | Only the load balancer is public; tasks accept only the load balancer and the database only the tasks; secrets in Secrets Manager, created empty; least-privilege IAM; Checkov scan in CI | `infra/`, [infrastructure](infrastructure.md) |
+| Online secrets and database exposure | Keys set only in Vercel environment variables, never in code; Neon connection strings provided by the integration (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`) and never printed; migrations use the direct connection only at build time | [deployment](deployment.md) |
 
 Related: [api](api.md) · [ai](ai.md) · [testing and quality](testing-and-quality.md)

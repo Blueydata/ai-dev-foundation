@@ -1,6 +1,6 @@
 # 0003 — AWS infrastructure as code with Terraform and Terragrunt
 
-**Date:** 2026-10-27 · **Status:** accepted
+**Date:** 2026-10-27 · **Status:** superseded by [0004](0004-vercel-and-neon-instead-of-aws.md)
 
 ## Context
 

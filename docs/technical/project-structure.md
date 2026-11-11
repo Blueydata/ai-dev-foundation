@@ -7,21 +7,18 @@ The complete folder tree of the repository, with what each folder and file holds
 ```
 .
 ├── .claude/                       Claude Code setup for this project
-│   ├── agents/                    Subagents, one file each, with model and effort
+│   ├── agents/                    Four subagents (explorer, tester, reviewer, documenter), one file each, with model and effort
 │   ├── hooks/session-start.sh     Cloud sessions only: runs scripts/cloud-setup.sh (see runtime-and-configuration.md)
-│   ├── skills/                    Skills: workflow (setup-project, new-feature, ...) and standards (code-standards, ...)
+│   ├── skills/                    Skills: workflow (setup-project, new-feature, deploy, ...) and standards (code-standards, ...)
 │   ├── launch.json                Starts the app (docker compose up) in the built-in browser of the Claude desktop app
 │   └── settings.json              Permissions (what Claude may run alone, what is denied) and the SessionStart hook
-├── .github/workflows/ci.yml       CI: types, unit tests, secret scan, integration tests, infrastructure checks, production image
-├── infra/                         Terraform modules and Terragrunt units for dev and prod (see infrastructure.md)
+├── .github/workflows/ci.yml       CI: types and unit tests, secret scan, integration tests, production build, cloud session setup
 ├── docs/
 │   ├── technical/                 This documentation (English)
 │   └── business/                  Business documentation in en and pt-BR (created with the first feature)
-├── scripts/                       Node tooling run inside the app container (migrations, checks, test runner), and cloud-setup.sh for cloud sessions
+├── scripts/                       Node tooling (migrations, checks, test runner, local-env) and cloud-setup.sh for cloud sessions
 ├── src/                           All application source code (see below)
 ├── workshop/                      Training material: the Torra Sul catalog CSV and its import specification
-├── .dockerignore                  Files left out of the production image
-├── Dockerfile                     Production image: Next.js standalone, migrations on start, non-root user
 ├── .env.example                   Names of keys only the product owner can provide; empty means none needed
 ├── .gitignore                     Keeps .env, build output and dependencies out of git
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available
@@ -29,9 +26,11 @@ The complete folder tree of the repository, with what each folder and file holds
 ├── AGENTS.md                      Written by next dev: points agents to the docs of the installed Next.js version
 ├── CLOUD.md                       Participant guide (pt-BR) to use the project and the workshop in Claude Code on the web
 ├── CLAUDE.md                      Product context, rules and workflow, read by Claude in every conversation
+├── PREREQUISITES.md               Guide (pt-BR) to install Docker, Git and Claude Code to run on a computer
+├── WORKSHOP.md                    Step-by-step prompts of the workshop (pt-BR)
 ├── README.md                      How to run the project and work with Claude
 ├── components.json                shadcn/ui settings: where generated components and utilities go
-├── docker-compose.yml             The db and app services, with local values for every setting
+├── docker-compose.yml             The db and app services, with local values for every setting (also read by scripts/local-env.mjs)
 ├── next.config.ts                 Next.js settings (allowed dev origins for the headless browser)
 ├── package.json                   Dependencies, pinned versions and npm scripts
 ├── postcss.config.mjs             Tailwind CSS through PostCSS
@@ -90,8 +89,10 @@ Test files sit next to the file they test (`*.test.ts` for unit, `*.integration.
 scripts/
 ├── check-env.mjs           Lists keys from .env.example missing in the environment (names only)
 ├── check-secrets.mjs       Looks for API keys, tokens and private keys in tracked files
+├── cloud-setup.sh          Cloud sessions: PostgreSQL, dependencies, session variables, migrations, next dev in the background
 ├── db-query.mjs            db:query and db:explain: one read statement in a read-only transaction, with plan analysis
-├── migrate.mjs             Applies pending SQL migrations and records them in schema_migrations
+├── local-env.mjs           Reads app.environment from docker-compose.yml and prints shell exports pointing at localhost
+├── migrate.mjs             Applies pending SQL migrations (DATABASE_URL_UNPOOLED preferred) and records them in schema_migrations; also run by vercel-build
 ├── test-integration.mjs    Recreates app_test, applies migrations and runs the integration tests
 └── *.d.mts, *.test.ts      Types for the TypeScript tests, and the tests of each script
 ```
@@ -104,6 +105,6 @@ scripts/
 | A page or API route | `src/app/`, calling the module `index.ts` |
 | A table | a new `src/shared/database/migrations/NNNN-description.sql` |
 | A shared UI piece | `src/shared/ui/` (shadcn) or `src/shared/ui/layout/` |
-| A setting | `src/shared/config/env.ts` plus a local value in `docker-compose.yml`, or `.env.example` for user-provided keys |
+| A setting | `src/shared/config/env.ts` plus a local value in `docker-compose.yml`, or `.env.example` for user-provided keys; online, the name is added in Vercel ([deployment](deployment.md)) |
 
 Related: [architecture](architecture.md) · [testing and quality](testing-and-quality.md)

@@ -10,11 +10,11 @@ The diagram shows who uses the system and which services it depends on. External
 flowchart LR
   user["End user (browser)"]
   owner["Product owner (Claude Code)"]
-  app["Next.js app<br/>(app container)"]
-  db[("Postgres 17<br/>(db container)")]
+  app["Next.js app<br/>(Vercel, or next dev locally)"]
+  db[("Postgres<br/>(Neon, or local Postgres 17)")]
   openai["OpenAI API<br/>(optional, server only)"]
-  user -- "HTTP :3000" --> app
-  owner -- "skills, subagents, docker compose exec" --> app
+  user -- "HTTPS, or HTTP :3000 locally" --> app
+  owner -- "skills, subagents, npm commands" --> app
   app -- "SQL over pg" --> db
   app -. "AI SDK, when a feature uses AI" .-> openai
 ```
@@ -26,7 +26,7 @@ flowchart LR
 | Web framework | Next.js (App Router) | 16.4.3 | `src/app/` |
 | UI library | React | 19.3.1 | `src/` |
 | Language | TypeScript, strict mode | 5.9.3 | `tsconfig.json` |
-| Database | Postgres | 17 (alpine image) | `docker-compose.yml` |
+| Database | Postgres (local: 17; online: Neon) | 17 | `docker-compose.yml`, `scripts/cloud-setup.sh`, [deployment](deployment.md) |
 | Database client | `pg` | 8.23.1 | `src/shared/database/client.ts` |
 | Validation | zod | 4.6.7 | schemas in modules, `src/shared/config/env.ts` |
 | Styling | Tailwind CSS | 4.3.3 | `src/app/globals.css` |
@@ -37,16 +37,16 @@ flowchart LR
 | AI | Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/openai`) | 7.0.153, 4.0.157, 4.0.102 | `src/shared/ai/`, module `infrastructure/ai/` |
 | Markdown streaming | Streamdown | 2.7.1 | `src/shared/ui/ai/ai-response.tsx` |
 | Tests | Vitest | 5.0.5 | `vitest.config.ts`, `vitest.integration.config.ts` |
-| Runtime | Node.js in Docker | 22 (alpine image) | `docker-compose.yml`, `.nvmrc` |
+| Runtime | Node.js, in a Claude Code on the web session or in Docker | 22 | `scripts/cloud-setup.sh`, `docker-compose.yml`, `.nvmrc` |
 | CI | GitHub Actions | | `.github/workflows/ci.yml` |
-| Infrastructure as code | Terraform, Terragrunt, AWS provider | 1.15.9, 1.1.6, ~> 6.50 | `infra/`, [infrastructure](infrastructure.md) |
-| Cloud | AWS: ECS Fargate (ARM), Application Load Balancer, Aurora PostgreSQL Serverless v2, ECR, Secrets Manager | Aurora PostgreSQL 16.8 | `infra/modules/` |
+| Hosting | Vercel (Hobby) with Neon Postgres, both on free plans | | `package.json` (`vercel-build`), [deployment](deployment.md) |
 
 ## Quality goals
 
 | Goal | How the project achieves it |
 | --- | --- |
-| Runs anywhere with no setup | Everything runs in Docker; local values live in `docker-compose.yml` ([runtime](runtime-and-configuration.md)) |
+| Runs anywhere with no setup | Cloud sessions prepare themselves, or Docker Compose on a computer; local values live in `docker-compose.yml` ([runtime](runtime-and-configuration.md)) |
+| Online with no cloud account to configure | Vercel and Neon on free plans, migrations on build ([deployment](deployment.md)) |
 | Predictable place for every change | Modules with four layers, enforced by a test ([architecture](architecture.md)) |
 | Changes do not break what works | Unit and integration tests in CI, end-to-end check by Claude in the browser ([testing](testing-and-quality.md)) |
 | No leaked secrets or customer data | Secret scan in CI, server-only keys, typed errors without internals ([security](security.md)) |

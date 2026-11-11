@@ -1,13 +1,13 @@
 # Technical documentation
 
-How the system is built, for a developer who just joined. The code has no comments, so everything that needs explanation is here. The pages follow the `technical-docs` skill and are updated by the `technical-documenter` subagent after every delivery.
+How the system is built, for a developer who just joined. The code has no comments, so everything that needs explanation is here. The pages follow the `technical-docs` skill and are updated by the `documenter` subagent after every delivery.
 
 ## Reading order
 
 1. [Overview](overview.md): what the system is, who talks to it and the tech stack.
 2. [Project structure](project-structure.md): the complete folder tree and where each kind of file goes.
 3. [Architecture](architecture.md): layers, dependency rules, request lifecycle and error handling.
-4. [Runtime and configuration](runtime-and-configuration.md): how it runs in Docker, environment variables and commands.
+4. [Runtime and configuration](runtime-and-configuration.md): how it runs in cloud sessions and in Docker, environment variables and commands.
 5. The page of the module you will work on, in [modules](modules/).
 
 ## All pages
@@ -20,12 +20,12 @@ How the system is built, for a developer who just joined. The code has no commen
 | [modules/system-status.md](modules/system-status.md) | The reference module: app and database health |
 | [data-model.md](data-model.md) | Tables, relationships and migrations |
 | [api.md](api.md) | Every route, with input, output, errors and examples |
-| [runtime-and-configuration.md](runtime-and-configuration.md) | Docker Compose topology, startup, environment variables, commands |
+| [runtime-and-configuration.md](runtime-and-configuration.md) | Cloud sessions, Docker Compose topology, startup, environment variables, commands |
 | [testing-and-quality.md](testing-and-quality.md) | Test layers, CI pipeline, architecture rules, secret scan |
 | [security.md](security.md) | Threats and the control that handles each one |
 | [ai.md](ai.md) | AI integration and the streaming pipeline |
 | [ui.md](ui.md) | Theme, typeface, shared components, layouts and URL state |
-| [infrastructure.md](infrastructure.md) | AWS deployment, Terraform modules, Terragrunt units, dev and prod, deploy runbook, costs |
+| [deployment.md](deployment.md) | Vercel and Neon: environments, variables, migrations on build, first deploy |
 
 ## Decisions
 
@@ -33,6 +33,8 @@ How the system is built, for a developer who just joined. The code has no commen
 | --- | --- | --- |
 | [0001](decisions/0001-initial-stack.md) | Initial stack | accepted |
 | [0002](decisions/0002-modular-architecture.md) | Modular architecture in `src` | accepted |
-| [0003](decisions/0003-aws-infrastructure-as-code.md) | AWS infrastructure as code with Terraform and Terragrunt | accepted |
+| [0003](decisions/0003-aws-infrastructure-as-code.md) | AWS infrastructure as code with Terraform and Terragrunt | superseded by 0004 |
+| [0004](decisions/0004-vercel-and-neon-instead-of-aws.md) | Vercel and Neon instead of AWS | accepted |
+| [0005](decisions/0005-cloud-first-development.md) | Cloud-first development with Claude Code on the web | accepted |
 
 Business documentation, for non-technical readers, is in [`docs/business/`](../business/) once the first feature is delivered.

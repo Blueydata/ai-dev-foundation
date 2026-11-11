@@ -62,7 +62,7 @@ flowchart TB
 | Only `shared/config/env.ts` reads `process.env` | Configuration is validated in one place |
 | Integration tests only next to `infrastructure` or `shared/database` | They test real adapters, not rules |
 | Files and folders in kebab-case; migrations `NNNN-description.sql` | Consistent names, ordered migrations |
-| No comments in code, CSS, SQL, YAML or `.env.example` | Explanations live in this documentation |
+| No comments in code, CSS, SQL, YAML, shell scripts (`scripts/*.sh`, `.claude/hooks`) or `.env.example` | Explanations live in this documentation |
 
 ## Request lifecycle
 

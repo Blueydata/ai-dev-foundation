@@ -33,15 +33,15 @@ flowchart LR
 
 ## CI pipeline
 
-`.github/workflows/ci.yml` runs five jobs in parallel on every pull request and on pushes to `main`. A pull request is merged only with all of them green.
+`.github/workflows/ci.yml` runs five jobs in parallel on every pull request and on pushes to `main`. A pull request is merged only with all of them green. The `cloud-setup` job runs `scripts/cloud-setup.sh` on Ubuntu, checks `/api/health` and runs the integration tests, proving that cloud sessions start correctly.
 
 ```mermaid
 flowchart LR
   trigger["push or pull request"] --> tests["Tests and types<br/>npm ci · typecheck · npm test"]
   trigger --> secrets["Secret scan<br/>npm run check:secrets"]
   trigger --> integration["Integration tests<br/>docker compose up -d --wait<br/>npm run test:integration<br/>db:query and db:explain read-only checks"]
-  trigger --> infrastructure["Infrastructure<br/>fmt · validate · tflint · Checkov"]
-  trigger --> image["Production image<br/>docker build · migrations · /api/health"]
+  trigger --> build["Production build<br/>npm ci · npm run build"]
+  trigger --> cloud["Cloud session setup<br/>scripts/cloud-setup.sh · /api/health · npm run test:integration"]
 ```
 
 ## Query validation
@@ -66,7 +66,7 @@ flowchart LR
 
 ## Architecture test
 
-`src/architecture.test.ts` runs with the unit tests. It parses every source file with the TypeScript compiler to read imports and comments and checks the rules listed in [architecture](architecture.md#rules-enforced-by-the-architecture-test): layer dependencies, module boundaries, allowed folders, client and server separation, database and environment access, naming, migrations and the absence of comments in code, CSS, SQL, YAML and `.env.example`.
+`src/architecture.test.ts` runs with the unit tests. It parses every source file with the TypeScript compiler to read imports and comments and checks the rules listed in [architecture](architecture.md#rules-enforced-by-the-architecture-test): layer dependencies, module boundaries, allowed folders, client and server separation, database and environment access, naming, migrations and the absence of comments in code, CSS, SQL, YAML, `.env.example`, `scripts/*.sh` and `.claude/hooks`; kebab-case names also allow `.sh`.
 
 ## Secret scan
 
