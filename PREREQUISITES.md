@@ -4,26 +4,28 @@ O que você precisa para usar o **Dev Foundation** e fazer o workshop "Desenvolv
 
 ![Tempo](https://img.shields.io/badge/tempo-~15%20min-1f6feb?style=for-the-badge)
 ![Instalar](https://img.shields.io/badge/instalar-nada-2da44e?style=for-the-badge)
-![Custo](https://img.shields.io/badge/custo-planos%20gratuitos%20%2B%20Claude%20Pro-1f6feb?style=for-the-badge)
+![Contas](https://img.shields.io/badge/contas-GitHub%20%C2%B7%20Vercel%20%C2%B7%20Claude-1f6feb?style=for-the-badge)
 ![Programar](https://img.shields.io/badge/saber%20programar-n%C3%A3o%20precisa-2da44e?style=for-the-badge)
 
 ```mermaid
 flowchart LR
-    A["1 · GitHub pessoal"] --> B["2 · Sua cópia do projeto"] --> C["3 · Claude Code na web"] --> D["4 · Chave da OpenAI"] --> E["5 · Vercel"] --> F["6 · /setup-project"] --> G(["✓ Tudo pronto"])
+    A["1 · GitHub pessoal"] --> B["2 · Sua cópia do projeto"] --> C["3 · Claude Code na web"] --> D["4 · Chave da OpenAI"] --> E["5 · Vercel pessoal"] --> F["6 · /setup-project"] --> G(["✓ Tudo pronto"])
     style G fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
 ## O que você vai usar
 
-| | Serviço | Para quê | Plano |
+São **três contas pessoais** e **uma chave**:
+
+| | Conta | Para quê | Plano |
 | :---: | --- | --- | --- |
-| 🐙 | **GitHub** | Guardar o código e cada versão | Gratuito, **conta pessoal** |
-| 🤖 | **Claude** | A IA que constrói o software, numa máquina na nuvem | **Pro ou superior** |
-| 🔑 | **OpenAI** | A IA do chat do app que você vai construir | US$ 5 de crédito sobram |
-| ▲ | **Vercel** + **Neon** | Colocar o app no ar, com banco de dados | Gratuitos, entrando com o GitHub |
+| 🐙 | **GitHub**, pessoal | Guardar o código e cada versão | Gratuito |
+| ▲ | **Vercel**, pessoal, criada com o login do GitHub | Colocar o app no ar; o banco de dados (Neon) é criado dentro dela, sem outra conta | Hobby, gratuito, sem cartão |
+| 🤖 | **Claude**, pessoal | A IA que constrói o software, numa máquina na nuvem | **Pro ou Max** (um plano Team ou Enterprise da empresa também serve, se o Claude Code na web estiver liberado) |
+| 🔑 | **Chave da OpenAI** | A IA do chat do app que você vai construir | US$ 5 de crédito sobram |
 
 > [!IMPORTANT]
-> Use uma **conta pessoal** do GitHub, não a da empresa. Repositórios de organizações precisam de aprovação de um administrador para o Claude e de plano pago na Vercel.
+> Use a **conta pessoal** do GitHub, não a da empresa: repositórios de organizações precisam de aprovação de um administrador para o Claude e de plano pago na Vercel.
 
 ## Como funciona
 
@@ -57,7 +59,7 @@ Abra [github.com/Blueydata/ai-dev-foundation](https://github.com/Blueydata/ai-de
 
 | Passo | O que fazer |
 | :---: | --- |
-| 1 | Entre em [claude.ai/code](https://claude.ai/code) com a conta do plano **Pro ou superior** |
+| 1 | Entre em [claude.ai/code](https://claude.ai/code) com a sua conta do plano **Pro ou Max** |
 | 2 | Conecte o GitHub quando ele pedir e autorize o acesso ao repositório que você criou |
 | 3 | Escolha o repositório no seletor de repositórios. No seletor de ambiente, o **Default** serve |
 
@@ -76,9 +78,9 @@ Depois de mudar o ambiente, **comece uma sessão nova**: as mudanças só valem 
 
 Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.
 
-## 5 · ▲ Vercel
+## 5 · ▲ Vercel pessoal
 
-Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, no plano **Hobby** (gratuito, sem cartão). Por enquanto é só isso: o projeto é conectado durante o workshop.
+Entre em [vercel.com/signup](https://vercel.com/signup) com **Continue with GitHub**, usando a mesma conta pessoal do GitHub, no plano **Hobby** (gratuito, sem cartão). Por enquanto é só isso: o projeto é conectado durante o workshop.
 
 ## 6 · ✅ Teste final
 
