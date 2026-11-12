@@ -41,7 +41,9 @@ install_dependencies() {
 write_environment() {
   local exports
   exports="$(node scripts/local-env.mjs)
-export DEV_FOUNDATION_CLOUD=true"
+export DEV_FOUNDATION_CLOUD=true
+export VERCEL_TELEMETRY_DISABLED=1
+export VERCEL_TOKEN=\"\${VERCEL_TOKEN:-vianetworksecret}\""
   if [ -n "${HTTPS_PROXY:-}${https_proxy:-}" ]; then
     exports="$exports
 export NODE_USE_ENV_PROXY=1

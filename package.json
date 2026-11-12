@@ -14,7 +14,8 @@
     "check:env": "node scripts/check-env.mjs",
     "test:integration": "node scripts/test-integration.mjs",
     "db:query": "node scripts/db-query.mjs",
-    "db:explain": "node scripts/db-query.mjs --explain"
+    "db:explain": "node scripts/db-query.mjs --explain",
+    "vercel": "npx --yes vercel@65.14.0"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.91",
