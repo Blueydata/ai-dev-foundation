@@ -7,8 +7,9 @@ The AI features of the product are built by Claude and the workshop runs in Clau
 ## Decision
 
 - The app's AI uses the Anthropic API through the Vercel AI SDK provider `@ai-sdk/anthropic` 4.0.91, which replaces `@ai-sdk/openai`. `ai` and `@ai-sdk/react` are unchanged.
-- Features read `ANTHROPIC_API_KEY` (user-provided, optional in the schema) and `ANTHROPIC_MODEL` (a local value with a default in `docker-compose.yml`, starting with `claude-haiku-5-5`) through `getServerEnv()`.
-- In cloud sessions `ANTHROPIC_API_KEY` is a plain environment variable of the cloud environment holding the real key (participants paste it under Environment variables; the screen warns that Claude Code itself does not use it, which is fine because it is the app's key). Only the code reads it, through `getServerEnv()`; Claude never prints it.
+- Features read `LLM_API_KEY` (user-provided, optional in the schema) and `LLM_MODEL` (a local value with a default in `docker-compose.yml`, starting with `claude-haiku-5-5`) through `getServerEnv()`.
+- In cloud sessions `LLM_API_KEY` is a plain environment variable of the cloud environment holding the real key (participants paste it under Environment variables; the screen warns that Claude Code itself does not use it, which is fine because it is the app's key). Only the code reads it, through `getServerEnv()`; Claude never prints it.
+- The app's variables are `LLM_API_KEY` and `LLM_MODEL`, not `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`: Claude Code reserves the `ANTHROPIC_*` names, and the rehearsal showed `ANTHROPIC_API_KEY` set in the cloud environment never reached the session's shell.
 - `scripts/check-secrets.mjs` checks Anthropic keys before OpenAI ones, and the OpenAI pattern excludes `sk-ant-`, so an Anthropic key is reported with the right name.
 
 ## Alternatives considered

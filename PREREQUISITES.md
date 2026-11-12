@@ -100,10 +100,12 @@ Em [claude.ai/code](https://claude.ai/code): **Default** (barra de baixo) → �
 2. Escreva a linha abaixo e cole a sua chave depois do `=`:
 
 ```
-ANTHROPIC_API_KEY=
+LLM_API_KEY=
 ```
 
-3. **Save changes**. O aviso amarelo da tela é normal: a chave é do seu app, não do Claude Code.
+3. **Save changes**.
+
+Use exatamente o nome `LLM_API_KEY`. O nome `ANTHROPIC_API_KEY` é reservado pelo próprio Claude Code e não chega à sessão.
 
 > [!CAUTION]
 > **Nunca cole chaves, tokens ou senhas na conversa** com o Claude, nem em arquivos do projeto. Elas ficam só aqui; no dia, o Claude leva a chave da Anthropic para a Vercel sem mostrá-la.

@@ -15,8 +15,8 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 - The Neon integration sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` for every environment. Never pull them into the project (`--no-env-pull`): the local app uses the session's own Postgres.
 - `.vercelignore` keeps `node_modules`, `.next`, `.vercel` and every `.env` file out of the upload.
 - The project name is the repository name in lowercase (`basename "$(git rev-parse --show-toplevel)"`).
-- Local values with a default in `docker-compose.yml` (for example `ANTHROPIC_MODEL`) also go to Vercel: `npm run vercel -- env add <NAME> --environment production,preview --value <value> --no-sensitive --yes --force --token "$VERCEL_TOKEN"` (they are not secrets).
-- Keys the product owner provides (`ANTHROPIC_API_KEY`) are environment variables of the cloud environment (Anthropic hosts cannot be network secrets). Copy each one to Vercel yourself, through stdin so the value never appears in a command, a log or the conversation: `printf '%s' "$ANTHROPIC_API_KEY" | npm run --silent vercel -- env add ANTHROPIC_API_KEY --environment production,preview --sensitive --yes --force --token "$VERCEL_TOKEN"`. Never echo, print or inspect the value; checking that it is set is `[ -n "$ANTHROPIC_API_KEY" ]`.
+- Local values with a default in `docker-compose.yml` (for example `LLM_MODEL`) also go to Vercel: `npm run vercel -- env add <NAME> --environment production,preview --value <value> --no-sensitive --yes --force --token "$VERCEL_TOKEN"` (they are not secrets).
+- Keys the product owner provides (`LLM_API_KEY`) are environment variables of the cloud environment (Anthropic hosts cannot be network secrets). Copy each one to Vercel yourself, through stdin so the value never appears in a command, a log or the conversation: `printf '%s' "$LLM_API_KEY" | npm run --silent vercel -- env add LLM_API_KEY --environment production,preview --sensitive --yes --force --token "$VERCEL_TOKEN"`. Never echo, print or inspect the value; checking that it is set is `[ -n "$LLM_API_KEY" ]`.
 
 ## Before anything: the token works
 
@@ -42,6 +42,6 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 
 - Migration error in the build: the log names the migration file; fix it as a new migration.
 - `/api/health` says the database is down: the Neon integration is not connected to that environment; run step 2 of "First publish" again.
-- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that Vercel environment; copy it again (step 4) and deploy again.
+- The chat says the AI is unavailable: `LLM_API_KEY` is missing in that Vercel environment; copy it again (step 4) and deploy again.
 
 Never ask for or print keys, tokens or connection strings.

@@ -22,8 +22,8 @@ sequenceDiagram
   Claude->>CLI: integration add neon --no-env-pull
   CLI->>Vercel: create database, set DATABASE_URL and DATABASE_URL_UNPOOLED
   Vercel->>Neon: provision
-  Claude->>CLI: env add for local values (ANTHROPIC_MODEL)
-  Claude->>CLI: env add ANTHROPIC_API_KEY --sensitive (value piped through stdin)
+  Claude->>CLI: env add for local values (LLM_MODEL)
+  Claude->>CLI: env add LLM_API_KEY --sensitive (value piped through stdin)
   CLI->>Vercel: store the key
   Claude->>CLI: deploy (preview) or deploy --prod (worktree of main)
   Vercel->>Vercel: npm run vercel-build (migrate, next build)
@@ -60,8 +60,8 @@ Preview links ask for a Vercel sign-in; that is expected.
 | --- | --- | --- | --- |
 | `DATABASE_URL` | Neon integration, for every environment | `src/shared/config/env.ts` (the app) | Pooled connection used while the app runs |
 | `DATABASE_URL_UNPOOLED` | Neon integration, for every environment | `scripts/migrate.mjs` | Direct connection used to apply migrations; `selectMigrationUrl` prefers it over `DATABASE_URL` |
-| Local values with a default in `docker-compose.yml` (for example `ANTHROPIC_MODEL`) | Claude, with `vercel env add <NAME> <environment>` for `production` and `preview` | `getServerEnv()` | Not secrets; same values as in development |
-| Names listed in `.env.example` (for example `ANTHROPIC_API_KEY`) | Claude, copied from the session with `printf '%s' "$NAME" \| npm run --silent vercel -- env add NAME --environment production,preview --sensitive --yes --force --token "$VERCEL_TOKEN"`, so the value never appears in a command, log or the conversation | `getServerEnv()` | Keys and logins that only a person can provide. If a name is not set in the session, Claude asks the product owner to add it in the cloud environment settings and publishes without it meanwhile; `vercel env list` shows which are missing |
+| Local values with a default in `docker-compose.yml` (for example `LLM_MODEL`) | Claude, with `vercel env add <NAME> <environment>` for `production` and `preview` | `getServerEnv()` | Not secrets; same values as in development |
+| Names listed in `.env.example` (for example `LLM_API_KEY`) | Claude, copied from the session with `printf '%s' "$NAME" \| npm run --silent vercel -- env add NAME --environment production,preview --sensitive --yes --force --token "$VERCEL_TOKEN"`, so the value never appears in a command, log or the conversation | `getServerEnv()` | Keys and logins that only a person can provide. If a name is not set in the session, Claude asks the product owner to add it in the cloud environment settings and publishes without it meanwhile; `vercel env list` shows which are missing |
 
 The integration is added with `--no-env-pull`: the Neon connection strings are never copied to the session, whose app uses its own Postgres. Values never go into the repository. A feature that adds a variable lists its name in the final report.
 

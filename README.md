@@ -49,7 +49,7 @@ To stop: `Ctrl + C`. To also erase the database data: `docker compose down -v`.
 
 ## Deploy
 
-The app goes online on Vercel with a Neon Postgres database, both on free plans (Vercel Hobby is for non-commercial use). Ask Claude to run `/deploy`: it publishes through the pinned Vercel CLI (`npm run vercel`), using a Vercel token saved as a network secret for `api.vercel.com` (see [`PREREQUISITES.md`](PREREQUISITES.md)), creates the project and the database, adds the local settings and gives you a link to paste your own `ANTHROPIC_API_KEY` in Vercel. A preview is deployed from the work branch and production from `main` after the merge; `npm run vercel-build` applies pending migrations before building. Pushing does not publish by itself. Details: [`docs/technical/deployment.md`](docs/technical/deployment.md).
+The app goes online on Vercel with a Neon Postgres database, both on free plans (Vercel Hobby is for non-commercial use). Ask Claude to run `/deploy`: it publishes through the pinned Vercel CLI (`npm run vercel`), using a Vercel token saved as a network secret for `api.vercel.com` (see [`PREREQUISITES.md`](PREREQUISITES.md)), creates the project and the database, adds the local settings and gives you a link to paste your own `LLM_API_KEY` in Vercel. A preview is deployed from the work branch and production from `main` after the merge; `npm run vercel-build` applies pending migrations before building. Pushing does not publish by itself. Details: [`docs/technical/deployment.md`](docs/technical/deployment.md).
 
 ## Workshop
 

@@ -15,6 +15,6 @@ describe("findSecrets", () => {
   });
 
   it("ignores code that reads the key from the environment", () => {
-    expect(findSecrets("const apiKey = process.env.ANTHROPIC_API_KEY;")).toEqual([]);
+    expect(findSecrets("const apiKey = process.env.LLM_API_KEY;")).toEqual([]);
   });
 });

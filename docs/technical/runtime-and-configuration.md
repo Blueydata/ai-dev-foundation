@@ -26,7 +26,7 @@ flowchart LR
 | `VERCEL_TELEMETRY_DISABLED` | `1` | Turns off Vercel CLI telemetry |
 | `NODE_USE_ENV_PROXY` | `1`, only when `HTTPS_PROXY` is set | Makes server-side `fetch` (for example the AI SDK) go through the session's egress proxy |
 
-The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables (`ANTHROPIC_API_KEY` holds the real key, because Claude Code on the web refuses network secrets for Anthropic hosts; `api.anthropic.com` is reachable without allowing any host), plus the Vercel token as a network secret that the egress proxy injects into requests to `api.vercel.com` (header `Authorization`, prefix `Bearer`). The participant guide is `PREREQUISITES.md`.
+The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables (`LLM_API_KEY` holds the real key, because Claude Code on the web refuses network secrets for Anthropic hosts; `api.anthropic.com` is reachable without allowing any host), plus the Vercel token as a network secret that the egress proxy injects into requests to `api.vercel.com` (header `Authorization`, prefix `Bearer`). The participant guide is `PREREQUISITES.md`.
 
 ## Docker Compose
 
@@ -83,7 +83,7 @@ There are two kinds of settings: **local values** the project defines in `docker
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Local (db service) | `app`, `app`, `app` | Postgres image | Development database credentials |
 | `CI` | Set by GitHub Actions | | `docker-compose.yml` | Marks CI runs |
 
-User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that uses AI adds `ANTHROPIC_API_KEY` there (and `ANTHROPIC_MODEL` as a local value in `docker-compose.yml`, starting with `claude-haiku-5-5`), makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and Claude adds local values with the Vercel CLI and copies each key named in `.env.example` from the session to Vercel through stdin ([deployment](deployment.md)).
+User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that uses AI adds `LLM_API_KEY` there (and `LLM_MODEL` as a local value in `docker-compose.yml`, starting with `claude-haiku-5-5`), makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and Claude adds local values with the Vercel CLI and copies each key named in `.env.example` from the session to Vercel through stdin ([deployment](deployment.md)).
 
 ## Commands
 

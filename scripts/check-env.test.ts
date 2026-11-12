@@ -3,11 +3,11 @@ import { findMissing, listRequiredNames } from "./check-env.mjs";
 
 describe("check-env", () => {
   it("lists the variable names declared in .env.example", () => {
-    expect(listRequiredNames("ANTHROPIC_API_KEY=\nSTRIPE_SECRET_KEY=\n\n")).toEqual(["ANTHROPIC_API_KEY", "STRIPE_SECRET_KEY"]);
+    expect(listRequiredNames("LLM_API_KEY=\nSTRIPE_SECRET_KEY=\n\n")).toEqual(["LLM_API_KEY", "STRIPE_SECRET_KEY"]);
   });
 
   it("reports only the names that are missing or empty, never the values", () => {
-    expect(findMissing(["ANTHROPIC_API_KEY", "STRIPE_SECRET_KEY"], { ANTHROPIC_API_KEY: "value", STRIPE_SECRET_KEY: " " })).toEqual(["STRIPE_SECRET_KEY"]);
+    expect(findMissing(["LLM_API_KEY", "STRIPE_SECRET_KEY"], { LLM_API_KEY: "value", STRIPE_SECRET_KEY: " " })).toEqual(["STRIPE_SECRET_KEY"]);
   });
 
   it("needs nothing when .env.example is empty", () => {

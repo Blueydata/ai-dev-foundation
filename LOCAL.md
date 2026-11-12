@@ -107,7 +107,7 @@ Os prompts do treinamento, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md). Nã
 | 3 | Na pasta do projeto, crie um arquivo `.env` com a linha abaixo |
 
 ```
-ANTHROPIC_API_KEY=a-sua-chave
+LLM_API_KEY=a-sua-chave
 ```
 
 Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.

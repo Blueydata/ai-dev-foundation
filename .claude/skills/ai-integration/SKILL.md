@@ -17,7 +17,7 @@ To confirm an AI SDK API, the docs for the installed version are in `node_module
 
 ## Rules
 
-1. **Server only.** Model, instructions and agents live in the module `infrastructure/ai/` and are served by route handlers in `src/app/api/` (`project-structure` skill). The API key is provided by the product owner: `ANTHROPIC_API_KEY` goes into the schema as `.optional()` and into `.env.example` with an empty value. The model name is a local value: `ANTHROPIC_MODEL` gets a default in `docker-compose.yml` (start with `claude-haiku-5-5`). Without the key the app still runs and only the AI feature answers with a clear error (see "Configuration" in `project-structure`).
+1. **Server only.** Model, instructions and agents live in the module `infrastructure/ai/` and are served by route handlers in `src/app/api/` (`project-structure` skill). The API key is provided by the product owner: `LLM_API_KEY` (never name app variables `ANTHROPIC_*` or `CLAUDE_*`: Claude Code reserves them and cloud sessions do not pass them to the shell) goes into the schema as `.optional()` and into `.env.example` with an empty value. The model name is a local value: `LLM_MODEL` gets a default in `docker-compose.yml` (start with `claude-haiku-5-5`). Without the key the app still runs and only the AI feature answers with a clear error (see "Configuration" in `project-structure`).
 2. **Always streamed** when the response is shown to the user, always with `experimental_transform: smoothTextStream()` from `src/shared/ai/stream.ts`. It releases text word by word at a steady pace and the screen animates each word, so the response never looks stuck.
 3. **Instructions separate from user input.** The assistant rules go in `instructions` (agent) or `system` (`streamText`), in English. User text goes only in the messages and never changes the rules. If the assistant answers end users, tell it in the instructions to answer in the product language.
 4. **Validated inputs and outputs:** request bodies with `parseJsonBody` and a schema, messages with `validateUIMessages`, tool parameters with `inputSchema`, structured outputs with `zod`.
@@ -45,11 +45,11 @@ import { getServerEnv } from "@/shared/config/env";
 import { UnavailableError } from "@/shared/kernel/errors";
 
 export function getChatModel() {
-  const { ANTHROPIC_API_KEY, ANTHROPIC_MODEL } = getServerEnv();
-  if (!ANTHROPIC_API_KEY) {
+  const { LLM_API_KEY, LLM_MODEL } = getServerEnv();
+  if (!LLM_API_KEY) {
     throw new UnavailableError("Anthropic");
   }
-  return createAnthropic({ apiKey: ANTHROPIC_API_KEY })(ANTHROPIC_MODEL);
+  return createAnthropic({ apiKey: LLM_API_KEY })(LLM_MODEL);
 }
 ```
 
@@ -209,7 +209,7 @@ tools: {
 
 Every message to the model is paid in tokens, and the same mistakes cost more with more users:
 
-1. **Smallest model that answers well.** Start with the small model of the provider (`ANTHROPIC_MODEL` default in `docker-compose.yml`, a Haiku model); move up only with evidence (a failing conversation), as a decision to record.
+1. **Smallest model that answers well.** Start with the small model of the provider (`LLM_MODEL` default in `docker-compose.yml`, a Haiku model); move up only with evidence (a failing conversation), as a decision to record.
 2. **Short, stable instructions.** Keep the system instructions short and identical between requests, so the provider can cache the prefix; never add per-request data to them.
 3. **Data through tools, a few rows at a time** (see above), never the whole table in the prompt.
 4. **Limits:** maximum messages and message length per request (`application/schemas.ts`), `maxOutputTokens`, `stopWhen: stepCountIs(n)` and rate limiting on public routes.

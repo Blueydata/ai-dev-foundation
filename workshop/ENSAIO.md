@@ -9,7 +9,7 @@ Prepare uma conta de ensaio exatamente como um participante, seguindo a página 
 - conta pessoal no GitHub, com o repositório `demo` criado (privado, com README);
 - Claude Code na web conectado a esse GitHub, com o `demo` aparecendo em **Repo**;
 - conta Hobby na Vercel;
-- no ambiente **Default** do Claude: o token da Vercel em **Network secrets** (`api.vercel.com`) e `ANTHROPIC_API_KEY` em **Environment variables**.
+- no ambiente **Default** do Claude: o token da Vercel em **Network secrets** (`api.vercel.com`) e `LLM_API_KEY` em **Environment variables**.
 
 Abra uma **sessão nova** em [claude.ai/code](https://claude.ai/code), com o ambiente **Default** e o repositório `demo`, e cole o prompt abaixo. O agente para e pede a você só o que um participante faria fora do Claude (por exemplo, o merge do pull request).
 
@@ -52,7 +52,7 @@ Regras do ensaio:
   silêncio: registre e siga no que der.
 
 O que fazer:
-1. Confira os pré-requisitos sem revelar valores: ANTHROPIC_API_KEY definida, o
+1. Confira os pré-requisitos sem revelar valores: LLM_API_KEY definida, o
    repositório com só o README e, depois da etapa 1, o token da Vercel
    funcionando (npm run vercel -- whoami --token "$VERCEL_TOKEN").
 2. Etapa 1: cole o prompt inicial do WORKSHOP.md (ele traz o template para cá)
@@ -84,7 +84,7 @@ de um único bloco de código markdown, para eu copiar e repassar. Ele deve ter:
   de quebrar o chat;
 - os links do pull request, da prévia e da produção na Vercel;
 - respostas diretas: o push do prompt inicial foi direto para a main? a
-  ANTHROPIC_API_KEY chegou à sessão? a Vercel CLI funcionou com o token do
+  LLM_API_KEY chegou à sessão? a Vercel CLI funcionou com o token do
   cofre? a criação do Neon pediu algo no navegador? a chave foi copiada para a
   Vercel sem aparecer? o painel de pré-visualização do app apareceu? quantas
   confirmações de permissão você pediu, e para quais comandos?

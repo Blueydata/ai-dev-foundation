@@ -10,7 +10,7 @@ const compose = `services:
     image: node:22-alpine
     environment:
       DATABASE_URL: postgres://app:app@db:5432/app
-      ANTHROPIC_MODEL: "claude-small"
+      LLM_MODEL: "claude-small"
       WATCHPACK_POLLING: "true"
     ports:
       - "3000:3000"
@@ -23,7 +23,7 @@ describe("local-env", () => {
   it("reads only the app service environment from docker-compose.yml", () => {
     expect(parseAppEnvironment(compose)).toEqual({
       DATABASE_URL: "postgres://app:app@db:5432/app",
-      ANTHROPIC_MODEL: "claude-small",
+      LLM_MODEL: "claude-small",
       WATCHPACK_POLLING: "true",
     });
   });
@@ -31,7 +31,7 @@ describe("local-env", () => {
   it("points the database at the cloud session's own Postgres and drops Docker-only settings", () => {
     expect(toCloudEnvironment(parseAppEnvironment(compose))).toEqual({
       DATABASE_URL: "postgres://app:app@localhost:5432/app",
-      ANTHROPIC_MODEL: "claude-small",
+      LLM_MODEL: "claude-small",
     });
   });
 
