@@ -109,7 +109,7 @@ A cloud session (`scripts/cloud-setup.sh`) and `docker compose up` must work on 
 | Kind | Examples | Where its value lives |
 | --- | --- | --- |
 | **Local value the project can define** | Database URL, ports, model names, feature flags, session secrets for development, seed options | A working development value in `docker-compose.yml` under `app.environment` (cloud sessions read it from there too). Never ask the product owner for these |
-| **Value only the product owner can provide** | External API keys and tokens (OpenAI, Stripe, e-mail providers), anything tied to a real account | The cloud environment settings (or `.env` with Docker, never committed) and Vercel; the name goes into `.env.example` with an empty value |
+| **Value only the product owner can provide** | External API keys and tokens (Anthropic, Stripe, e-mail providers), anything tied to a real account | The cloud environment settings (or `.env` with Docker, never committed) and Vercel; the name goes into `.env.example` with an empty value |
 | **Credentials of people** | Admin e-mail and password, any login a person types | The same places, chosen by the product owner; the name goes into `.env.example` with an empty value. **Never** in code, tests, seeds, `docker-compose.yml`, documentation, prompts or the conversation, not even for development. Never ask for them and never suggest values |
 
 Rules:

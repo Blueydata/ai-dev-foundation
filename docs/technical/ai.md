@@ -18,7 +18,7 @@ sequenceDiagram
   participant Panel as ChatPanel + useChat (client)
   participant Route as src/app/api/<resource>/route.ts
   participant AI as module infrastructure/ai
-  participant Provider as Model provider (e.g. OpenAI)
+  participant Provider as Anthropic API (Claude models)
   User->>Panel: types and sends
   Panel->>Route: POST messages (status submitted, TypingIndicator)
   Route->>Route: parseJsonBody + validateUIMessages

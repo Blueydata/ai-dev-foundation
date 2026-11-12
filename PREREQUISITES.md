@@ -9,7 +9,7 @@ O que você precisa para usar o **Dev Foundation** e fazer o workshop "Desenvolv
 
 ```mermaid
 flowchart LR
-    A["1 · GitHub pessoal"] --> B["2 · Claude + GitHub"] --> C["3 · Chave da OpenAI"] --> D["4 · Vercel pessoal"] --> E["5 · Teste final"] --> H(["✓ Tudo pronto"])
+    A["1 · GitHub pessoal"] --> B["2 · Claude + GitHub"] --> C["3 · Chave da Anthropic"] --> D["4 · Vercel pessoal"] --> E["5 · Teste final"] --> H(["✓ Tudo pronto"])
     style H fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
@@ -21,8 +21,8 @@ São **três contas pessoais** e **uma chave**:
 | :---: | --- | --- | --- |
 | 🐙 | **GitHub**, pessoal | Guardar o código e cada versão | Gratuito |
 | ▲ | **Vercel**, pessoal, criada com o login do GitHub | Colocar o app no ar; o banco de dados (Neon) é criado dentro dela, sem outra conta | Hobby, gratuito, sem cartão |
-| 🤖 | **Claude**, pessoal | A IA que constrói o software, numa máquina na nuvem | **Pro ou Max** (um plano Team ou Enterprise da empresa também serve, se o Claude Code na web estiver liberado) |
-| 🔑 | **Chave da OpenAI** | A IA do chat do app que você vai construir | A organização fornece uma no dia; **recomendado levar a sua** (US$ 5 de crédito sobram) |
+| 🤖 | **Claude**, pessoal | A IA que constrói o software, no **Claude Code na web** | **Pro, Max ou Ultra** (Free não dá acesso ao Claude Code; Team ou Enterprise só se o administrador da empresa liberou o Claude Code na web) |
+| 🔑 | **Chave da API da Anthropic** | A IA (Claude) do chat do app que você vai construir | A organização fornece uma no dia; **recomendado levar a sua**, com um pouco de crédito |
 
 > [!IMPORTANT]
 > Use a **conta pessoal** do GitHub, não a da empresa: repositórios de organizações precisam de aprovação de um administrador para o Claude e de plano pago na Vercel.
@@ -55,19 +55,19 @@ Crie uma conta gratuita em [github.com/signup](https://github.com/signup), se ai
 
 | Passo | O que fazer |
 | :---: | --- |
-| 1 | Entre em [claude.ai/code](https://claude.ai/code) com a sua conta do plano **Pro ou Max** |
+| 1 | Entre em [claude.ai/code](https://claude.ai/code) com a sua conta do plano **Pro, Max ou Ultra**. Se aparecer um pedido de upgrade, o seu plano não inclui o Claude Code na web |
 | 2 | Conecte o GitHub quando ele pedir, com a sua **conta pessoal**, e autorize o acesso aos seus repositórios (pode ser a todos ou só aos que você escolher) |
 
-## 3 · 🔑 Chave da OpenAI
+## 3 · 🔑 Chave da API da Anthropic
 
 > [!TIP]
 > A organização fornece uma chave para o dia do workshop, que é **desativada depois**. Com a sua própria chave, o app que você publicar continua respondendo no chat depois do workshop.
 
 | Passo | O que fazer |
 | :---: | --- |
-| 1 | **Recomendado:** crie uma conta em [platform.openai.com](https://platform.openai.com), adicione um pouco de crédito (US$ 5 sobram) e gere uma chave em **API keys**. Sem chave própria, use a que a organização vai fornecer no dia do workshop. Guarde a chave num lugar seguro: você vai usá-la de novo na Vercel |
-| 2 | No Claude Code na web, abra o menu do ambiente da sessão e clique em **Edit**. Em **Network secrets** (ou **API credentials**), salve a chave para o host `api.openai.com`, no cabeçalho `Authorization`, com o prefixo `Bearer`. Isso também libera o acesso da sessão ao `api.openai.com` |
-| 3 | Nas **variáveis de ambiente** do mesmo ambiente, acrescente `OPENAI_API_KEY=via-network-secret`. O app precisa de um valor ali, e a chave de verdade é colocada no caminho pela rede da nuvem, sem nunca entrar na máquina |
+| 1 | **Recomendado:** entre em [platform.claude.com](https://platform.claude.com), compre um pouco de crédito em [Billing](https://platform.claude.com/settings/billing) e crie uma chave em [API keys](https://platform.claude.com/settings/keys) (**Create key**). Ela começa com `sk-ant-` e aparece **uma vez só**: copie e guarde num lugar seguro, você vai usá-la de novo na Vercel. Sem chave própria, use a que a organização vai fornecer no dia do workshop |
+| 2 | No Claude Code na web, abra o menu do ambiente da sessão e clique em **Edit**. Em **Network secrets** (ou **API credentials**), salve a chave para o host `api.anthropic.com`, no cabeçalho `x-api-key`, **sem prefixo**. Isso também libera o acesso da sessão ao `api.anthropic.com` |
+| 3 | Nas **variáveis de ambiente** do mesmo ambiente, acrescente `ANTHROPIC_API_KEY=via-network-secret`. O app precisa de um valor ali, e a chave de verdade é colocada no caminho pela rede da nuvem, sem nunca entrar na máquina |
 
 Depois de mudar o ambiente, **comece uma sessão nova**: as mudanças só valem para sessões abertas depois delas.
 

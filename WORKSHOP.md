@@ -61,7 +61,7 @@ flowchart TB
 
 ## ✅ Antes de começar
 
-Siga o [`PREREQUISITES.md`](PREREQUISITES.md): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, e a chave da OpenAI (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
+Siga o [`PREREQUISITES.md`](PREREQUISITES.md): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, e a chave da API da Anthropic (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
 
 ---
 
@@ -196,7 +196,7 @@ O Claude constrói cada etapa com testes, faz um commit por etapa, testa tudo no
 | Passo | O que fazer |
 | :---: | --- |
 | 1 | [vercel.com/new](https://vercel.com/new) → **Import** o seu repositório |
-| 2 | Em **Environment Variables**, adicione `OPENAI_API_KEY` com a sua chave |
+| 2 | Em **Environment Variables**, adicione `ANTHROPIC_API_KEY` com a sua chave |
 | 3 | **Deploy**. O primeiro build falha porque ainda não há banco: é esperado |
 | 4 | No projeto: **Storage → Create Database → Neon**, plano gratuito, conectado a todos os ambientes |
 | 5 | **Deployments** → no último, **… → Redeploy** |
@@ -325,7 +325,7 @@ em destaque, e ordene do mais barato para o mais caro por padrão.
 | `Usage by model` | O modelo principal e os mais baratos dos subagentes |
 
 > [!NOTE]
-> No plano Pro ou superior, esse valor é uma **estimativa**: o uso já está incluído na assinatura. Serve para comparar o custo da funcionalidade inteira, com testes, revisão, documentação e deploy, com as horas que ela levaria sem IA. O gasto do chat aparece em [platform.openai.com/usage](https://platform.openai.com/usage).
+> Nos planos Pro, Max e Ultra, esse valor é uma **estimativa**: o uso já está incluído na assinatura. Serve para comparar o custo da funcionalidade inteira, com testes, revisão, documentação e deploy, com as horas que ela levaria sem IA. O gasto do chat aparece em [platform.claude.com/usage](https://platform.claude.com/usage).
 
 ---
 

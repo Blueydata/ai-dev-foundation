@@ -11,7 +11,7 @@ The app runs on **Vercel** (Hobby plan, free, sign in with a personal GitHub acc
 
 - Vercel runs `npm run vercel-build`: `scripts/migrate.mjs` applies pending migrations (through `DATABASE_URL_UNPOOLED` when Neon provides it) and then `next build`.
 - The Neon integration sets `DATABASE_URL` (pooled, used by the app) and `DATABASE_URL_UNPOOLED` (direct, used by migrations) for every environment.
-- Keys and logins (`OPENAI_API_KEY`, …) are set by the product owner in Vercel, **Settings → Environment Variables**, never in code or in the conversation.
+- Keys and logins (`ANTHROPIC_API_KEY`, …) are set by the product owner in Vercel, **Settings → Environment Variables**, never in code or in the conversation.
 - Local values that have a default in `docker-compose.yml` (model names, flags) must also exist in Vercel: list them for the product owner when a feature adds one.
 
 ## Vercel connector
@@ -46,6 +46,6 @@ In the final report of the feature, list the new variable names the product owne
 
 - Build failed: read the build log with the connector (without it, ask the product owner for the last lines, never for secrets). A migration error comes with the file name.
 - `/api/health` says the database is down: the Neon database is not connected to that environment, or the deploy happened before the integration; redeploy.
-- The chat says the AI is unavailable: `OPENAI_API_KEY` is missing in that environment; add it and redeploy.
+- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that environment; add it and redeploy.
 
 Never ask for or print keys, passwords or connection strings.

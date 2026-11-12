@@ -35,7 +35,7 @@ flowchart LR
 Depois, faça login com a sua conta e abra a aba **Code**: é ali que você vai trabalhar (no terminal, rode `claude` dentro da pasta do projeto).
 
 > [!IMPORTANT]
-> A conta precisa ser do plano **Pro ou superior**, que é o que dá acesso ao Claude Code.
+> A conta precisa ser do plano **Pro, Max ou Ultra** (ou Team e Enterprise com o Claude Code liberado pela empresa): o plano Free não dá acesso ao Claude Code.
 
 ## 2 · 🌿 Git
 
@@ -78,7 +78,7 @@ Ele confere tudo, sobe o projeto e diz o que fazer se faltar algo. Na primeira v
 ✓ Aplicação e banco no ar (http://localhost:3000)
 ✓ Testes e tipos
 ✓ Sem segredos no código
-– Chave da OpenAI não configurada (opcional: só o chat precisa dela)
+– Chave da Anthropic não configurada (opcional: só o chat precisa dela)
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```
 
@@ -96,18 +96,18 @@ Os prompts do treinamento, na ordem, estão no [`WORKSHOP.md`](WORKSHOP.md). Nã
 ---
 
 <details>
-<summary><strong>🔑 Opcional: chave da OpenAI, para o chat com IA responder</strong></summary>
+<summary><strong>🔑 Opcional: chave da API da Anthropic, para o chat com IA responder</strong></summary>
 
 <br>
 
 | Passo | O que fazer |
 | :---: | --- |
-| 1 | Crie uma conta em [platform.openai.com](https://platform.openai.com) e adicione um pouco de crédito (US$ 5 sobram) |
-| 2 | Gere uma chave em **API keys** |
+| 1 | Entre em [platform.claude.com](https://platform.claude.com) e compre um pouco de crédito em [Billing](https://platform.claude.com/settings/billing) |
+| 2 | Crie uma chave em [API keys](https://platform.claude.com/settings/keys) (começa com `sk-ant-` e aparece uma vez só) |
 | 3 | Na pasta do projeto, crie um arquivo `.env` com a linha abaixo |
 
 ```
-OPENAI_API_KEY=a-sua-chave
+ANTHROPIC_API_KEY=a-sua-chave
 ```
 
 Sem a chave, todo o resto funciona; só o chat avisa que a IA está indisponível.

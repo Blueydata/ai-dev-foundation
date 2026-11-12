@@ -35,7 +35,7 @@ In the conversation language, short. While something is missing: the list with �
 ✓ Aplicação e banco no ar
 ✓ Testes e tipos
 ✓ Sem segredos no código
-– Chave da OpenAI não configurada (opcional: só o chat precisa dela)
+– Chave da Anthropic não configurada (opcional: só o chat precisa dela)
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```
 

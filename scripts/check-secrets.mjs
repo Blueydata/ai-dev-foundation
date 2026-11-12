@@ -4,8 +4,8 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export const RULES = [
-  { name: "OpenAI API key", pattern: /sk-(?:proj-)?[A-Za-z0-9_-]{32,}/ },
   { name: "Anthropic API key", pattern: /sk-ant-[A-Za-z0-9_-]{32,}/ },
+  { name: "OpenAI API key", pattern: /sk-(?!ant-)(?:proj-)?[A-Za-z0-9_-]{32,}/ },
   { name: "AWS access key", pattern: /AKIA[0-9A-Z]{16}/ },
   { name: "GitHub token", pattern: /gh[pousr]_[A-Za-z0-9]{36,}/ },
   { name: "Stripe secret key", pattern: /sk_live_[A-Za-z0-9]{24,}/ },

@@ -24,7 +24,7 @@ flowchart LR
 | `DEV_FOUNDATION_CLOUD` | `true` | Tells Claude, skills and subagents to run commands without the Docker prefix |
 | `NODE_USE_ENV_PROXY` | `1`, only when `HTTPS_PROXY` is set | Makes server-side `fetch` (for example the AI SDK) go through the session's egress proxy |
 
-The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `OPENAI_API_KEY`, with a placeholder value in the variable). The participant guide is `PREREQUISITES.md`.
+The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `ANTHROPIC_API_KEY`, with a placeholder value in the variable). The participant guide is `PREREQUISITES.md`.
 
 ## Docker Compose
 
@@ -81,7 +81,7 @@ There are two kinds of settings: **local values** the project defines in `docker
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Local (db service) | `app`, `app`, `app` | Postgres image | Development database credentials |
 | `CI` | Set by GitHub Actions | | `docker-compose.yml` | Marks CI runs |
 
-User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that needs one (for example `OPENAI_API_KEY`) adds the name there, makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and the product owner adds the keys in Vercel ([deployment](deployment.md)).
+User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that needs one (for example `ANTHROPIC_API_KEY`) adds the name there, makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and the product owner adds the keys in Vercel ([deployment](deployment.md)).
 
 ## Commands
 

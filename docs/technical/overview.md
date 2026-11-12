@@ -12,11 +12,11 @@ flowchart LR
   owner["Product owner (Claude Code)"]
   app["Next.js app<br/>(Vercel, or next dev locally)"]
   db[("Postgres<br/>(Neon, or local Postgres 17)")]
-  openai["OpenAI API<br/>(optional, server only)"]
+  anthropic["Anthropic API<br/>(optional, server only)"]
   user -- "HTTPS, or HTTP :3000 locally" --> app
   owner -- "skills, subagents, npm commands" --> app
   app -- "SQL over pg" --> db
-  app -. "AI SDK, when a feature uses AI" .-> openai
+  app -. "AI SDK, when a feature uses AI" .-> anthropic
 ```
 
 ## Tech stack
@@ -34,7 +34,7 @@ flowchart LR
 | Animation | Motion, tw-animate-css | 14.6.0, 1.4.0 | components |
 | Typeface | Instrument Sans (Fontsource, self-hosted) | 5.3.0 | `src/app/globals.css` |
 | URL state | nuqs | 2.10.2 | `src/app/layout.tsx`, module `presentation/url-state.ts` |
-| AI | Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/openai`) | 7.0.153, 4.0.157, 4.0.102 | `src/shared/ai/`, module `infrastructure/ai/` |
+| AI | Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/anthropic`) | 7.0.153, 4.0.157, 4.0.91 | `src/shared/ai/`, module `infrastructure/ai/` |
 | Markdown streaming | Streamdown | 2.7.1 | `src/shared/ui/ai/ai-response.tsx` |
 | Tests | Vitest | 5.0.5 | `vitest.config.ts`, `vitest.integration.config.ts` |
 | Runtime | Node.js, in a Claude Code on the web session or in Docker | 22 | `scripts/cloud-setup.sh`, `docker-compose.yml`, `.nvmrc` |

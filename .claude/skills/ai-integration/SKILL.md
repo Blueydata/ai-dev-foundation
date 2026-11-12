@@ -13,11 +13,11 @@ To confirm an AI SDK API, the docs for the installed version are in `node_module
 
 - `ai`: core (`streamText`, `generateText`, `ToolLoopAgent`, `tool`, `smoothStream`…). Already installed.
 - `@ai-sdk/react`: the `useChat` hook for chat screens. Already installed.
-- Provider: `@ai-sdk/openai` is already installed. For another provider, install its package (for example `@ai-sdk/anthropic`) with an exact version, explaining why first.
+- Provider: `@ai-sdk/anthropic` (Claude models) is already installed and is the project's provider. Another provider only as a decision to record, installing its package with an exact version and explaining why first.
 
 ## Rules
 
-1. **Server only.** Model, instructions and agents live in the module `infrastructure/ai/` and are served by route handlers in `src/app/api/` (`project-structure` skill). The API key is provided by the product owner: `OPENAI_API_KEY` goes into the schema as `.optional()` and into `.env.example` with an empty value. The model name is a local value: `OPENAI_MODEL` gets a default in `docker-compose.yml`. Without the key the app still runs and only the AI feature answers with a clear error (see "Configuration" in `project-structure`).
+1. **Server only.** Model, instructions and agents live in the module `infrastructure/ai/` and are served by route handlers in `src/app/api/` (`project-structure` skill). The API key is provided by the product owner: `ANTHROPIC_API_KEY` goes into the schema as `.optional()` and into `.env.example` with an empty value. The model name is a local value: `ANTHROPIC_MODEL` gets a default in `docker-compose.yml` (start with `claude-haiku-5-5`). Without the key the app still runs and only the AI feature answers with a clear error (see "Configuration" in `project-structure`).
 2. **Always streamed** when the response is shown to the user, always with `experimental_transform: smoothTextStream()` from `src/shared/ai/stream.ts`. It releases text word by word at a steady pace and the screen animates each word, so the response never looks stuck.
 3. **Instructions separate from user input.** The assistant rules go in `instructions` (agent) or `system` (`streamText`), in English. User text goes only in the messages and never changes the rules. If the assistant answers end users, tell it in the instructions to answer in the product language.
 4. **Validated inputs and outputs:** request bodies with `parseJsonBody` and a schema, messages with `validateUIMessages`, tool parameters with `inputSchema`, structured outputs with `zod`.
@@ -40,16 +40,16 @@ To confirm an AI SDK API, the docs for the installed version are in `node_module
 ## Model provider
 
 ```ts
-import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { getServerEnv } from "@/shared/config/env";
 import { UnavailableError } from "@/shared/kernel/errors";
 
 export function getChatModel() {
-  const { OPENAI_API_KEY, OPENAI_MODEL } = getServerEnv();
-  if (!OPENAI_API_KEY) {
-    throw new UnavailableError("OpenAI");
+  const { ANTHROPIC_API_KEY, ANTHROPIC_MODEL } = getServerEnv();
+  if (!ANTHROPIC_API_KEY) {
+    throw new UnavailableError("Anthropic");
   }
-  return createOpenAI({ apiKey: OPENAI_API_KEY })(OPENAI_MODEL);
+  return createAnthropic({ apiKey: ANTHROPIC_API_KEY })(ANTHROPIC_MODEL);
 }
 ```
 
@@ -209,7 +209,7 @@ tools: {
 
 Every message to the model is paid in tokens, and the same mistakes cost more with more users:
 
-1. **Smallest model that answers well.** Start with the small model of the provider (`OPENAI_MODEL` default in `docker-compose.yml`); move up only with evidence (a failing conversation), as a decision to record.
+1. **Smallest model that answers well.** Start with the small model of the provider (`ANTHROPIC_MODEL` default in `docker-compose.yml`, a Haiku model); move up only with evidence (a failing conversation), as a decision to record.
 2. **Short, stable instructions.** Keep the system instructions short and identical between requests, so the provider can cache the prefix; never add per-request data to them.
 3. **Data through tools, a few rows at a time** (see above), never the whole table in the prompt.
 4. **Limits:** maximum messages and message length per request (`application/schemas.ts`), `maxOutputTokens`, `stopWhen: stepCountIs(n)` and rate limiting on public routes.

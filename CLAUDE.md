@@ -20,7 +20,7 @@ This project starts from **Dev Foundation**, a base to build any kind of softwar
 - Next.js (App Router) with TypeScript
 - Postgres, through the `pg` package (`src/shared/database/client.ts`), with SQL migrations
 - UI: Tailwind CSS, shadcn/ui, Motion and lucide-react · URL state: nuqs · Validation: zod
-- AI: Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/openai`) and Streamdown for streamed responses
+- AI: Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/anthropic`, Claude models) and Streamdown for streamed responses
 - Development: Claude Code on the web (cloud sessions, nothing installed); Docker Compose as the option on a computer
 - Deploy: Vercel with a Neon Postgres database, followed through the claude.ai Vercel connector (`deploy` skill)
 - Tests: Vitest unit tests and integration tests against the real Postgres; end-to-end checks done by Claude in a real browser (`/test-in-browser`), not written as files
