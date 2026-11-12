@@ -26,7 +26,7 @@ disable-model-invocation: true
 1. [Step]
 ```
 
-4. **Cloud session:** push the branch and open the pull request yourself; give the product owner its link and say that CI checks types, tests, queries, secrets and the production build there, and Vercel adds a preview link to the pull request when the project is connected (`deploy`). **On a computer:** show the product owner the commands to run:
+4. **Cloud session:** push the branch and open the pull request yourself, then publish a preview with the `deploy` skill. Give the product owner both links (pull request and preview) and say that CI checks types, tests, queries, secrets and the production build on the pull request. **On a computer:** show the product owner the commands to run:
 
 ```bash
 git push -u origin <branch-name>

@@ -20,7 +20,7 @@ A foundation to start building any kind of software with AI. It ships the techni
 | Standards skills | `.claude/skills/` | `project-structure`, `code-standards`, `ui-standards`, `url-state`, `database-queries`, `ai-integration` and `technical-docs`, which Claude follows on its own |
 | Subagents | `.claude/agents/` | Four specialists (`explorer`, `tester`, `reviewer`, `documenter`), each with its own model and effort level |
 | Data at scale | `database-queries` skill, `scripts/db-query.mjs`, `src/shared/database/query-counter.ts` | Rules for queries that stay fast with large data, AI that answers plain-language questions through typed tools, and the tools to prove it: read-only `db:query` and `db:explain`, and N+1 tests |
-| Deploy | `deploy` skill, `package.json` (`vercel-build`) | Vercel and Neon on free plans: production on every push to `main`, a preview per pull request, migrations applied on build; no infrastructure code to maintain |
+| Deploy | `deploy` skill, `package.json` (`vercel-build`) | Vercel and Neon on free plans: Claude publishes with the pinned Vercel CLI (`npm run vercel`): a preview from the work branch, production from `main`, migrations applied on build; no infrastructure code to maintain |
 | Documentation | `docs/` | Technical in English, complete from day one: overview, folder tree, architecture, module pages, data model, API, runtime, testing, security, AI and UI, with Mermaid diagrams (start at `docs/technical/README.md`). Business in English and Brazilian Portuguese, created with the first feature. Both grow with every delivery |
 | Tests | `*.test.ts`, `*.integration.test.ts`, `.claude/launch.json` | Unit tests, integration tests against the real database, and the end-to-end check: at the end of each feature Claude uses the app in the built-in browser of the Claude desktop app, while you watch |
 | CI | `.github/workflows/ci.yml` | Types and unit tests, integration tests, read-only query checks, secret scanning, the production build and a check of the cloud session setup |
@@ -49,7 +49,7 @@ To stop: `Ctrl + C`. To also erase the database data: `docker compose down -v`.
 
 ## Deploy
 
-The app goes online on Vercel with a Neon Postgres database, both on free plans, with a personal GitHub account. Ask Claude to run `/deploy`: it guides you through the few clicks only you can do. Every push to `main` publishes production, every pull request gets a preview link, and `npm run vercel-build` applies pending migrations before building. Details: [`docs/technical/deployment.md`](docs/technical/deployment.md).
+The app goes online on Vercel with a Neon Postgres database, both on free plans (Vercel Hobby is for non-commercial use). Ask Claude to run `/deploy`: it publishes through the pinned Vercel CLI (`npm run vercel`), using a Vercel token saved as a network secret for `api.vercel.com` (see [`PREREQUISITES.md`](PREREQUISITES.md)), creates the project and the database, adds the local settings and gives you a link to paste your own `ANTHROPIC_API_KEY` in Vercel. A preview is deployed from the work branch and production from `main` after the merge; `npm run vercel-build` applies pending migrations before building. Pushing does not publish by itself. Details: [`docs/technical/deployment.md`](docs/technical/deployment.md).
 
 ## Workshop
 

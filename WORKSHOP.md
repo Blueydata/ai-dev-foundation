@@ -50,7 +50,7 @@ flowchart TB
 | Marcador | Onde |
 | --- | --- |
 | 🤖 **Claude** | [claude.ai/code](https://claude.ai/code), numa sessão no **seu** repositório |
-| ▲ **Vercel** | [vercel.com](https://vercel.com), entrando com o GitHub |
+| ▲ **Vercel** | [vercel.com](https://vercel.com): só para colar a sua chave, uma vez |
 | 🌐 **App** | O link que a Vercel dá para o seu app |
 
 > [!TIP]
@@ -191,19 +191,7 @@ Aprovado. Pode construir.
 
 O Claude constrói cada etapa com testes, faz um commit por etapa, testa tudo no navegador, chama o revisor, corrige o que for grave e atualiza a documentação. Leva de 20 a 35 minutos.
 
-▲ **Vercel** · Enquanto isso, deixe o link público pronto:
-
-| Passo | O que fazer |
-| :---: | --- |
-| 1 | [vercel.com/new](https://vercel.com/new) → **Import** o seu repositório |
-| 2 | Em **Environment Variables**, adicione `ANTHROPIC_API_KEY` com a sua chave |
-| 3 | **Deploy**. O primeiro build falha porque ainda não há banco: é esperado |
-| 4 | No projeto: **Storage → Create Database → Neon**, plano gratuito, conectado a todos os ambientes |
-| 5 | **Deployments** → no último, **… → Redeploy** |
-
-✔️ Abra o link do projeto: aparece **"Banco de dados: conectado"**. É o projeto base, ainda sem a funcionalidade nova, que está sendo construída na branch da sessão.
-
-Depois, veja quanto de contexto a conversa está usando:
+Enquanto isso, veja quanto de contexto a conversa está usando:
 
 | 1 | 2 |
 | --- | --- |
@@ -235,15 +223,14 @@ Estreito, e do chat respondendo "tem kitnet mobiliada?".
 /deliver
 ```
 
-✔️ O Claude faz o push e abre o pull request no seu repositório. O CI confere tipos, testes e o build, e a Vercel publica uma **prévia** do pull request, com a planilha carregada no banco.
+✔️ O Claude faz o push, abre o pull request (o CI confere tipos, testes e o build) e **publica o app na Vercel** pela CLI, com o token do seu cofre. Na primeira vez, ele mesmo cria o projeto e o banco de dados (Neon) e carrega a planilha.
 
-✔️ Pelo conector da Vercel, o Claude acompanha esse deploy sozinho: se o build falhar, ele lê o erro, corrige e faz o push de novo. Quando ficar pronto, ele te entrega o **link da prévia**.
+🔑 **Sua chave** · Na primeira publicação, o Claude te passa um link das configurações do projeto na Vercel. Abra, adicione `ANTHROPIC_API_KEY` com a sua chave da Anthropic para todos os ambientes, salve e responda `pronto`. É a única coisa que você faz na Vercel.
 
-> [!TIP]
-> Sem o conector da Vercel na sessão, abra o link de prévia no comentário da Vercel no pull request e, se o build falhar, peça: `/deploy o build da prévia falhou`.
+✔️ O Claude acompanha o build, corrige o que falhar e te entrega o **link da prévia**. A prévia pede que você esteja logado na Vercel: é normal.
 
 > [!NOTE]
-> A prévia é do pull request. Quando você fizer o **merge** no GitHub, a Vercel publica no link oficial, o da `main`.
+> Quando você fizer o **merge** do pull request no GitHub, peça: `/deploy publique a main em produção`. O Claude publica o link oficial.
 
 ## 8 · 💬 Conversar com o chat
 
@@ -307,7 +294,7 @@ Liste todos os imóveis que já estão alugados.
 em destaque, e ordene do mais barato para o mais caro por padrão.
 ```
 
-✔️ O Claude muda, testa, documenta, faz o push e acompanha o novo deploy até a prévia atualizada ficar pronta. Quando estiver tudo certo, faça o **merge** do pull request no GitHub e abra o link oficial.
+✔️ O Claude muda, testa, documenta, faz o push e publica uma prévia nova. Quando estiver tudo certo, faça o **merge** do pull request no GitHub e peça `/deploy publique a main em produção`.
 
 ### 💰 Quanto custou?
 

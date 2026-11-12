@@ -15,8 +15,9 @@ Take the person from "just opened" to "ready to develop". Check each item in ord
 2. **Tests and types:** the `tester` subagent.
 3. **Secrets:** `npm run check:secrets` reports nothing.
 4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which feature needs each one and that it goes in the cloud environment settings (environment menu of the session, **Edit**: environment variables, or network secrets for API keys), followed by a new session. The guide is `PREREQUISITES.md`.
-5. **Preview:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
-6. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
+5. **Vercel:** `npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If not, the Vercel token is missing from the cloud environment's network secrets (`PREREQUISITES.md`, step 6): optional for setup, needed only to publish.
+6. **Preview:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
+7. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
 
 ## On a computer with Docker
 
@@ -35,6 +36,7 @@ In the conversation language, short. While something is missing: the list with �
 ✓ Aplicação e banco no ar
 ✓ Testes e tipos
 ✓ Sem segredos no código
+✓ Vercel conectada (pronta para publicar)
 – Chave da Anthropic não configurada (opcional: só o chat precisa dela)
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```

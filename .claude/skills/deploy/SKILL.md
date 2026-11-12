@@ -1,51 +1,46 @@
 ---
 name: deploy
-description: Puts the app online on Vercel with a Neon Postgres database, both on free plans, and keeps the deploy working as features add settings - guides the product owner through the one-time clicks only they can do, then follows every deploy through the Vercel connector, fixes failed builds and hands over the link. Use when asked to publish, deploy or put the app online, and whenever a feature adds an environment variable.
+description: Publishes the app on Vercel with a Neon Postgres database, both on free plans, through the Vercel CLI - creates the project and the database the first time, deploys a preview for the work branch and production from main, follows the build, fixes failures and hands over the link. The product owner only provides keys. Use when asked to publish, deploy or put the app online, after /deliver, and whenever a feature adds an environment variable.
 ---
 
 # Deploy
 
-The app runs on **Vercel** (Hobby plan, free, sign in with a personal GitHub account) with a **Neon** Postgres database created from inside Vercel. Every push to `main` publishes production; every pull request gets its own preview link. There is no infrastructure code to maintain.
+The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** Postgres database created through Vercel. You publish it with the Vercel CLI; the product owner never clicks through Vercel except to paste their own keys.
 
 ## How it works
 
-- Vercel runs `npm run vercel-build`: `scripts/migrate.mjs` applies pending migrations (through `DATABASE_URL_UNPOOLED` when Neon provides it) and then `next build`.
-- The Neon integration sets `DATABASE_URL` (pooled, used by the app) and `DATABASE_URL_UNPOOLED` (direct, used by migrations) for every environment.
-- Keys and logins (`ANTHROPIC_API_KEY`, …) are set by the product owner in Vercel, **Settings → Environment Variables**, never in code or in the conversation.
-- Local values that have a default in `docker-compose.yml` (model names, flags) must also exist in Vercel: list them for the product owner when a feature adds one.
+- The CLI is pinned: always run it as `npm run vercel -- <command> --token "$VERCEL_TOKEN"`.
+- The token is a network secret of the cloud environment for `api.vercel.com`. `scripts/cloud-setup.sh` sets `VERCEL_TOKEN` to a placeholder (`vianetworksecret`) and the network proxy puts the real token in each request: you never see it, never print it and never ask for it in the conversation.
+- Vercel builds with `npm run vercel-build`: `scripts/migrate.mjs` applies pending migrations (through `DATABASE_URL_UNPOOLED`) and then `next build`.
+- The Neon integration sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` for every environment. Never pull them into the project (`--no-env-pull`): the local app uses the session's own Postgres.
+- `.vercelignore` keeps `node_modules`, `.next`, `.vercel` and every `.env` file out of the upload.
+- The project name is the repository name in lowercase (`basename "$(git rev-parse --show-toplevel)"`).
+- Local values with a default in `docker-compose.yml` (for example `ANTHROPIC_MODEL`) also go to Vercel: add them yourself with `npm run vercel -- env add <NAME> <environment>` (they are not secrets). Keys the product owner provides (`ANTHROPIC_API_KEY`) are pasted by them in Vercel; you only give the link.
 
-## Vercel connector
+## Before anything: the token works
 
-The Vercel connector of claude.ai (connected once at https://claude.ai/customize/connectors, then a new session) gives you its tools in cloud sessions: projects, deployments, build logs and the Vercel docs. It does not create projects, databases or environment variables: those are the one-time clicks below. Every push you make deploys on its own (Vercel watches the GitHub repository): a pushed branch gets a preview, `main` gets production.
+`npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If it fails with an authentication or network error, tell the product owner in one line to save the Vercel token as a network secret for `api.vercel.com` (header `Authorization`, prefix `Bearer`) in the cloud environment settings and open a new session (`PREREQUISITES.md`, step 6). Stop there.
 
-If its tools are not in the session, tell the product owner once, in one line, to connect it and open a new session; meanwhile follow the steps below by asking them.
+## First publish (once per repository)
 
-**After every push** (stages, fixes, `/deliver`), use the connector, without being asked:
+1. **Project:** `npm run vercel -- project create <name> --token "$VERCEL_TOKEN"` (an "already exists" answer is fine), then `npm run vercel -- link --yes --project <name> --token "$VERCEL_TOKEN"`.
+2. **Database:** `npm run vercel -- integration add neon --no-env-pull --token "$VERCEL_TOKEN"`. If it answers with a link to accept the integration terms, give the link to the product owner, wait for "pronto" and run it again.
+3. **Settings:** add every local value the app needs (`docker-compose.yml`) with `env add` for `production` and `preview`.
+4. **Keys:** `npm run vercel -- env list --token "$VERCEL_TOKEN"`. For each name in `.env.example` that is missing, give the product owner the link `https://vercel.com/<account>/<name>/settings/environment-variables` (the account comes from `whoami`) and ask them to add the name with their own value for all environments. Wait for "pronto" and check again.
+5. Continue with "Every publish".
 
-1. Find the project and the deployment for the commit you just pushed; wait until it finishes.
-2. Failed: read the build log, fix the cause in the code (with a test when the cause is in a rule or a repository), commit, push and follow the new deployment. After 3 failed attempts, stop and explain.
-3. Ready: give the product owner the link in one line (preview for a branch, production for `main`) and check it: `/api/health` answers `"database":"ok"` and the main pages work, through the connector's tools to read a Vercel URL when they exist, or `curl` and `test-in-browser` when the session's network reaches it.
+## Every publish
 
-## First deploy (the product owner clicks once, you guide)
-
-Give these steps one at a time, in the conversation language, and wait for "pronto" after each:
-
-1. Open https://vercel.com/new, sign in with GitHub and **import** the project repository (the personal account must own the repository: organization repositories need a paid plan).
-2. Before **Deploy**, open **Environment Variables** and add every name in `.env.example` with their own values (logins made up for the purpose, never a real password).
-3. Click **Deploy**. The first build fails without a database; that is expected.
-4. In the project, **Storage → Create Database → Neon**, free plan, region `São Paulo` when offered, connect it to all environments.
-5. **Deployments → … → Redeploy**.
-
-Then follow that deployment with the connector, as in "After every push", and give the production link. Without the connector, ask for the production URL and check it with `curl` and `test-in-browser`.
-
-## When a feature changes configuration
-
-In the final report of the feature, list the new variable names the product owner must add in Vercel (and in which environments). Nothing else changes for deploy.
+1. **Where:** a preview from the session's branch after `/deliver`; production only from `main`, after the pull request is merged, from a fresh checkout: `git fetch origin main && git worktree add /tmp/release origin/main`, then deploy with `--cwd /tmp/release`.
+2. **Deploy:** `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"` (add `--prod` for production). It waits for the build and prints the URL.
+3. **Failed build:** `npm run vercel -- inspect <url> --logs --token "$VERCEL_TOKEN"`, fix the cause in the code (with a test when it is in a rule or a repository), commit, push and deploy again. After 3 failed attempts, stop and explain.
+4. **Check:** `npm run vercel -- curl /api/health --deployment <url> --token "$VERCEL_TOKEN"` answers `"database":"ok"`; then open the main pages the same way (or with `test-in-browser` when the session's network reaches the URL).
+5. **Hand over** the link in one line. Preview links ask the product owner to be signed in to Vercel; that is expected.
 
 ## When something fails
 
-- Build failed: read the build log with the connector (without it, ask the product owner for the last lines, never for secrets). A migration error comes with the file name.
-- `/api/health` says the database is down: the Neon database is not connected to that environment, or the deploy happened before the integration; redeploy.
-- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that environment; add it and redeploy.
+- Migration error in the build: the log names the migration file; fix it as a new migration.
+- `/api/health` says the database is down: the Neon integration is not connected to that environment; run step 2 of "First publish" again.
+- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that environment; give the product owner the settings link and deploy again after they add it.
 
-Never ask for or print keys, passwords or connection strings.
+Never ask for or print keys, tokens or connection strings.

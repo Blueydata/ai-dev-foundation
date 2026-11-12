@@ -8,7 +8,7 @@ The template is used in a two-hour workshop. Every participant must be able to p
 
 ## Decision
 
-- The app is published on Vercel (Hobby plan) and the database is Neon Postgres created from inside Vercel's Storage tab, both on free plans.
+- The app is published on Vercel (Hobby plan) and the database is Neon Postgres created through the Vercel Neon integration, both on free plans.
 - Every push to `main` publishes production; every pull request gets a preview deployment.
 - Vercel runs `npm run vercel-build`, which is `node scripts/migrate.mjs && next build`: migrations are applied before the build. The migration runner prefers `DATABASE_URL_UNPOOLED` (direct connection) over `DATABASE_URL` (pooled), through `selectMigrationUrl`.
 - `infra/`, `Dockerfile`, `.dockerignore`, `scripts/start.mjs`, the `infra` Compose service, the CI jobs `infrastructure` and `image`, the `infrastructure-as-code` skill and the `infrastructure-engineer` subagent are removed, and `output: "standalone"` is dropped from `next.config.ts`.
@@ -23,7 +23,7 @@ The template is used in a two-hour workshop. Every participant must be able to p
 
 ## Consequences
 
-- Deploying needs a GitHub account and a few clicks; there is no infrastructure code to keep in sync with features.
+- Publishing is done by Claude through the Vercel CLI ([0007](0007-claude-publishes-through-the-vercel-cli.md)); the dashboard import described above is no longer the flow. There is no infrastructure code to keep in sync with features.
 - A feature that adds an environment variable must list it for the product owner to add in Vercel ([deployment](../deployment.md)).
 - The app is tied to Vercel's serverless limits (function duration, no long-running processes) and to Neon's free-plan limits.
 - Moving to AWS later is possible, but infrastructure code and a container image would have to be written again.

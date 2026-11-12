@@ -25,7 +25,7 @@ How the system is built, for a developer who just joined. The code has no commen
 | [security.md](security.md) | Threats and the control that handles each one |
 | [ai.md](ai.md) | AI integration and the streaming pipeline |
 | [ui.md](ui.md) | Theme, typeface, shared components, layouts and URL state |
-| [deployment.md](deployment.md) | Vercel and Neon: environments, variables, migrations on build, first deploy |
+| [deployment.md](deployment.md) | Publishing with the Vercel CLI and Neon: flow, token, environments, variables, migrations on build, limits |
 
 ## Decisions
 
@@ -36,5 +36,7 @@ How the system is built, for a developer who just joined. The code has no commen
 | [0003](decisions/0003-aws-infrastructure-as-code.md) | AWS infrastructure as code with Terraform and Terragrunt | superseded by 0004 |
 | [0004](decisions/0004-vercel-and-neon-instead-of-aws.md) | Vercel and Neon instead of AWS | accepted |
 | [0005](decisions/0005-cloud-first-development.md) | Cloud-first development with Claude Code on the web | accepted |
+| [0006](decisions/0006-anthropic-api-for-the-app-ai.md) | Anthropic API for the app's AI | accepted |
+| [0007](decisions/0007-claude-publishes-through-the-vercel-cli.md) | Claude publishes through the Vercel CLI | accepted |
 
 Business documentation, for non-technical readers, is in [`docs/business/`](../business/) once the first feature is delivered.

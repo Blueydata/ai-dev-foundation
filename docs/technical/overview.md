@@ -39,14 +39,14 @@ flowchart LR
 | Tests | Vitest | 5.0.5 | `vitest.config.ts`, `vitest.integration.config.ts` |
 | Runtime | Node.js, in a Claude Code on the web session or in Docker | 22 | `scripts/cloud-setup.sh`, `docker-compose.yml`, `.nvmrc` |
 | CI | GitHub Actions | | `.github/workflows/ci.yml` |
-| Hosting | Vercel (Hobby) with Neon Postgres, both on free plans | | `package.json` (`vercel-build`), [deployment](deployment.md) |
+| Hosting | Vercel (Hobby, published by Claude through the pinned Vercel CLI) with Neon Postgres, both on free plans | | `package.json` (`vercel-build`), [deployment](deployment.md) |
 
 ## Quality goals
 
 | Goal | How the project achieves it |
 | --- | --- |
 | Runs anywhere with no setup | Cloud sessions prepare themselves, or Docker Compose on a computer; local values live in `docker-compose.yml` ([runtime](runtime-and-configuration.md)) |
-| Online with no cloud account to configure | Vercel and Neon on free plans, migrations on build ([deployment](deployment.md)) |
+| Online with no cloud account to configure | Vercel and Neon on free plans, published by Claude with the Vercel CLI, migrations on build ([deployment](deployment.md)) |
 | Predictable place for every change | Modules with four layers, enforced by a test ([architecture](architecture.md)) |
 | Changes do not break what works | Unit and integration tests in CI, end-to-end check by Claude in the browser ([testing](testing-and-quality.md)) |
 | No leaked secrets or customer data | Secret scan in CI, server-only keys, typed errors without internals ([security](security.md)) |

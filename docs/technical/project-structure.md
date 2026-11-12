@@ -20,8 +20,9 @@ The complete folder tree of the repository, with what each folder and file holds
 ├── src/                           All application source code (see below)
 ├── workshop/                      Training material: the Ilha Clara rental listings CSV and its specification (pt-BR)
 ├── .env.example                   Names of keys only the product owner can provide; empty means none needed
-├── .gitignore                     Keeps .env, build output and dependencies out of git
+├── .gitignore                     Keeps .env, build output, dependencies and .vercel/ out of git
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available
+├── .vercelignore                  Files the Vercel CLI does not upload: .git, node_modules, .next, .vercel, .env files, logs
 ├── .nvmrc                         Node.js major version used by CI
 ├── AGENTS.md                      Written by next dev: points agents to the docs of the installed Next.js version
 ├── LOCAL.md                       Optional guide (pt-BR) to run on a computer with Docker, Git and Claude Code
@@ -32,7 +33,7 @@ The complete folder tree of the repository, with what each folder and file holds
 ├── components.json                shadcn/ui settings: where generated components and utilities go
 ├── docker-compose.yml             The db and app services, with local values for every setting (also read by scripts/local-env.mjs)
 ├── next.config.ts                 Next.js settings (allowed dev origins for the headless browser)
-├── package.json                   Dependencies, pinned versions and npm scripts
+├── package.json                   Dependencies, pinned versions and npm scripts (including vercel, the pinned Vercel CLI)
 ├── postcss.config.mjs             Tailwind CSS through PostCSS
 ├── tsconfig.json                  Strict TypeScript; the @/ alias points to src/
 ├── vitest.config.ts               Unit tests: src/**/*.test.ts and scripts/*.test.ts
@@ -89,7 +90,7 @@ Test files sit next to the file they test (`*.test.ts` for unit, `*.integration.
 scripts/
 ├── check-env.mjs           Lists keys from .env.example missing in the environment (names only)
 ├── check-secrets.mjs       Looks for API keys, tokens and private keys in tracked files
-├── cloud-setup.sh          Cloud sessions: PostgreSQL, dependencies, session variables, migrations, next dev in the background
+├── cloud-setup.sh          Cloud sessions: PostgreSQL, dependencies, session variables (including the VERCEL_TOKEN placeholder), migrations, next dev in the background
 ├── db-query.mjs            db:query and db:explain: one read statement in a read-only transaction, with plan analysis
 ├── local-env.mjs           Reads app.environment from docker-compose.yml and prints shell exports pointing at localhost
 ├── migrate.mjs             Applies pending SQL migrations (DATABASE_URL_UNPOOLED preferred) and records them in schema_migrations; also run by vercel-build

@@ -22,9 +22,11 @@ flowchart LR
 | `DATABASE_URL` | `postgres://app:app@localhost:5432/app` | Application database on the container's Postgres; built from `app.environment` in `docker-compose.yml` by `scripts/local-env.mjs`, with the host `db` replaced by `localhost` |
 | `TEST_DATABASE_URL` | `postgres://app:app@localhost:5432/app_test` | Integration tests |
 | `DEV_FOUNDATION_CLOUD` | `true` | Tells Claude, skills and subagents to run commands without the Docker prefix |
+| `VERCEL_TOKEN` | `vianetworksecret` (placeholder, kept if already set) | The Vercel CLI sends it; the proxy replaces it with the real token, a network secret for `api.vercel.com` ([deployment](deployment.md)) |
+| `VERCEL_TELEMETRY_DISABLED` | `1` | Turns off Vercel CLI telemetry |
 | `NODE_USE_ENV_PROXY` | `1`, only when `HTTPS_PROXY` is set | Makes server-side `fetch` (for example the AI SDK) go through the session's egress proxy |
 
-The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way for `ANTHROPIC_API_KEY`, with a placeholder value in the variable). The participant guide is `PREREQUISITES.md`.
+The script is idempotent: a second run only checks health. `npm install` is skipped while `scripts/cloud-setup.sh`, `package.json` and `package-lock.json` match the hashes in `node_modules/.cloud-setup.sha256`. User-provided keys and logins come from the cloud environment's settings: environment variables, or a network secret that the egress proxy injects into requests to its host (the recommended way: `ANTHROPIC_API_KEY` for `api.anthropic.com`, header `x-api-key`, no prefix, with the placeholder `via-network-secret` in the variable; the Vercel token for `api.vercel.com`, header `Authorization`, prefix `Bearer`). The participant guide is `PREREQUISITES.md`.
 
 ## Docker Compose
 
@@ -81,7 +83,7 @@ There are two kinds of settings: **local values** the project defines in `docker
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Local (db service) | `app`, `app`, `app` | Postgres image | Development database credentials |
 | `CI` | Set by GitHub Actions | | `docker-compose.yml` | Marks CI runs |
 
-User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that needs one (for example `ANTHROPIC_API_KEY`) adds the name there, makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and the product owner adds the keys in Vercel ([deployment](deployment.md)).
+User-provided keys: none in Dev Foundation. `.env.example` is empty; a feature that uses AI adds `ANTHROPIC_API_KEY` there (and `ANTHROPIC_MODEL` as a local value in `docker-compose.yml`, starting with `claude-haiku-5-5`), makes it `.optional()` in the schema, and fails only that feature with `UnavailableError` while the key is missing. `npm run check:env` lists missing names, never values. Every local value above is for development only; online, Neon provides `DATABASE_URL` and `DATABASE_URL_UNPOOLED` and Claude adds local values with the Vercel CLI and the product owner pastes the keys in Vercel ([deployment](deployment.md)).
 
 ## Commands
 
@@ -99,6 +101,7 @@ In a cloud session, run them as written. With Docker Compose, run them inside th
 | `npm run db:query -- "<SELECT …>"` | Runs one read statement on the development database, read-only with a 5-second timeout |
 | `npm run db:explain -- "<SELECT …>"` | Prints the execution plan and warns about large sequential scans; `--force-index` disables sequential scans |
 | `npm run build` | Production build |
+| `npm run vercel -- <command> --token "$VERCEL_TOKEN"` | The pinned Vercel CLI (`npx --yes vercel@65.14.0`), used by the `deploy` skill |
 | `npm run vercel-build` | Migrations then production build, run by Vercel |
 | `npx shadcn@latest add <name>` | Adds a shadcn/ui component to `src/shared/ui/` |
 | `docker compose down -v` | Stops everything and erases the database volume |

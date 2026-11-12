@@ -70,7 +70,7 @@ flowchart LR
 
 ## Secret scan
 
-`scripts/check-secrets.mjs` scans the files tracked by git or, when the project is not a repository (downloaded as ZIP), every file except `node_modules`, `.git`, `.next` and `.env` files. It looks for OpenAI, Anthropic, AWS, GitHub, Stripe and Slack keys and private keys, and prints file and line for each finding. The same command runs in CI, so a leaked key fails the pull request.
+`scripts/check-secrets.mjs` scans the files tracked by git or, when the project is not a repository (downloaded as ZIP), every file except `node_modules`, `.git`, `.next` and `.env` files. It looks for Anthropic (checked first, so its keys are not reported as OpenAI), OpenAI, AWS, GitHub, Stripe and Slack keys and private keys, and prints file and line for each finding. The same command runs in CI, so a leaked key fails the pull request.
 
 ## Current tests
 

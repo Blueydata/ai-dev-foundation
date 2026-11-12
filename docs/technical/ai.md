@@ -1,6 +1,6 @@
 # AI
 
-How language models and agents are integrated. Dev Foundation ships the shared streaming and chat UI pieces; features add their models, instructions and agents in their module `infrastructure/ai/` folder, and list them in the table below.
+How language models and agents are integrated. The provider is Anthropic (Claude models) through `@ai-sdk/anthropic`, see [decision 0006](decisions/0006-anthropic-api-for-the-app-ai.md). Dev Foundation ships the shared streaming and chat UI pieces; features add their models, instructions and agents in their module `infrastructure/ai/` folder, and list them in the table below.
 
 ## Integrations
 
@@ -39,7 +39,7 @@ sequenceDiagram
 
 ## Rules
 
-- Server only: the provider key and model name come from `getServerEnv()`; the key is a user-provided, optional variable, and without it the feature answers with `UnavailableError` while the rest of the app works.
+- Server only: the provider key (`ANTHROPIC_API_KEY`) and model name (`ANTHROPIC_MODEL`) come from `getServerEnv()`; the key is a user-provided, optional variable (in cloud sessions a placeholder, `via-network-secret`, with the real key injected by the network proxy for `api.anthropic.com`), and without it the feature answers with `UnavailableError` while the rest of the app works.
 - Instructions are separate from user text, in English, and tell the assistant to answer in the product language.
 - Agent tools call use cases received as dependencies, never SQL directly.
 - Data reaches the model only through tools with typed filters and at most 10 compact rows per call; the whole table is never put in the prompt. Visibility and permission rules live in the use case or the query, never only in the instructions.

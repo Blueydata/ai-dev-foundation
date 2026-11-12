@@ -29,8 +29,18 @@
       "Bash(docker compose up -d)",
       "Bash(test -f docker-compose.yml)",
       "Bash(uname -s)",
-      "Bash(docker compose run --rm infra check)",
-      "Bash(docker compose run --rm infra plan *)"
+      "Bash(npm test)",
+      "Bash(npm run test)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run test:integration)",
+      "Bash(npm run build)",
+      "Bash(npm run check:secrets)",
+      "Bash(npm run db:migrate)",
+      "Bash(npm run check:env)",
+      "Bash(npm run db:explain *)",
+      "Bash(npm run db:query *)",
+      "Bash(scripts/cloud-setup.sh)",
+      "Bash(tail -n 40 /tmp/dev-foundation-app.log)"
     ],
     "deny": [
       "Read(**/.env)",
