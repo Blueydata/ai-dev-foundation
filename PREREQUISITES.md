@@ -1,6 +1,6 @@
 # Pré-requisitos — tudo na nuvem, sem instalar nada
 
-O que deixar pronto antes do workshop "Desenvolvimento de software com IA": três contas pessoais, um repositório e duas chaves. A versão com prints de cada tela é a página de preparação enviada aos participantes. Tudo acontece no navegador, no **Claude Code na web** ([claude.ai/code](https://claude.ai/code)); não precisa instalar nada. Prefere rodar no seu computador? Veja o [`LOCAL.md`](LOCAL.md).
+O que deixar pronto antes do workshop "Desenvolvimento de software com IA": três contas pessoais, um repositório e duas chaves. A versão com prints de cada tela é a página de preparação: [abrir a página](https://claude.ai/artifact/VfDEQLnrrSJTU893erfRdz) (o mesmo conteúdo está em [`workshop/preparacao.html`](workshop/preparacao.html)). Tudo acontece no navegador, no **Claude Code na web** ([claude.ai/code](https://claude.ai/code)); não precisa instalar nada. Prefere rodar no seu computador? Veja o [`LOCAL.md`](LOCAL.md).
 
 ![Tempo](https://img.shields.io/badge/tempo-~20%20min-1f6feb?style=for-the-badge)
 ![Instalar](https://img.shields.io/badge/instalar-nada-2da44e?style=for-the-badge)

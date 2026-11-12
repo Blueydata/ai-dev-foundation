@@ -61,7 +61,7 @@ flowchart TB
 
 ## ✅ Antes de começar
 
-Siga o [`PREREQUISITES.md`](PREREQUISITES.md) (ou a página de preparação com prints): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, o repositório `demo`, o token da Vercel e a chave da API da Anthropic (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
+Siga a [página de preparação com prints](https://claude.ai/artifact/VfDEQLnrrSJTU893erfRdz) (ou o [`PREREQUISITES.md`](PREREQUISITES.md)): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, o repositório `demo`, o token da Vercel e a chave da API da Anthropic (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
 
 ---
 
