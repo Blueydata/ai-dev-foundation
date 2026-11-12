@@ -5,7 +5,7 @@ description: Publishes the app on Vercel with a Neon Postgres database, both on 
 
 # Deploy
 
-The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** Postgres database created through Vercel. You publish it with the Vercel CLI; the product owner never clicks through Vercel except to paste their own keys.
+The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** Postgres database created through Vercel. You publish it with the Vercel CLI; the product owner never clicks through Vercel: they only keep their keys in the cloud environment settings.
 
 ## How it works
 
@@ -15,7 +15,8 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 - The Neon integration sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` for every environment. Never pull them into the project (`--no-env-pull`): the local app uses the session's own Postgres.
 - `.vercelignore` keeps `node_modules`, `.next`, `.vercel` and every `.env` file out of the upload.
 - The project name is the repository name in lowercase (`basename "$(git rev-parse --show-toplevel)"`).
-- Local values with a default in `docker-compose.yml` (for example `ANTHROPIC_MODEL`) also go to Vercel: add them yourself with `npm run vercel -- env add <NAME> <environment>` (they are not secrets). Keys the product owner provides (`ANTHROPIC_API_KEY`) are pasted by them in Vercel; you only give the link.
+- Local values with a default in `docker-compose.yml` (for example `ANTHROPIC_MODEL`) also go to Vercel: `npm run vercel -- env add <NAME> --environment production,preview --value <value> --no-sensitive --yes --force --token "$VERCEL_TOKEN"` (they are not secrets).
+- Keys the product owner provides (`ANTHROPIC_API_KEY`) are environment variables of the cloud environment (Anthropic hosts cannot be network secrets). Copy each one to Vercel yourself, through stdin so the value never appears in a command, a log or the conversation: `printf '%s' "$ANTHROPIC_API_KEY" | npm run --silent vercel -- env add ANTHROPIC_API_KEY --environment production,preview --sensitive --yes --force --token "$VERCEL_TOKEN"`. Never echo, print or inspect the value; checking that it is set is `[ -n "$ANTHROPIC_API_KEY" ]`.
 
 ## Before anything: the token works
 
@@ -26,7 +27,7 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 1. **Project:** `npm run vercel -- project create <name> --token "$VERCEL_TOKEN"` (an "already exists" answer is fine), then `npm run vercel -- link --yes --project <name> --token "$VERCEL_TOKEN"`.
 2. **Database:** `npm run vercel -- integration add neon --no-env-pull --token "$VERCEL_TOKEN"`. If it answers with a link to accept the integration terms, give the link to the product owner, wait for "pronto" and run it again.
 3. **Settings:** add every local value the app needs (`docker-compose.yml`) with `env add` for `production` and `preview`.
-4. **Keys:** `npm run vercel -- env list --token "$VERCEL_TOKEN"`. For each name in `.env.example` that is missing, give the product owner the link `https://vercel.com/<account>/<name>/settings/environment-variables` (the account comes from `whoami`) and ask them to add the name with their own value for all environments. Wait for "pronto" and check again.
+4. **Keys:** for each name in `.env.example`, copy it from the session to Vercel as shown above. If a name is not set in the session (`[ -n "$NAME" ]` fails), tell the product owner in one line to add it in the cloud environment settings (environment variables) and open a new session; meanwhile publish without it (only the feature that needs it is unavailable). Confirm with `npm run vercel -- env list --token "$VERCEL_TOKEN"` (names only).
 5. Continue with "Every publish".
 
 ## Every publish
@@ -41,6 +42,6 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 
 - Migration error in the build: the log names the migration file; fix it as a new migration.
 - `/api/health` says the database is down: the Neon integration is not connected to that environment; run step 2 of "First publish" again.
-- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that environment; give the product owner the settings link and deploy again after they add it.
+- The chat says the AI is unavailable: `ANTHROPIC_API_KEY` is missing in that Vercel environment; copy it again (step 4) and deploy again.
 
 Never ask for or print keys, tokens or connection strings.

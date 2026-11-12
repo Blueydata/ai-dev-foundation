@@ -1,6 +1,6 @@
 # Pré-requisitos — tudo na nuvem, sem instalar nada
 
-O que deixar pronto antes do workshop "Desenvolvimento de software com IA": três contas pessoais e duas chaves. Tudo acontece no navegador, no **Claude Code na web** ([claude.ai/code](https://claude.ai/code)); não precisa instalar nada. Prefere rodar no seu computador? Veja o [`LOCAL.md`](LOCAL.md).
+O que deixar pronto antes do workshop "Desenvolvimento de software com IA": três contas pessoais, um repositório e duas chaves. A versão com prints de cada tela é a página de preparação enviada aos participantes. Tudo acontece no navegador, no **Claude Code na web** ([claude.ai/code](https://claude.ai/code)); não precisa instalar nada. Prefere rodar no seu computador? Veja o [`LOCAL.md`](LOCAL.md).
 
 ![Tempo](https://img.shields.io/badge/tempo-~20%20min-1f6feb?style=for-the-badge)
 ![Instalar](https://img.shields.io/badge/instalar-nada-2da44e?style=for-the-badge)
@@ -9,7 +9,7 @@ O que deixar pronto antes do workshop "Desenvolvimento de software com IA": trê
 
 ```mermaid
 flowchart LR
-    A["1 · GitHub"] --> B["2 · Claude Code na web"] --> C["3 · Vercel"] --> D["4 · Token da Vercel"] --> E["5 · Chave da Anthropic"] --> F["6 · Cofre do Claude"] --> G["7 · Teste"] --> H(["✓ Pronto"])
+    A["1 · GitHub + repositório"] --> B["2 · Claude Code na web"] --> C["3 · Vercel"] --> D["4 · Token da Vercel"] --> E["5 · Chave da Anthropic"] --> F["6 · Ambiente do Claude"] --> G["7 · Teste"] --> H(["✓ Pronto"])
     style H fill:#2da44e,color:#fff,stroke:#2da44e
 ```
 
@@ -34,15 +34,17 @@ flowchart LR
 
 - Cada sessão prepara o projeto sozinha ([`scripts/cloud-setup.sh`](scripts/cloud-setup.sh)): na primeira vez leva cerca de 1 minuto; depois, segundos.
 - O Claude testa o app num navegador da própria nuvem, faz o commit e o push, abre o pull request e **publica na Vercel** por você.
-- As chaves ficam num cofre do ambiente do Claude: ele as usa sem nunca vê-las.
+- As chaves ficam no ambiente do Claude, nunca na conversa. O Claude leva a chave da Anthropic para a Vercel sozinho, sem mostrá-la.
 
 ---
 
-## 1 · 🐙 GitHub
+## 1 · 🐙 GitHub: conta e repositório
 
-Crie a sua conta **pessoal** em [github.com/signup](https://github.com/signup) e confirme o e-mail. Já tem uma pessoal? Pule.
+1. Crie a sua conta **pessoal** em [github.com/signup](https://github.com/signup) (ou use a sua).
+2. Clique na sua foto → **Repositories** → **New**.
+3. **Owner:** a sua conta (nunca uma empresa) · **Repository name:** `demo` · **Private** · **Add README** ligado → **Create repository**.
 
-## 2 · 🤖 Claude Code na web
+## 2 · 🤖 Claude Code na web conectado ao GitHub
 
 O workshop inteiro acontece no Claude Code na web. O seu plano precisa incluir esse acesso:
 
@@ -52,55 +54,63 @@ O workshop inteiro acontece no Claude Code na web. O seu plano precisa incluir e
 | **Team**, **Enterprise** | Só se o administrador da empresa liberou |
 | **Free** | ❌ |
 
-1. Entre em [claude.ai/code](https://claude.ai/code). Se aparecer um pedido de upgrade, o seu plano não inclui.
-2. Conecte o GitHub com a sua **conta pessoal** e libere **All repositories**.
+1. Abra [claude.ai/code](https://claude.ai/code). O plano aparece ao lado do seu nome, no canto inferior esquerdo; se pedir upgrade, o plano não inclui.
+2. **Connect GitHub** → no GitHub, **Authorize**.
+3. De volta ao Claude, abra **Repo** (barra de baixo) → **Install the Claude GitHub App** → **All repositories** → **Install & Authorize**.
+4. Em **Repo**, o seu `demo` aparece na lista.
 
 ## 3 · ▲ Vercel
 
-Em [vercel.com/signup](https://vercel.com/signup), escolha **Hobby** e entre com **Continue with GitHub**, usando o GitHub pessoal. É grátis e sem cartão.
+Em [vercel.com/signup](https://vercel.com/signup), entre com o GitHub e escolha **I'm working on personal projects (Hobby)**, dê um nome e **Continue**. Grátis e sem cartão.
+
+Ao chegar na tela **New Project**, **pare**: não importe nada. Quem cria o projeto é o Claude, no dia.
 
 ## 4 · 🔑 Token da Vercel
 
 É com ele que o Claude publica o app por você.
 
-1. Abra [Account Settings → Tokens](https://vercel.com/account/settings/tokens).
-2. Crie um token com o nome `workshop` e validade de 30 dias.
-3. **Copie**: ele aparece uma vez só. Guarde até o passo 6.
+1. Abra [vercel.com/account/settings/tokens](https://vercel.com/account/settings/tokens) (ou: sua conta, canto inferior esquerdo → ⚙️ → **Tokens**).
+2. Nome `workshop` · escopo **Full Account** · validade **7 Days** → **Create**.
+3. **Copie** o token (ele aparece uma vez só) e vá para o passo 6.
 
 ## 5 · 🔑 Chave da API da Anthropic
 
 É o Claude respondendo no chat do app que você vai construir.
 
-1. Entre em [platform.claude.com](https://platform.claude.com) e compre um pouco de crédito em [Billing](https://platform.claude.com/settings/billing).
-2. Em [API keys](https://platform.claude.com/settings/keys), clique em **Create key**.
-3. **Copie** (começa com `sk-ant-` e aparece uma vez só). Guarde até o passo 6.
+1. Em [platform.claude.com](https://platform.claude.com): **Spending (Billing)** → **Buy credits**.
+2. **API keys** → **Create key** (nome `workshop`, validade até depois do workshop). Se aparecer a janela de "identity federation", clique em **Continue with an API key**.
+3. **Copy key** (começa com `sk-ant-` e aparece uma vez só).
 
 > [!TIP]
 > No dia, a Bluey empresta uma chave, desativada depois do workshop. Com a sua, o app continua respondendo depois.
 
-## 6 · 🔐 Cofre do Claude
+## 6 · 🔐 Ambiente do Claude
 
-Em [claude.ai/code](https://claude.ai/code): menu do ambiente **Default** → **Edit** → **Network secrets** (em algumas versões, **API credentials**). Crie dois segredos:
+Em [claude.ai/code](https://claude.ai/code): **Default** (barra de baixo) → ⚙️ → tela **Edit cloud environment**.
 
-| Segredo | Host | Cabeçalho | Prefixo |
-| --- | --- | --- | --- |
-| Token da Vercel (passo 4) | `api.vercel.com` | `Authorization` | `Bearer` |
-| Chave da Anthropic (passo 5) | `api.anthropic.com` | `x-api-key` | nenhum |
+**Token da Vercel → Network secrets** (o Claude usa sem nunca ver):
 
-No mesmo ambiente, em **variáveis de ambiente**, acrescente:
+1. **Network secrets** → **Add secret**.
+2. **Secret type:** `Bearer` · **Allowed websites:** `api.vercel.com` · **Header name:** `Authorization` · **Prefix:** `Bearer` · **Value:** o token → **Add**.
+3. **Save changes**. Sem isso, nada fica salvo.
+
+**Chave da Anthropic → Environment variables** (o Claude Code não aceita segredos para hosts da Anthropic):
+
+1. **Environment variables**, na mesma tela.
+2. Escreva a linha abaixo e cole a sua chave depois do `=`:
 
 ```
-ANTHROPIC_API_KEY=via-network-secret
+ANTHROPIC_API_KEY=
 ```
 
-O app precisa de um valor ali; a chave de verdade é colocada no caminho pela rede da nuvem, sem nunca ficar visível.
+3. **Save changes**. O aviso amarelo da tela é normal: a chave é do seu app, não do Claude Code.
 
 > [!CAUTION]
-> **Nunca cole chaves, tokens ou senhas na conversa** com o Claude, nem em arquivos do projeto. Elas ficam só no cofre e, no dia, na Vercel.
+> **Nunca cole chaves, tokens ou senhas na conversa** com o Claude, nem em arquivos do projeto. Elas ficam só aqui; no dia, o Claude leva a chave da Anthropic para a Vercel sem mostrá-la.
 
 ## 7 · ✅ Teste
 
-Em [claude.ai/code](https://claude.ai/code), comece uma sessão nova: o Claude Code abre sem pedir upgrade e os repositórios do seu GitHub aparecem na lista? Pronto.
+Em [claude.ai/code](https://claude.ai/code), numa sessão nova, a barra de baixo mostra **Default · sua-conta/demo · main**. Pronto.
 
 ---
 

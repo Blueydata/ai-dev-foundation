@@ -50,7 +50,7 @@ flowchart TB
 | Marcador | Onde |
 | --- | --- |
 | 🤖 **Claude** | [claude.ai/code](https://claude.ai/code), numa sessão no **seu** repositório |
-| ▲ **Vercel** | [vercel.com](https://vercel.com): só para colar a sua chave, uma vez |
+| ▲ **Vercel** | [vercel.com](https://vercel.com): só para olhar; quem configura e publica é o Claude |
 | 🌐 **App** | O link que a Vercel dá para o seu app |
 
 > [!TIP]
@@ -61,26 +61,17 @@ flowchart TB
 
 ## ✅ Antes de começar
 
-Siga o [`PREREQUISITES.md`](PREREQUISITES.md): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, e a chave da API da Anthropic (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
+Siga o [`PREREQUISITES.md`](PREREQUISITES.md) (ou a página de preparação com prints): contas pessoais no GitHub, no Claude (conectado ao GitHub) e na Vercel, o repositório `demo`, o token da Vercel e a chave da API da Anthropic (a sua, recomendado, ou a fornecida pela organização no dia). O projeto vem do template no início do workshop, com a planilha dentro: [`workshop/ilha-clara-imoveis.csv`](workshop/ilha-clara-imoveis.csv), descrita em [`workshop/README.md`](workshop/README.md).
 
 ---
 
 ## 1 · 🧰 O projeto
 
-> `Preparar` · o seu repositório, com o projeto dentro, pronto na nuvem
-
-### 📦 O seu repositório
-
-| Passo | O que fazer |
-| :---: | --- |
-| 1 | No GitHub, clique em **New repository** ([github.com/new](https://github.com/new)) |
-| 2 | Dono: a sua conta pessoal. Nome: por exemplo `ilha-clara`. Pode ser **Private** |
-| 3 | Marque **Add a README file** (o repositório precisa ter um primeiro commit para o Claude abrir) e clique em **Create repository** |
-| 4 | Se você autorizou o Claude só para alguns repositórios, inclua este novo nas permissões do app do Claude no GitHub |
+> `Preparar` · o projeto dentro do seu repositório `demo`, pronto na nuvem
 
 ### 🚀 O projeto dentro do repositório
 
-🤖 **Claude** · No [claude.ai/code](https://claude.ai/code), abra uma **sessão nova** escolhendo o repositório que você acabou de criar (o ambiente **Default** serve) e cole o prompt inicial:
+🤖 **Claude** · No [claude.ai/code](https://claude.ai/code), abra uma **sessão nova** com o ambiente **Default** e o repositório **demo** (criado nos pré-requisitos) e cole o prompt inicial:
 
 ```
 Este repositório ainda está vazio. Monte nele o projeto a partir do template
@@ -225,7 +216,7 @@ Estreito, e do chat respondendo "tem kitnet mobiliada?".
 
 ✔️ O Claude faz o push, abre o pull request (o CI confere tipos, testes e o build) e **publica o app na Vercel** pela CLI, com o token do seu cofre. Na primeira vez, ele mesmo cria o projeto e o banco de dados (Neon) e carrega a planilha.
 
-🔑 **Sua chave** · Na primeira publicação, o Claude te passa um link das configurações do projeto na Vercel. Abra, adicione `ANTHROPIC_API_KEY` com a sua chave da Anthropic para todos os ambientes, salve e responda `pronto`. É a única coisa que você faz na Vercel.
+✔️ Na primeira publicação, o Claude também leva a sua chave da Anthropic (do ambiente do Claude) para a Vercel, sem mostrá-la. Você não precisa configurar nada lá.
 
 ✔️ O Claude acompanha o build, corrige o que falhar e te entrega o **link da prévia**. A prévia pede que você esteja logado na Vercel: é normal.
 

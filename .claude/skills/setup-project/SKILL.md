@@ -14,7 +14,7 @@ Take the person from "just opened" to "ready to develop". Check each item in ord
 1. **App and database:** `curl -s http://localhost:3000/api/health` answers `"database":"ok"`. If not, run `scripts/cloud-setup.sh` and check again; if it still fails, read `tail -n 40 /tmp/dev-foundation-app.log` and explain the cause and the fix in one line each.
 2. **Tests and types:** the `tester` subagent.
 3. **Secrets:** `npm run check:secrets` reports nothing.
-4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which feature needs each one and that it goes in the cloud environment settings (environment menu of the session, **Edit**: environment variables, or network secrets for API keys), followed by a new session. The guide is `PREREQUISITES.md`.
+4. **User-provided keys:** `npm run check:env`. Missing keys are optional for setup: say which feature needs each one and that it goes in the cloud environment settings (environment menu of the session, **Edit**: environment variables for the Anthropic key, network secrets for the Vercel token), followed by a new session. The guide is `PREREQUISITES.md`.
 5. **Vercel:** `npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If not, the Vercel token is missing from the cloud environment's network secrets (`PREREQUISITES.md`, step 6): optional for setup, needed only to publish.
 6. **Preview:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
 7. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.

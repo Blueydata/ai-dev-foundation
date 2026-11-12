@@ -32,7 +32,7 @@ Cloud sessions are the default: the SessionStart hook runs `scripts/cloud-setup.
 
 **Always show the app.** At the start of every cloud session, as soon as `/api/health` answers, report port 3000 with the preview port tool (`report_preview_port`, when it exists) so the product owner can open the app in the preview pane and follow along. After every change visible on screen, check it yourself in the browser (`test-in-browser`), send a screenshot and tell the product owner in one line which page to open in the preview to see it. On a computer, the built-in browser of the Claude desktop app plays the same role.
 
-**Publish it yourself.** After `/deliver`, publish a preview of the branch with the `deploy` skill (Vercel CLI, token kept as a network secret) and give the link; after the merge, publish production from `main`. Fix a failed build before handing over. The product owner only pastes their own keys in Vercel.
+**Publish it yourself.** After `/deliver`, publish a preview of the branch with the `deploy` skill (Vercel CLI, token kept as a network secret) and give the link; after the merge, publish production from `main`. Fix a failed build before handing over. The product owner never configures Vercel: you copy their keys from the cloud environment to Vercel without showing them.
 
 - `npm test`: unit tests
 - `npm run test:integration`: integration tests on a fresh `app_test` database
