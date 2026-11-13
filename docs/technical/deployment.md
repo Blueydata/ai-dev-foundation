@@ -70,7 +70,9 @@ The integration is added with `--no-env-pull`: the Neon connection strings are n
 
 `npm run vercel-build` is `node scripts/migrate.mjs && next build`. Pending files in `src/shared/database/migrations/` are applied first through `DATABASE_URL_UNPOOLED`, each in its own transaction; if one fails, the build fails and the previous deployment keeps serving. A preview migrates the database it is connected to, so previews and production share the schema unless a Neon branch is used.
 
-## First publish and every publish
+## Preparing the project and every publish
+
+`/setup-project` runs steps 1 to 4 and a first preview, so the project, the database and the build are proven before the first feature. Every step is safe to repeat; a new session only runs `link`, since `.vercel/` is not committed.
 
 1. `whoami` confirms the token; if it fails, the product owner saves the token as a network secret and opens a new session.
 2. `project create <name>` and `link --yes --project <name>`.

@@ -22,20 +22,23 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 
 `npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If it fails with an authentication or network error, tell the product owner in one line to save the Vercel token as a network secret for `api.vercel.com` (header `Authorization`, prefix `Bearer`) in the cloud environment settings and open a new session (`PREREQUISITES.md`, step 6). Stop there.
 
-## First publish (once per repository)
+## Prepare the project (`/setup-project` does it)
 
+Leaves Vercel ready before the first feature. Every step is safe to repeat, so run it whenever something is missing.
+
+0. **Already ready?** `npm run vercel -- project inspect <name> --token "$VERCEL_TOKEN"` succeeds and `npm run vercel -- env list --token "$VERCEL_TOKEN"` (names only) shows `DATABASE_URL`, `LLM_MODEL` and every name in `.env.example` that is set in the session: then only `link` (step 1, second command; `.vercel/` is not committed, so every new session links again) and stop.
 1. **Project:** `npm run vercel -- project create <name> --token "$VERCEL_TOKEN"` (an "already exists" answer is fine), then `npm run vercel -- link --yes --project <name> --token "$VERCEL_TOKEN"`.
 2. **Database:** accept the Neon terms without a browser, `npm run vercel -- integration accept-terms neon --yes --token "$VERCEL_TOKEN"`, then `npm run vercel -- integration add neon --no-env-pull --token "$VERCEL_TOKEN"`. Only if it still answers with a link to accept terms, give the link to the product owner, wait for "pronto" and run it again.
 3. **Settings:** add every local value the app needs (`docker-compose.yml`) with `env add` for `production` and `preview`.
 4. **Keys:** for each name in `.env.example`, copy it from the session to Vercel as shown above. If a name is not set in the session (`[ -n "$NAME" ]` fails), tell the product owner in one line to add it in the cloud environment settings (environment variables) and open a new session; meanwhile publish without it (only the feature that needs it is unavailable). Confirm with `npm run vercel -- env list --token "$VERCEL_TOKEN"` (names only).
-5. Continue with "Merge and show a step".
+5. **First preview:** `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"` and the `/api/health` check of "Merge and show a step", step 4. A failed build is fixed as in step 3 there. This proves the project, the database and the build work before any feature.
 
 ## Merge and show a step
 
 After every stage of `/new-feature`, every `/adjust-feature` and every `/fix-bug`, once its tests pass and it is committed:
 
 1. **Merge into `main`:** `git fetch origin main`, `git merge --no-edit origin/main` (only if `main` moved; never rebase), run the `tester` again if the merge brought changes, then `git push origin HEAD:main` and `git push origin HEAD` (the session's branch). On a computer, merge the work branch into `main` the same way.
-2. **Preview:** if the project does not exist yet, do "First publish" first. Then `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"`: it builds and prints the preview URL.
+2. **Preview:** if the project is not ready or not linked in this session, do "Prepare the project" first. Then `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"`: it builds and prints the preview URL.
 3. **Failed build:** `npm run vercel -- inspect <url> --logs --token "$VERCEL_TOKEN"`, fix the cause in the code (with a test when it is in a rule or a repository), commit and go back to step 1. After 3 failed attempts, stop and explain.
 4. **Check:** `npm run vercel -- curl /api/health --deployment <url> --token "$VERCEL_TOKEN"` answers `"database":"ok"`; open the pages the step changed the same way (or with `test-in-browser` when the session's network reaches the URL).
 5. **Show it:** give the product owner the preview link and one line on what to open and look at ("Abra o link e veja a vitrine com os filtros"). The link asks them to be signed in to Vercel; that is expected.
@@ -57,7 +60,7 @@ When a feature needs something the project does not have (login, e-mail, file st
 ## When something fails
 
 - Migration error in the build: the log names the migration file; fix it as a new migration.
-- `/api/health` says the database is down: the Neon integration is not connected to that environment; run step 2 of "First publish" again.
+- `/api/health` says the database is down: the Neon integration is not connected to that environment; run step 2 of "Prepare the project" again.
 - The chat says the AI is unavailable: `LLM_API_KEY` is missing in that Vercel environment; copy it again (step 4) and deploy again.
 
 Never ask for or print keys, tokens or connection strings.

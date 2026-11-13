@@ -108,10 +108,13 @@ No fim, me diga em uma linha se deu tudo certo.
 | Linha | O que o Claude conferiu |
 | --- | --- |
 | `Chave da IA (LLM_API_KEY) funcionando` | A chave da Anthropic do seu ambiente chegou à sessão e é aceita pela Anthropic, sem aparecer na conversa |
-| `Vercel conectada` | O token da Vercel do seu cofre funciona: o Claude consegue publicar as prévias |
+| `Vercel conectada` | O token da Vercel do seu cofre funciona: o Claude consegue publicar |
+| `Projeto na Vercel…` | O Claude criou sozinho o projeto na Vercel e o banco de dados (Neon), levou a sua chave da Anthropic para lá sem mostrá-la e publicou uma **primeira prévia** 👀 |
 
 > [!WARNING]
 > Se alguma delas vier com ✗, o Claude diz o que falta. Quase sempre é corrigir o ambiente (página de preparação, passo 6) e abrir uma **sessão nova**: a sessão só lê o ambiente ao abrir.
+
+👀 **Prévia** · Abra o link da primeira prévia: é o template ainda sem nada da imobiliária. A prévia pede que você esteja logado na Vercel: é normal. A cada etapa da construção, vem um link novo como esse.
 
 ## 2 · 🏢 O negócio
 
@@ -198,9 +201,6 @@ flowchart LR
 ```
 
 👀 **Prévia** · A cada etapa, o Claude manda o link e uma linha dizendo o que olhar. **Abra e confira** enquanto ele segue para a próxima: se algo não estiver como você queria, é só escrever na conversa.
-
-> [!NOTE]
-> Na primeira etapa, o Claude cria sozinho o projeto na Vercel e o banco de dados (Neon), carrega a planilha e leva a sua chave da Anthropic para a Vercel, sem mostrá-la. A prévia pede que você esteja logado na Vercel: é normal.
 
 > [!TIP]
 > Por que a `main` a cada etapa? O que está na `main` está testado e já foi visto numa prévia. Se algo der errado depois, nada se perde: cada etapa é um ponto seguro para voltar.

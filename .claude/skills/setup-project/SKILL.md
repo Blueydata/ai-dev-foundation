@@ -16,9 +16,10 @@ Take the person from "just opened" to "ready to develop". Check each item in ord
 3. **Secrets:** `npm run check:secrets` reports nothing.
 4. **User-provided keys:** `npm run check:env` lists the names in `.env.example` still missing. Missing keys go in the cloud environment settings (environment menu of the session, **Edit**: environment variables), followed by a new session. The guide is `PREREQUISITES.md`.
 5. **AI key (`LLM_API_KEY`):** never print it. First `[ -n "$LLM_API_KEY" ]`. If it is set, check that it works without showing it: `curl -s -o /dev/null -w "%{http_code}" https://api.anthropic.com/v1/models -H "x-api-key: $LLM_API_KEY" -H "anthropic-version: 2023-06-01"` answers `200` (`401` means an invalid or revoked key). If it is missing: if `ANTHROPIC_API_KEY` exists in the environment settings, explain that this name is reserved by Claude Code and does not reach the session, and that it must be renamed to `LLM_API_KEY`; otherwise, point to `PREREQUISITES.md`, step 6. Without it everything works except the AI features.
-6. **Vercel:** `npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If it fails, the Vercel token is missing or expired in the cloud environment's network secrets (`api.vercel.com`, `PREREQUISITES.md`, step 6), followed by a new session. Without it the work goes on, but nothing can be published or shown in a preview.
-7. **Preview:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
-8. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
+6. **Vercel access:** `npm run vercel -- whoami --token "$VERCEL_TOKEN"` prints the account. If it fails, the Vercel token is missing or expired in the cloud environment's network secrets (`api.vercel.com`, `PREREQUISITES.md`, step 6), followed by a new session. Without it the work goes on, but nothing can be published or shown in a preview; skip step 7.
+7. **Vercel project:** follow "Prepare the project" in the `deploy` skill: project, Neon database, settings, keys copied without showing them, and a first preview checked with `/api/health`. When it already exists, it only links this session. Give the preview link: from now on every finished stage gets one like it.
+8. **Preview pane:** report port 3000 with the preview port tool (`report_preview_port`, when it exists) and tell the person they can open the app in the preview pane.
+9. **Product context:** the "Product" section of `CLAUDE.md` has no bracketed placeholders left. If it does, that is the next step, not a problem.
 
 ## On a computer with Docker
 
@@ -38,7 +39,8 @@ In the conversation language, short. While something is missing: the list with �
 ✓ Testes e tipos
 ✓ Sem segredos no código
 ✓ Chave da IA (LLM_API_KEY) funcionando
-✓ Vercel conectada (pronta para publicar as prévias)
+✓ Vercel conectada (conta da pessoa)
+✓ Projeto na Vercel com banco Neon e chave da IA · primeira prévia: <link>
 ✗ "Product" ainda não preenchido no CLAUDE.md → é o próximo passo
 ```
 

@@ -7,7 +7,7 @@ Decision [0007](0007-claude-publishes-through-the-vercel-cli.md) had Claude publ
 ## Decision
 
 - Every stage of `/new-feature`, every `/adjust-feature` and every `/fix-bug` whose tests pass is committed, merged into `main` (`git push origin HEAD:main`, merging `origin/main` first if it moved, never rebasing) and published as a Vercel preview. The product owner gets the link with one line on what to look at, and Claude goes on without waiting.
-- The first stage also does the first publish (project, Neon database with `integration accept-terms neon --yes`, keys).
+- `/setup-project` prepares Vercel before any feature: project, Neon database (`integration accept-terms neon --yes`), settings, keys and a first preview checked with `/api/health`. A new session only links again.
 - `/deliver` runs the final checks, confirms `main` has every commit and CI is green, and publishes production from `main`.
 - `/setup-project` checks that `LLM_API_KEY` works (a non-printing call to the Anthropic models endpoint) and that the Vercel token works (`whoami`).
 - A capability the project does not have is looked for first in the Vercel Marketplace (`integration discover`, `integration guide`), proposed with its free plan and installed only after approval.
