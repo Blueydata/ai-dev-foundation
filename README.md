@@ -53,7 +53,7 @@ The app goes online on Vercel with a Neon Postgres database, both on free plans 
 
 ## Workshop
 
-The step-by-step prompts used in the training are in [`WORKSHOP.md`](WORKSHOP.md) (in Brazilian Portuguese). Participants prepare with the [preparation page](https://claude.ai/artifact/VfDEQLnrrSJTU893erfRdz) (also in [`workshop/preparacao.html`](workshop/preparacao.html)), with a screenshot of every screen. To rehearse the whole workshop with an agent before running it, use the prompt in [`workshop/ENSAIO.md`](workshop/ENSAIO.md).
+The step-by-step prompts used in the training are in [`WORKSHOP.md`](WORKSHOP.md) (in Brazilian Portuguese). Participants prepare with the [preparation page](https://claude.ai/artifact/VfDEQLnrrSJTU893erfRdz) (also in [`workshop/preparacao.html`](workshop/preparacao.html)), with a screenshot of every screen.
 
 ## How to work with Claude
 

@@ -18,7 +18,7 @@ The complete folder tree of the repository, with what each folder and file holds
 │   └── business/                  Business documentation in en and pt-BR (created with the first feature)
 ├── scripts/                       Node tooling (migrations, checks, test runner, local-env) and cloud-setup.sh for cloud sessions
 ├── src/                           All application source code (see below)
-├── workshop/                      Training material (pt-BR): the Ilha Clara listings CSV and its spec (README.md), the participant preparation page (preparacao.html) and the rehearsal prompt (ENSAIO.md)
+├── workshop/                      Training material (pt-BR): the Ilha Clara listings CSV and its spec (README.md) and the participant preparation page (preparacao.html)
 ├── .env.example                   Names of keys only the product owner can provide; empty means none needed
 ├── .gitignore                     Keeps .env, build output, dependencies and .vercel/ out of git
 ├── .mcp.json                      Headless Playwright browser in Docker, used when the built-in browser is not available
