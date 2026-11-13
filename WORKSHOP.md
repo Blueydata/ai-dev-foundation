@@ -114,6 +114,9 @@ No fim, me diga em uma linha se deu tudo certo.
 > [!WARNING]
 > Se alguma delas vier com ✗, o Claude diz o que falta. Quase sempre é corrigir o ambiente (página de preparação, passo 6) e abrir uma **sessão nova**: a sessão só lê o ambiente ao abrir.
 
+> [!IMPORTANT]
+> **Termos do Neon:** ao criar o banco, a Vercel pode pedir que você aceite os termos do Neon. Se o Claude mandar um link para isso, abra-o (logado na Vercel), clique em **Accept** e responda `pronto` na conversa: ele cria o banco e continua sozinho.
+
 👀 **Prévia** · Abra o link da primeira prévia: é o template ainda sem nada da imobiliária. A prévia pede que você esteja logado na Vercel: é normal. A cada etapa da construção, vem um link novo como esse.
 
 ## 2 · 🏢 O negócio
