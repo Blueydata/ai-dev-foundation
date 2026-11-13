@@ -1,6 +1,6 @@
 ---
 name: deploy
-description: Publishes the app on Vercel with a Neon Postgres database, both on free plans, through the Vercel CLI - creates the project and the database the first time, deploys a preview for the work branch and production from main, follows the build, fixes failures and hands over the link. The product owner only provides keys. Use when asked to publish, deploy or put the app online, after /deliver, and whenever a feature adds an environment variable.
+description: Publishes the app on Vercel with a Neon Postgres database, both on free plans, through the Vercel CLI - merges every finished step into main and shows it in a preview, publishes production from main, follows the build and fixes failures, and finds Vercel Marketplace integrations for new capabilities. The product owner only provides keys. Use after every finished stage, adjustment or fix, when asked to publish, at /deliver, and whenever a feature needs a capability or a setting the project does not have.
 ---
 
 # Deploy
@@ -25,18 +25,34 @@ The app runs on **Vercel** (Hobby plan, free, personal account) with a **Neon** 
 ## First publish (once per repository)
 
 1. **Project:** `npm run vercel -- project create <name> --token "$VERCEL_TOKEN"` (an "already exists" answer is fine), then `npm run vercel -- link --yes --project <name> --token "$VERCEL_TOKEN"`.
-2. **Database:** `npm run vercel -- integration add neon --no-env-pull --token "$VERCEL_TOKEN"`. If it answers with a link to accept the integration terms, give the link to the product owner, wait for "pronto" and run it again.
+2. **Database:** accept the Neon terms without a browser, `npm run vercel -- integration accept-terms neon --yes --token "$VERCEL_TOKEN"`, then `npm run vercel -- integration add neon --no-env-pull --token "$VERCEL_TOKEN"`. Only if it still answers with a link to accept terms, give the link to the product owner, wait for "pronto" and run it again.
 3. **Settings:** add every local value the app needs (`docker-compose.yml`) with `env add` for `production` and `preview`.
 4. **Keys:** for each name in `.env.example`, copy it from the session to Vercel as shown above. If a name is not set in the session (`[ -n "$NAME" ]` fails), tell the product owner in one line to add it in the cloud environment settings (environment variables) and open a new session; meanwhile publish without it (only the feature that needs it is unavailable). Confirm with `npm run vercel -- env list --token "$VERCEL_TOKEN"` (names only).
-5. Continue with "Every publish".
+5. Continue with "Merge and show a step".
 
-## Every publish
+## Merge and show a step
 
-1. **Where:** a preview from the session's branch after `/deliver`; production only from `main`, after the pull request is merged, from a fresh checkout: `git fetch origin main && git worktree add /tmp/release origin/main`, then deploy with `--cwd /tmp/release`.
-2. **Deploy:** `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"` (add `--prod` for production). It waits for the build and prints the URL.
-3. **Failed build:** `npm run vercel -- inspect <url> --logs --token "$VERCEL_TOKEN"`, fix the cause in the code (with a test when it is in a rule or a repository), commit, push and deploy again. After 3 failed attempts, stop and explain.
-4. **Check:** `npm run vercel -- curl /api/health --deployment <url> --token "$VERCEL_TOKEN"` answers `"database":"ok"`; then open the main pages the same way (or with `test-in-browser` when the session's network reaches the URL).
-5. **Hand over** the link in one line. Preview links ask the product owner to be signed in to Vercel; that is expected.
+After every stage of `/new-feature`, every `/adjust-feature` and every `/fix-bug`, once its tests pass and it is committed:
+
+1. **Merge into `main`:** `git fetch origin main`, `git merge --no-edit origin/main` (only if `main` moved; never rebase), run the `tester` again if the merge brought changes, then `git push origin HEAD:main` and `git push origin HEAD` (the session's branch). On a computer, merge the work branch into `main` the same way.
+2. **Preview:** if the project does not exist yet, do "First publish" first. Then `npm run vercel -- deploy --yes --token "$VERCEL_TOKEN"`: it builds and prints the preview URL.
+3. **Failed build:** `npm run vercel -- inspect <url> --logs --token "$VERCEL_TOKEN"`, fix the cause in the code (with a test when it is in a rule or a repository), commit and go back to step 1. After 3 failed attempts, stop and explain.
+4. **Check:** `npm run vercel -- curl /api/health --deployment <url> --token "$VERCEL_TOKEN"` answers `"database":"ok"`; open the pages the step changed the same way (or with `test-in-browser` when the session's network reaches the URL).
+5. **Show it:** give the product owner the preview link and one line on what to open and look at ("Abra o link e veja a vitrine com os filtros"). The link asks them to be signed in to Vercel; that is expected.
+
+## Production
+
+At `/deliver`, or when the product owner asks: from a fresh checkout of `main`, `git fetch origin main && git worktree add /tmp/release origin/main`, then `npm run vercel -- deploy --prod --yes --cwd /tmp/release --token "$VERCEL_TOKEN"`. Check `/api/health` as above and give the production link.
+
+## Marketplace: new capabilities
+
+When a feature needs something the project does not have (login, e-mail, file storage, payments, cache, search, queues, analytics…), look for a Vercel Marketplace integration before writing it yourself or bringing in another service:
+
+1. **Search:** `npm run vercel -- integration discover <what is needed> --json --token "$VERCEL_TOKEN"` (categories: `integration categories`). Read the best two or three with `integration guide <slug>`.
+2. **Propose** to the product owner, in up to 3 lines, the option you recommend: what it does, its free plan and what would cost money. A new service is the product owner's decision (`CLAUDE.md`, rule 12): wait for the approval.
+3. **Install:** `integration accept-terms <slug> --yes` when it supports it (otherwise give the terms link), then `integration add <slug> --no-env-pull --token "$VERCEL_TOKEN"`. Its keys arrive as environment variables of the Vercel project; never print them.
+4. **Use it in the code** through a gateway in the module `infrastructure/` (`project-structure`), with the variable names in `src/shared/config/env.ts` and `.env.example`. For the session to run it locally, ask the product owner to add the same variables in the cloud environment settings and open a new session; until then the feature answers with `UnavailableError`.
+5. Record the choice as a decision (`documenter`) and list the integration in `docs/technical/deployment.md`.
 
 ## When something fails
 

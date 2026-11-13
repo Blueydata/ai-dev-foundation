@@ -1,36 +1,20 @@
 ---
 name: deliver
-description: Runs the final checks and opens the pull request for a finished feature, change or fix. Use when the work is ready to go into the project.
+description: Closes a finished feature, change or fix - runs the final checks, makes sure every step is merged into main and publishes production on Vercel. Use when the work is ready.
 disable-model-invocation: true
 ---
 
 # Deliver
 
-1. **Checks** (show ✓ or ✗ for each; stop only on a ✗ you cannot fix yourself):
+Every stage was already merged into `main` and shown in a preview (`deploy` skill, "Merge and show a step"). Delivering closes the work and puts it in production.
+
+1. **Checks** (show ✓ or ✗ for each; fix yourself what you can, commit, and merge and show again):
    - the `tester` subagent: types, unit and integration tests;
-   - `npm run check:secrets` reports nothing and no `.env` is in the diff;
+   - `npm run check:secrets` reports nothing and no `.env` file is tracked;
    - the browser test ran after the last change visible on screen;
-   - the review left no high finding and `docs/` has the entry for this delivery.
-   Fix what is missing yourself (a failing test, a missing changelog line) and commit it.
-2. **Branch:** commit anything pending on the work branch (the session's branch in the cloud; `feature/…`, `change/…` or `fix/…` otherwise). Never on `main`.
-3. **Pull request**, description in English:
+   - the review left no high finding and `docs/` has the entry for this delivery;
+   - `main` has every commit of the work branch (`git fetch origin main` and `git log origin/main..HEAD` is empty) and CI is green on `main`.
+2. **Production:** publish `main` (`deploy` skill, "Production") and check it.
+3. **Answer** in up to 6 lines: the checklist, the production link, what changed for the user in one sentence, and the next step: `/clear` and the next feature.
 
-```markdown
-## Summary
-[What changes for the user, in business language.]
-
-## What changed
-- [Main technical change]
-
-## How to test
-1. [Step]
-```
-
-4. **Cloud session:** push the branch and open the pull request yourself, then publish a preview with the `deploy` skill. Give the product owner both links (pull request and preview) and say that CI checks types, tests, queries, secrets and the production build on the pull request. **On a computer:** show the product owner the commands to run:
-
-```bash
-git push -u origin <branch-name>
-gh pr create --fill
-```
-
-Then one line: after the merge, `/clear` and the next feature.
+On a computer with Docker, production is published the same way when the Vercel CLI and token are available; otherwise show the product owner the commands to push `main` and stop there.

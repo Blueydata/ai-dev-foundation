@@ -38,5 +38,6 @@ How the system is built, for a developer who just joined. The code has no commen
 | [0005](decisions/0005-cloud-first-development.md) | Cloud-first development with Claude Code on the web | accepted |
 | [0006](decisions/0006-anthropic-api-for-the-app-ai.md) | Anthropic API for the app's AI | accepted |
 | [0007](decisions/0007-claude-publishes-through-the-vercel-cli.md) | Claude publishes through the Vercel CLI | accepted |
+| [0008](decisions/0008-merge-and-preview-every-step.md) | A merge and a preview for every step | accepted |
 
 Business documentation, for non-technical readers, is in [`docs/business/`](../business/) once the first feature is delivered.

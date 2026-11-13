@@ -1,6 +1,6 @@
 # Deployment
 
-How the app is published: Claude publishes it on Vercel with the pinned Vercel CLI, Neon provides the Postgres database, both on free plans, with no infrastructure code in the repository. The decisions are [0004](decisions/0004-vercel-and-neon-instead-of-aws.md) (Vercel and Neon) and [0007](decisions/0007-claude-publishes-through-the-vercel-cli.md) (the CLI). The `deploy` skill (`.claude/skills/deploy/SKILL.md`) is the step-by-step flow Claude follows.
+How the app is published: every finished stage is merged into `main` and shown in a preview, and `/deliver` publishes production. Claude publishes it on Vercel with the pinned Vercel CLI, Neon provides the Postgres database, both on free plans, with no infrastructure code in the repository. The decisions are [0004](decisions/0004-vercel-and-neon-instead-of-aws.md) (Vercel and Neon) and [0007](decisions/0007-claude-publishes-through-the-vercel-cli.md) (the CLI) and [0008](decisions/0008-merge-and-preview-every-step.md) (a merge and a preview for every step). The `deploy` skill (`.claude/skills/deploy/SKILL.md`) is the step-by-step flow Claude follows.
 
 ## How a publish works
 
@@ -19,6 +19,7 @@ sequenceDiagram
   Proxy->>Vercel: real token injected
   Vercel-->>Claude: account name
   Claude->>CLI: project create + link
+  Claude->>CLI: integration accept-terms neon --yes
   Claude->>CLI: integration add neon --no-env-pull
   CLI->>Vercel: create database, set DATABASE_URL and DATABASE_URL_UNPOOLED
   Vercel->>Neon: provision
@@ -49,8 +50,8 @@ On a failed build Claude runs `inspect <url> --logs`, fixes the cause in the cod
 
 | Environment | Created by | Purpose |
 | --- | --- | --- |
-| Preview | `deploy` from the session's branch, after `/deliver` | A link to try the change before merging |
-| Production | `deploy --prod` from a worktree of `origin/main` (`git worktree add /tmp/release origin/main`, `--cwd /tmp/release`), after the pull request is merged | The live app |
+| Preview | `deploy` after every finished stage, adjustment or fix, once it is merged into `main` ("Merge and show a step" in the `deploy` skill) | A link for the product owner to look at what the step built |
+| Production | `deploy --prod` from a worktree of `origin/main` (`git worktree add /tmp/release origin/main`, `--cwd /tmp/release`), at `/deliver` | The live app, open to anyone |
 
 Preview links ask for a Vercel sign-in; that is expected.
 
@@ -73,9 +74,31 @@ The integration is added with `--no-env-pull`: the Neon connection strings are n
 
 1. `whoami` confirms the token; if it fails, the product owner saves the token as a network secret and opens a new session.
 2. `project create <name>` and `link --yes --project <name>`.
-3. `integration add neon --no-env-pull`; if it answers with a terms link, the product owner accepts it and Claude runs it again.
+3. `integration accept-terms neon --yes`, then `integration add neon --no-env-pull`; if it still answers with a terms link, the product owner accepts it and Claude runs it again.
 4. `env add ... --value ... --no-sensitive` for local values; each key named in `.env.example` is copied from the session through stdin.
 5. `deploy --yes` (preview) or `deploy --yes --prod` (production), then `curl /api/health --deployment <url>` answers `"database":"ok"`.
+
+## Merge and show a step
+
+```mermaid
+flowchart LR
+  stage["Stage, adjustment or fix"] --> tests["tester passes"] --> commit["Commit on the session branch"]
+  commit --> main["git push origin HEAD:main"] --> preview["vercel deploy (preview)"]
+  preview --> health["curl /api/health"] --> owner["Preview link to the product owner"]
+```
+
+1. `git fetch origin main`; if `main` moved, `git merge --no-edit origin/main` (never a rebase) and the tests run again.
+2. `git push origin HEAD:main` and `git push origin HEAD`.
+3. `deploy --yes`; a failed build is read with `inspect --logs` and fixed, at most 3 attempts.
+4. `curl /api/health --deployment <url>`, then the product owner gets the link with one line on what to look at. Claude goes on without waiting.
+
+## Marketplace integrations
+
+When a feature needs a capability the project does not have (login, e-mail, file storage, payments, cache, search…), Claude looks for a Vercel Marketplace integration before writing it or bringing another service:
+
+1. `integration discover --json` and `integration guide <name>` to compare the options.
+2. A proposal of at most 3 lines: the integration, its free plan and cost, what it provides. Nothing is installed without the product owner's approval.
+3. Once approved: `integration accept-terms <name> --yes` and `integration add <name> --no-env-pull`, a gateway in the module's `infrastructure/`, new variables in `src/shared/config/env.ts` and `.env.example`, and a decision record. The product owner adds the variables to the cloud environment for local development.
 
 ## Limits
 

@@ -33,7 +33,7 @@ flowchart LR
 
 ## CI pipeline
 
-`.github/workflows/ci.yml` runs five jobs in parallel on every pull request and on pushes to `main`. A pull request is merged only with all of them green. The `cloud-setup` job runs `scripts/cloud-setup.sh` on Ubuntu, checks `/api/health` and runs the integration tests, proving that cloud sessions start correctly.
+`.github/workflows/ci.yml` runs five jobs in parallel on every pull request and on pushes to `main`. Each step is merged into `main` only after its tests pass, and `/deliver` publishes production only with CI green on `main`. The `cloud-setup` job runs `scripts/cloud-setup.sh` on Ubuntu, checks `/api/health` and runs the integration tests, proving that cloud sessions start correctly.
 
 ```mermaid
 flowchart LR

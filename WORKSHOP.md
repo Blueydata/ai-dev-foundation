@@ -40,7 +40,7 @@ flowchart TB
     end
     subgraph D["🚀 Publicar e validar · 45 min"]
         direction LR
-        S7["7 · No ar"] --> S8["8 · Conversar"] --> S9["9 · Quebrar o chat"] --> S10["10 · Ajuste ao vivo"]
+        S7["7 · Produção"] --> S8["8 · Conversar"] --> S9["9 · Quebrar o chat"] --> S10["10 · Ajuste ao vivo"]
     end
     P --> E --> C --> D
 ```
@@ -51,7 +51,8 @@ flowchart TB
 | --- | --- |
 | 🤖 **Claude** | [claude.ai/code](https://claude.ai/code), numa sessão no **seu** repositório |
 | ▲ **Vercel** | [vercel.com](https://vercel.com): só para olhar; quem configura e publica é o Claude |
-| 🌐 **App** | O link que a Vercel dá para o seu app |
+| 👀 **Prévia** | O link que o Claude entrega a cada etapa pronta: a versão daquela etapa, na Vercel |
+| 🌐 **App** | O link oficial do seu app, em produção |
 
 > [!TIP]
 > No GitHub, cada bloco de prompt tem um **botão de copiar** no canto. Cole um prompt por vez e espere o Claude terminar antes do próximo.
@@ -102,7 +103,15 @@ No fim, me diga em uma linha se deu tudo certo.
 /setup-project
 ```
 
-✔️ Tudo ✓, menos "Product", que é o próximo passo.
+✔️ Tudo ✓, menos "Product", que é o próximo passo. Repare em duas linhas:
+
+| Linha | O que o Claude conferiu |
+| --- | --- |
+| `Chave da IA (LLM_API_KEY) funcionando` | A chave da Anthropic do seu ambiente chegou à sessão e é aceita pela Anthropic, sem aparecer na conversa |
+| `Vercel conectada` | O token da Vercel do seu cofre funciona: o Claude consegue publicar as prévias |
+
+> [!WARNING]
+> Se alguma delas vier com ✗, o Claude diz o que falta. Quase sempre é corrigir o ambiente (página de preparação, passo 6) e abrir uma **sessão nova**: a sessão só lê o ambiente ao abrir.
 
 ## 2 · 🏢 O negócio
 
@@ -180,7 +189,21 @@ Aprovado. Pode construir.
 
 > `Construir` · o Claude trabalha sozinho, etapa por etapa
 
-O Claude constrói cada etapa com testes, faz um commit por etapa, testa tudo no navegador, chama o revisor, corrige o que for grave e atualiza a documentação. Leva de 20 a 35 minutos.
+O Claude constrói cada etapa com testes, testa no navegador e, assim que os testes passam, **leva a etapa para a `main` e publica uma prévia na Vercel**. No fim, testa tudo de novo, chama o revisor, corrige o que for grave e atualiza a documentação. Leva de 20 a 35 minutos.
+
+```mermaid
+flowchart LR
+    A["🔨 Etapa"] --> B["🧪 Testes"] --> C["🌿 main"] --> D["👀 Prévia na Vercel"]
+    D -.->|próxima etapa| A
+```
+
+👀 **Prévia** · A cada etapa, o Claude manda o link e uma linha dizendo o que olhar. **Abra e confira** enquanto ele segue para a próxima: se algo não estiver como você queria, é só escrever na conversa.
+
+> [!NOTE]
+> Na primeira etapa, o Claude cria sozinho o projeto na Vercel e o banco de dados (Neon), carrega a planilha e leva a sua chave da Anthropic para a Vercel, sem mostrá-la. A prévia pede que você esteja logado na Vercel: é normal.
+
+> [!TIP]
+> Por que a `main` a cada etapa? O que está na `main` está testado e já foi visto numa prévia. Se algo der errado depois, nada se perde: cada etapa é um ponto seguro para voltar.
 
 Enquanto isso, veja quanto de contexto a conversa está usando:
 
@@ -195,7 +218,7 @@ Enquanto isso, veja quanto de contexto a conversa está usando:
 
 > `Construir` · o que foi feito, com evidência
 
-✔️ O Claude termina com a tabela dos critérios de pronto ✓/✗, o que a revisão encontrou e o que foi corrigido.
+✔️ O Claude termina com a tabela dos critérios de pronto ✓/✗, o que a revisão encontrou e o que foi corrigido, e o link da última prévia: todas as etapas já estão na `main`.
 
 🤖 **Claude**, para ver você mesmo:
 
@@ -206,7 +229,7 @@ Estreito, e do chat respondendo "tem kitnet mobiliada?".
 
 ## 7 · ▲ No ar
 
-> `Publicar` · o pull request e o link público
+> `Publicar` · da prévia para o link oficial
 
 🤖 **Claude:**
 
@@ -214,14 +237,15 @@ Estreito, e do chat respondendo "tem kitnet mobiliada?".
 /deliver
 ```
 
-✔️ O Claude faz o push, abre o pull request (o CI confere tipos, testes e o build) e **publica o app na Vercel** pela CLI, com o token do seu cofre. Na primeira vez, ele mesmo cria o projeto e o banco de dados (Neon) e carrega a planilha.
+✔️ O Claude faz as conferências finais (testes, segredos no código, teste no navegador, revisão, documentação, `main` em dia e o CI verde no GitHub) e **publica a `main` em produção** na Vercel.
 
-✔️ Na primeira publicação, o Claude também leva a sua chave da Anthropic (do ambiente do Claude) para a Vercel, sem mostrá-la. Você não precisa configurar nada lá.
+✔️ Ele acompanha o build, corrige o que falhar e te entrega o **link oficial** 🌐: esse abre para qualquer pessoa, sem login. Mande para alguém do lado testar no celular.
 
-✔️ O Claude acompanha o build, corrige o que falhar e te entrega o **link da prévia**. A prévia pede que você esteja logado na Vercel: é normal.
-
-> [!NOTE]
-> Quando você fizer o **merge** do pull request no GitHub, peça: `/deploy publique a main em produção`. O Claude publica o link oficial.
+| | 👀 Prévia | 🌐 Produção |
+| --- | --- | --- |
+| Quando | A cada etapa pronta | No `/deliver` |
+| Quem abre | Só você, logado na Vercel | Qualquer pessoa |
+| Para quê | Conferir o que acabou de ser feito | O app de verdade, para os clientes |
 
 ## 8 · 💬 Conversar com o chat
 
@@ -285,7 +309,25 @@ Liste todos os imóveis que já estão alugados.
 em destaque, e ordene do mais barato para o mais caro por padrão.
 ```
 
-✔️ O Claude muda, testa, documenta, faz o push e publica uma prévia nova. Quando estiver tudo certo, faça o **merge** do pull request no GitHub e peça `/deploy publique a main em produção`.
+✔️ O Claude muda, testa, documenta, leva para a `main` e manda o link de uma **prévia nova** 👀. Confira e, se estiver certo, publique:
+
+```
+/deliver
+```
+
+### 🧩 E quando precisar de algo novo?
+
+Login, e-mail, envio de arquivos, pagamentos… O projeto não traz tudo pronto. Quando uma funcionalidade pede algo que ele ainda não tem, o Claude **procura primeiro nas integrações do Marketplace da Vercel** e propõe a melhor opção gratuita, antes de escrever do zero ou trazer outro serviço.
+
+🤖 **Claude** · Só para ver a proposta, sem construir:
+
+```
+Quero que o cliente deixe o e-mail para ser avisado quando aparecer um imóvel
+como o que ele procurou. O que falta no projeto para isso? Procure nas
+integrações da Vercel e me proponha, sem implementar ainda.
+```
+
+✔️ O Claude pesquisa no Marketplace e responde em poucas linhas: qual integração usar, se tem plano gratuito e o que ela traz. Nada é instalado sem a sua aprovação; aprovada, ele mesmo conecta na Vercel e leva as chaves para o projeto.
 
 ### 💰 Quanto custou?
 
@@ -314,7 +356,7 @@ Sem problema: acompanhe pelo telão. Para pular para o ponto da turma, abra uma 
 ```
 Traga para a branch desta sessão o conteúdo da branch etapa-6-resultado do
 repositório https://github.com/Blueydata/ai-dev-foundation, substituindo o que
-houver aqui, e faça o commit e o push.
+houver aqui, faça o commit e leve para a main.
 ```
 
 Troque `etapa-6-resultado` pela etapa da turma:

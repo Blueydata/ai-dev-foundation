@@ -69,7 +69,7 @@ From there, the skill drives the way and stops at each phase for your approval:
 4. **Review:** the `reviewer` checks the done criteria, code, security and UX.
 5. **Documentation:** the `documenter` updates `docs/` with what was delivered.
 
-Then `/deliver` prepares the pull request. To change something that exists, use `/adjust-feature`; when something breaks, `/fix-bug`; to put it online, `/deploy`.
+Every stage that passes its tests is merged into `main` and published as a Vercel preview, with the link for the product owner to look at. Then `/deliver` runs the final checks and publishes production. To change something that exists, use `/adjust-feature`; when something breaks, `/fix-bug`. When a feature needs a capability the project does not have, Claude looks for a Vercel Marketplace integration first (`deploy` skill).
 
 ## Useful commands
 

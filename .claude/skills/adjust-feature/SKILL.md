@@ -14,6 +14,6 @@ Change only what is needed, prove it with a test and keep the documentation accu
 5. **Confirm:** the `tester` subagent passes; if the change is visible on screen, check it with `test-in-browser`.
 6. **Review only when it matters:** if it touches routes, customer data, integrations or AI, call the `reviewer` once and fix high findings.
 7. **Document:** call the `documenter` (changelog entry with "Change:"/"Ajuste:" and the features update).
-8. Commit `feat: [what changed]` and answer in up to 5 lines: what changed and how to see it on screen.
+8. Commit `feat: [what changed]`, then **merge and show** (`deploy` skill, "Merge and show a step"): merge into `main`, publish a preview and answer in up to 5 lines: what changed and the preview link with what to look at.
 
 Do not use the change as an excuse to touch other things.

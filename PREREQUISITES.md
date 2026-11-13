@@ -28,12 +28,12 @@ O plano gratuito da Vercel só publica repositórios de contas pessoais do GitHu
 flowchart LR
     Voce(["👤 Você, no navegador"]) -->|"pede em português"| Sessao["☁️ Claude Code na web"]
     Sessao -->|"ao abrir, sozinho"| Setup["dependências · Postgres<br/>migrações · app"]
-    Sessao -->|"commit, push e pull request"| GitHub[("🐙 Seu repositório")]
-    Sessao -->|"publica com o token da Vercel"| Vercel["▲ Vercel + Neon<br/>seu app no ar"]
+    Sessao -->|"cada etapa pronta vai para a main"| GitHub[("🐙 Seu repositório")]
+    Sessao -->|"prévia a cada etapa · produção no /deliver"| Vercel["▲ Vercel + Neon<br/>seu app no ar"]
 ```
 
 - Cada sessão prepara o projeto sozinha ([`scripts/cloud-setup.sh`](scripts/cloud-setup.sh)): na primeira vez leva cerca de 1 minuto; depois, segundos.
-- O Claude testa o app num navegador da própria nuvem, faz o commit e o push, abre o pull request e **publica na Vercel** por você.
+- O Claude testa o app num navegador da própria nuvem, leva cada etapa pronta para a `main` e **publica uma prévia na Vercel** para você conferir; no fim, publica a produção.
 - As chaves ficam no ambiente do Claude, nunca na conversa. O Claude leva a chave da Anthropic para a Vercel sozinho, sem mostrá-la.
 
 ---

@@ -14,6 +14,7 @@ Fix the cause, not the symptom, and leave a test so it does not come back.
 5. **Fix** with the smallest change that solves the cause, following `code-standards`. Confirm with the `tester`; if it was visible on screen, repeat the scenario in the browser.
 6. **Security or customer data bug:** call the `reviewer` once on the fix.
 7. **Document:** call the `documenter` for a changelog entry ("Fix:"/"Correção:"). Commit `fix: [what was fixed]`.
-8. Answer in up to 5 lines: the bug, the cause, the fix and the test that protects against it.
+8. **Merge and show** (`deploy` skill, "Merge and show a step"): merge into `main` and publish a preview.
+9. Answer in up to 5 lines: the bug, the cause, the fix, the test that protects against it and the preview link to check it.
 
 If the fix changes a behavior documented in `docs/business/en/features.md`, ask the product owner first.

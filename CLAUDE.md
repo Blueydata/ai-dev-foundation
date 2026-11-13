@@ -32,7 +32,9 @@ Cloud sessions are the default: the SessionStart hook runs `scripts/cloud-setup.
 
 **Always show the app.** At the start of every cloud session, as soon as `/api/health` answers, report port 3000 with the preview port tool (`report_preview_port`, when it exists) so the product owner can open the app in the preview pane and follow along. After every change visible on screen, check it yourself in the browser (`test-in-browser`), send a screenshot and tell the product owner in one line which page to open in the preview to see it. On a computer, the built-in browser of the Claude desktop app plays the same role.
 
-**Publish it yourself.** After `/deliver`, publish a preview of the branch with the `deploy` skill (Vercel CLI, token kept as a network secret) and give the link; after the merge, publish production from `main`. Fix a failed build before handing over. The product owner never configures Vercel: you copy their keys from the cloud environment to Vercel without showing them.
+**Merge and show every step.** Every finished stage, adjustment or fix whose tests pass is committed, merged into `main` and published as a Vercel preview, and the product owner gets the preview link with one line on what to look at (`deploy` skill, "Merge and show a step"). `/deliver` publishes production from `main`. Fix a failed build before handing over. The product owner never configures Vercel: you copy their keys from the cloud environment to Vercel without showing them.
+
+**New capabilities come from the Vercel Marketplace.** When a feature needs something the project does not have (login, e-mail, file storage, payments, cache, search…), search the Vercel Marketplace integrations first and propose the best free option (`deploy` skill, "Marketplace") before writing it yourself or bringing in another service.
 
 - `npm test`: unit tests
 - `npm run test:integration`: integration tests on a fresh `app_test` database
@@ -76,8 +78,8 @@ Everything lives in `src/`, split into business modules with four layers. The fu
 | Changing something that exists | `/adjust-feature` | Changes it with a test and updates the docs |
 | Something does not work as it should | `/fix-bug` | Reproduces it with a test, fixes the cause and documents |
 | Testing like a user, in the browser | `/test-in-browser` | Claude uses the app in a real browser and checks every done criterion |
-| Ready to go into the project | `/deliver` | Final checks, push and pull request |
-| Putting it online | `/deploy` | Claude creates the Vercel project and the Neon database, publishes and gives the link |
+| Feature finished | `/deliver` | Final checks and the production link |
+| Putting it online | `/deploy` | Vercel project and Neon database, a preview for every step, production, and Marketplace integrations |
 
 Standards Claude follows on its own whenever the work calls for them:
 
@@ -121,7 +123,7 @@ They work in a separate context, on a cheaper model where possible, and return o
 4. **Secrets and credentials never go into code, prompts or the conversation.** Keys and logins come from the cloud environment settings (or `.env` with Docker) and from Vercel, chosen by the product owner and read only through `src/shared/config/env.ts`; Claude never reads `.env`, never prints them and never suggests passwords.
 5. **External API keys only on the server.** Never in `"use client"` components or `NEXT_PUBLIC_` variables.
 6. **Every change comes with tests.** Unit tests for rules and use cases, integration tests for repositories, both through the `tester` subagent. Every feature ends with Claude testing all done criteria in the browser (`test-in-browser`).
-7. **Work on a branch, deliver through a pull request.** In the cloud, the session's branch; on a computer, `feature/…`, `change/…` or `fix/…`. Never on `main`; one commit per stage, in English. `main` changes only through a merged pull request.
+7. **Small steps, each merged into `main`.** Work on a branch (the session's branch in the cloud; `feature/…`, `change/…` or `fix/…` on a computer), never commit directly on `main`. One commit per stage, in English; every stage that passes its tests is merged into `main` right away and shown in a preview.
 8. **Every screen follows `ui-standards` and `url-state`**, and **all AI uses the Vercel AI SDK, streamed** (`ai-integration`). AI reads data through tools with typed filters, never the whole table in the prompt.
 9. **Built for volume** (`database-queries`). Filters, sorting and counts in SQL, indexes in the migration, no query inside a loop, every list paginated; every new query validated with integration tests, `countQueries` and `db:explain`.
 10. **Customer data (LGPD).** Keep only what is needed. Do not log message content or personal data, and never put personal data in URLs.
